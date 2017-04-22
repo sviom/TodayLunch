@@ -28,11 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Properties\PublishProfiles\TodayLaunch - FTP.pubxml" />
-    <None Remove="Properties\PublishProfiles\TodayLaunch - Web Deploy.pubxml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="wwwroot\css\Layout.css" />
     <Content Include="wwwroot\favicon.ico" />
     <Content Include="wwwroot\js\Common.js" />
@@ -54,7 +49,6 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
