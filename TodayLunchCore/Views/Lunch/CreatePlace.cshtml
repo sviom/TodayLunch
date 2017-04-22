@@ -1,0 +1,101 @@
+﻿@using LunchCommon.Models
+@model Owner
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#savePlaceButton").click(function () {
+            SavePlaceList();
+        });
+    });
+
+    function SavePlaceList() {
+        var rows = document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
+        if (rows < 1) {
+            alert("장소를 입력해주세요.");
+            $("#savePlaceButton").prop("disabled", true);
+            return false;
+        }
+
+        var placeList = new Array();
+        for (var i = 0; i < rows; i++) {
+            var rw = parseInt(document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr")[i].id.replace("placeTR", ""));
+            var placeInfo = new Object();
+            placeInfo.PlaceName = $("#placeNameText" + rw).val();
+            placeInfo.PlaceLocation = $("#placeLocationText" + rw).val();
+
+            var Owner = new Object();
+            Owner.OwnerId = parseInt("@Model.OwnerId");
+            Owner.OwnerName = "@Model.OwnerName";
+            placeInfo.PlaceOwner = Owner;
+
+            placeList.push(placeInfo);
+        }
+
+        var resultData = ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(placeList));
+        console.log("결과");
+        console.log(resultData);
+        if (resultData) {
+            location.href = '/Lunch/LunchList/@Model.OwnerName';
+        }
+        else {
+            location.href = "/Home/Index";
+         }
+    }
+
+    // 열 추가
+    function AddPlaceInput() {
+        var rows = document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
+        var assembleText = '<tr id="placeTR' + rows + '">';
+        assembleText += '<td><input type="text" id="placeNameText' + rows + '" placeholder="점심 장소 이름" /></td >';
+        assembleText += '<td><input type="text" id="placeLocationText' + rows + '" placeholder="점심 장소 위치" /></td>';
+        assembleText += '<td><button type="button" id="deletePlaceButton' + rows + '" class="deletePlaceButton" onclick="DeletePlaceInput(this);">장소 제거</button></td>';
+        assembleText += '</tr>';
+
+        document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].innerHTML += assembleText;
+    }
+
+    // 해당 열에 해당하는 장소 제거
+    function DeletePlaceInput(BtnObject) {
+        var rowCount = parseInt(BtnObject.id.replace("deletePlaceButton", ""));
+        document.getElementById("placeTR" + rowCount).outerHTML = "";
+    }
+</script>
+
+<div>
+    <div>
+        <h2>주변에 어떠한 장소가 있나요?</h2>
+        <h4>@Model.OwnerName 님, 환영합니다.</h4>
+        <input type="hidden" value="@Model.OwnerId" />
+    </div>
+
+    <hr />
+    <button type="button" id="addPlaceButton" class="addPlaceButton" onclick="AddPlaceInput();">장소 추가</button>
+    <table id="inputPlaceTable">
+        <thead>
+            <tr>
+                <td>이름</td>
+                <td>위치</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="placeTR0">
+                <td>
+                    <input type="text" id="placeNameText0" placeholder="점심 장소 이름" />
+                </td>
+                <td>
+                    <input type="text" id="placeLocationText0" placeholder="점심 장소 위치" />
+                </td>
+                <td>
+                    <button type="button" id="deletePlaceButton0" class="deletePlaceButton" onclick="DeletePlaceInput(this);">장소 제거</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <button type="button" id="savePlaceButton">장소 저장</button>
+    <nav>
+        <a href="/Lunch/LunchList">뒤로 이동</a>
+        <a href="/Home/Index">홈으로</a>
+    </nav>
+</div>

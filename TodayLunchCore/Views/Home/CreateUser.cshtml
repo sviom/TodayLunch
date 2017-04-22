@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "등록";
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#duplicateCheck").click(function () {
+            if ($("#ownerName").val().length > 30) {
+                $("#duplicateInfo").html("입력하신 값이 너무 깁니다. 줄여서 입력하세요.");
+                return false;
+            }
+            var resultData =
+                ExecuteAjax("POST", "/Home/CheckDuplicateUser", "json", "application/json", JSON.stringify($("#ownerName").val()));
+
+            if (!resultData) {
+                $("#duplicateInfo").html("중복되는 값이 존재합니다. 다른 값을 입력하세요.");
+            } else {
+                $("#duplicateInfo").html("사용 가능한 값입니다.");
+                $("#regist").prop("disabled", false);
+            }
+        });
+
+        $("#regist").click(function () {
+            if ($("#ownerName").val().length > 30 || $("#ownerName").val().length < 1) {
+                alert("아이디가 너무 길거나 없습니다.");
+                return false;
+            }
+
+            $("#createUserForm").prop("action", "/Home/PostUser");
+            $("#createUserForm").prop("method", "post");
+            $("#createUserForm").submit();
+        });
+    });
+</script>
+
+<div>
+    <div>
+        <h2>등록을 환영합니다.</h2>
+    </div>
+    <hr />
+    <form id="createUserForm">
+        <span>아이디 입력</span>
+        <input type="text" id="ownerName" name="ownerName" placeholder="원하시는 아이디를 입력하세요." />
+        <button type="button" id="duplicateCheck">중복검사</button>
+        <button type="submit" id="regist" disabled>등록</button>
+        <span id="duplicateInfo"></span>
+    </form>
+
+    <nav>
+        <a href="/Home/Index">홈으로</a>
+    </nav>
+</div>

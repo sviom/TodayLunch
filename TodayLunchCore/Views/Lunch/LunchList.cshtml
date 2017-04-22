@@ -1,0 +1,53 @@
+﻿@using LunchCommon.Models
+@model IEnumerable<LunchCommon.Models.Place>
+
+@{
+    ViewData["Title"] = "점심고르기";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#selectLunch").click(function () {
+        });
+    });
+</script>
+
+<div>
+    <div>
+        <h2>점심을 골라봅시다.</h2>
+    </div>
+
+    <hr />
+
+    <button type="button" id="selectLunch">점심 고르기</button>
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <td style="border:1px solid black;">번호</td>
+                    <td style="border:1px solid black;">이름</td>
+                    <td style="border:1px solid black;">위치</td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    @foreach (Place item in Model)
+                    {
+                        <tr>
+                            <td>@item.PlaceId</td>
+                            <td>@item.PlaceName</td>
+                            <td>@item.PlaceLocation</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <nav>
+        <a href="/Lunch/CreatePlace">장소 입력</a>
+        <a href="/Home/Index">홈으로</a>
+    </nav>
+</div>
