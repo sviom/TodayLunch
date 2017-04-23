@@ -10,6 +10,21 @@
         $("#selectLunch").click(function () {
         });
     });
+
+    function DeleteCreatedPlace(BtnObject) {
+        var rowCount = parseInt(BtnObject.id.replace("deletePlaceButton_", ""));
+
+        var placeInfo = new Object();
+        placeInfo.PlaceId = parseInt($("#placeId_" + rowCount).html());
+
+        var resultData = ExecuteAjax("POST", "/Lunch/DeletePlace", "json", "application/json", JSON.stringify(placeInfo));
+        console.log("결과");
+        console.log(resultData);
+        if (resultData) {
+            alert("삭제하였습니다.");
+            document.getElementById("placeTR_" + rowCount).outerHTML = "";
+        }
+    }
 </script>
 
 <div>
@@ -28,18 +43,24 @@
                     <td style="border:1px solid black;">번호</td>
                     <td style="border:1px solid black;">이름</td>
                     <td style="border:1px solid black;">위치</td>
+                    <td></td>
                 </tr>
             </thead>
             <tbody>
                 @if (Model != null)
                 {
+                    int i = 0;
                     @foreach (Place item in Model)
                     {
-                        <tr>
-                            <td>@item.PlaceId</td>
+                        <tr id="placeTR_@i">
+                            <td><span id="placeId_@i">@item.PlaceId</span></td>
                             <td>@item.PlaceName</td>
                             <td>@item.PlaceLocation</td>
+                            <td>
+                                <button type="button" id="deletePlaceButton_@i" onclick="DeleteCreatedPlace(this);">이 장소 제거</button>
+                            </td>
                         </tr>
+                        i++;
                     }
                 }
             </tbody>

@@ -150,5 +150,41 @@ namespace TodayLunchCore.Controllers
             return _createdPlaceCount;
         }
 
+        public async Task<bool> DeletePlace([FromBody]Place placeInfo)
+        {
+            return await _DeletePlaceAsync(placeInfo);
+        }
+
+        private async Task<bool> _DeletePlaceAsync(Place _placeInfo)
+        {
+            bool _deleteResult = false;
+            using (HttpClient client = new HttpClient())
+            {
+                var response
+                    = await client.PostAsync
+                    (
+                        //"http://todaylunchapi.azurewebsites.net/api/DeleteAPI/DeletePlace",
+                        "http://localhost:7011/api/DeleteAPI/DeletePlace",
+                        new StringContent(JsonConvert.SerializeObject(_placeInfo), Encoding.UTF8, "application/json")
+                    );
+
+                string content = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    //var model = JsonConvert.DeserializeObject<Owner>(content);
+                    //return View(model.results);
+
+                    if (Convert.ToBoolean(content))
+                    {
+                        _deleteResult = true;
+                    }
+                    
+                }
+
+                // an error occurred => here you could log the content returned by the remote server
+                //return Content("An error occurred: " + content);
+            }
+            return _deleteResult;
+        }
     }
 }
