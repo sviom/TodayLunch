@@ -150,11 +150,21 @@ namespace TodayLunchCore.Controllers
             return _createdPlaceCount;
         }
 
+        /// <summary>
+        /// 장소 삭제 Wrapper
+        /// </summary>
+        /// <param name="placeInfo"></param>
+        /// <returns></returns>
         public async Task<bool> DeletePlace([FromBody]Place placeInfo)
         {
             return await _DeletePlaceAsync(placeInfo);
         }
 
+        /// <summary>
+        /// 장소 삭제 API 호출
+        /// </summary>
+        /// <param name="_placeInfo"></param>
+        /// <returns></returns>
         private async Task<bool> _DeletePlaceAsync(Place _placeInfo)
         {
             bool _deleteResult = false;
