@@ -1,59 +1,45 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
+    <AssemblyName>TodayLunchCore</AssemblyName>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\lib\bootstrap\**" />
-    <Compile Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
-    <Compile Remove="wwwroot\lib\jquery-validation\**" />
-    <Compile Remove="wwwroot\lib\jquery\**" />
-    <Content Remove="wwwroot\lib\bootstrap\**" />
-    <Content Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
-    <Content Remove="wwwroot\lib\jquery-validation\**" />
-    <Content Remove="wwwroot\lib\jquery\**" />
-    <EmbeddedResource Remove="wwwroot\lib\bootstrap\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jquery-validation\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jquery\**" />
-    <None Remove="wwwroot\lib\bootstrap\**" />
-    <None Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
-    <None Remove="wwwroot\lib\jquery-validation\**" />
-    <None Remove="wwwroot\lib\jquery\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="wwwroot\css\Layout.css" />
-    <Content Include="wwwroot\favicon.ico" />
-    <Content Include="wwwroot\js\Common.js" />
-    <Content Include="wwwroot\js\jquery-3.1.1.min.js" />
+    <Compile Remove="wwwroot\images\**" />
+    <Compile Remove="wwwroot\lib\**" />
+    <Content Remove="wwwroot\images\**" />
+    <Content Remove="wwwroot\lib\**" />
+    <EmbeddedResource Remove="wwwroot\images\**" />
+    <EmbeddedResource Remove="wwwroot\lib\**" />
+    <None Remove="wwwroot\images\**" />
+    <None Remove="wwwroot\lib\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
-    <Folder Include="wwwroot\lib\" />
+    <ProjectReference Include="..\LunchCommon\LunchCommon.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LunchCommon\LunchCommon.csproj" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>
