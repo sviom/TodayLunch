@@ -38,8 +38,5 @@
   <ItemGroup>
     <ProjectReference Include="..\LunchCommon\LunchCommon.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
 
 </Project>
