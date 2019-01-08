@@ -26,8 +26,7 @@ namespace TodayLunchCore.Controllers
                     var response
                         = await client.PostAsync
                         (
-                            "http://todaylunchapi.azurewebsites.net/api/SelectAPI/GetUserInfo",
-                            //"http://localhost:7011/api/SelectAPI/GetUserInfo",
+                            LunchCommon.PreDefined.ServiceApiUrl + "SelectAPI/GetUserInfo",
                             new StringContent(JsonConvert.SerializeObject(_ownerName), Encoding.UTF8, "application/json")
                         );
 

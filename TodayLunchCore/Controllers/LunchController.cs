@@ -66,8 +66,7 @@ namespace TodayLunchCore.Controllers
                     var response
                         = await client.PostAsync
                         (
-                            "http://todaylunchapi.azurewebsites.net/api/SelectAPI/GetPlaceList",
-                            //"http://localhost:7011/api/SelectAPI/GetPlaceList",
+                            LunchCommon.PreDefined.ServiceApiUrl + "SelectAPI/GetPlaceList",
                             new StringContent(JsonConvert.SerializeObject(_ownerInfo), Encoding.UTF8, "application/json")
                         );
 
@@ -125,8 +124,7 @@ namespace TodayLunchCore.Controllers
                 var response
                     = await client.PostAsync
                     (
-                        "http://todaylunchapi.azurewebsites.net/api/InsertAPI/CreatePlace",
-                        //"http://localhost:7011/api/InsertAPI/CreatePlace",
+                        LunchCommon.PreDefined.ServiceApiUrl + "InsertAPI/CreatePlace",
                         new StringContent(JsonConvert.SerializeObject(_placeList), Encoding.UTF8, "application/json")
                     );
 
@@ -173,8 +171,7 @@ namespace TodayLunchCore.Controllers
                 var response
                     = await client.PostAsync
                     (
-                        //"http://todaylunchapi.azurewebsites.net/api/DeleteAPI/DeletePlace",
-                        "http://localhost:7011/api/DeleteAPI/DeletePlace",
+                        LunchCommon.PreDefined.ServiceApiUrl + "DeleteAPI/DeletePlace",
                         new StringContent(JsonConvert.SerializeObject(_placeInfo), Encoding.UTF8, "application/json")
                     );
 

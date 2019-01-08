@@ -82,8 +82,7 @@ namespace TodayLunchCore.Controllers
                 var response
                     = await client.PostAsync
                     (
-                        "http://todaylunchapi.azurewebsites.net/api/SelectAPI/GetCheckUserDuplicate",
-                        //"http://localhost:7011/api/SelectAPI/GetCheckUserDuplicate",
+                        LunchCommon.PreDefined.ServiceApiUrl + "SelectAPI/GetCheckUserDuplicate",
                         new StringContent(JsonConvert.SerializeObject(_ownerName), Encoding.UTF8, "application/json")
                     );
 
@@ -92,8 +91,7 @@ namespace TodayLunchCore.Controllers
                 {
                     //var model = JsonConvert.DeserializeObject<Owner>(content);
                     //return View(model.results);
-                    int value;
-                    if (int.TryParse(content, out value))
+                    if (int.TryParse(content, out int value))
                     {
                         if (value > 0)
                         {
@@ -148,8 +146,8 @@ namespace TodayLunchCore.Controllers
                 var response
                     = await client.PostAsync
                     (
-                        "http://todaylunchapi.azurewebsites.net/api/InsertAPI/CreateUser",
-                        //"http://localhost:7011/api/InsertAPI/CreateUser",
+                        LunchCommon.PreDefined.ServiceApiUrl + "InsertAPI/CreateUser",
+                        
                         new StringContent(JsonConvert.SerializeObject(_ownerId), Encoding.UTF8, "application/json")
                     );
 
