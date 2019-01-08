@@ -9,6 +9,7 @@ namespace LunchCommon.Models
     /// <summary>
     /// 먹는 장소 관련
     /// </summary>
+    [Table("Place")]
     public class Place
     {
         /// <summary>

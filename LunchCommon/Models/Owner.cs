@@ -9,6 +9,7 @@ namespace LunchCommon.Models
     /// <summary>
     /// 서비스 사용자 관련
     /// </summary>
+    [Table("Owner")]
     public class Owner
     {
         /// <summary>
