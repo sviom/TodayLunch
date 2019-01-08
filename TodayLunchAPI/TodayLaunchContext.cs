@@ -6,15 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TodayLunchAPI.Models
+namespace TodayLunchAPI
 {
     public class TodayLunchContext : DbContext
     {
         public TodayLunchContext(DbContextOptions<TodayLunchContext> options)
             : base(options)
         {
-            // TODO: #639
-            //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
         }
 
         public DbSet<Place> Places { get; set; }
