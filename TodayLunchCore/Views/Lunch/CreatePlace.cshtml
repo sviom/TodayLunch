@@ -24,8 +24,8 @@
             placeInfo.PlaceLocation = $("#placeLocationText" + rw).val();
 
             var Owner = new Object();
-            Owner.OwnerId = parseInt("@Model.OwnerId");
-            Owner.OwnerName = "@Model.OwnerName";
+            Owner.OwnerId = parseInt("@Model.Id");
+            Owner.OwnerName = "@Model.Name";
             placeInfo.PlaceOwner = Owner;
 
             placeList.push(placeInfo);
@@ -35,7 +35,7 @@
         console.log("결과");
         console.log(resultData);
         if (resultData) {
-            location.href = '/Lunch/LunchList/@Model.OwnerName';
+            location.href = '/Lunch/LunchList/@Model.Name';
         }
         else {
             location.href = "/Home/Index";
@@ -64,8 +64,8 @@
 <div>
     <div>
         <h2>주변에 어떠한 장소가 있나요?</h2>
-        <h4>@Model.OwnerName 님, 환영합니다.</h4>
-        <input type="hidden" value="@Model.OwnerId" />
+        <h4>@Model.Name 님, 환영합니다.</h4>
+        <input type="hidden" value="@Model.Id" />
     </div>
 
     <hr />
@@ -95,7 +95,7 @@
     <br />
     <button type="button" id="savePlaceButton">장소 저장</button>
     <nav>
-        <a href="/Lunch/LunchList/@Model.OwnerName">뒤로 이동</a>
+        <a href="/Lunch/LunchList/@Model.Name">뒤로 이동</a>
         <a href="/Home/Index">홈으로</a>
     </nav>
 </div>

@@ -53,9 +53,9 @@
                     @foreach (Place item in Model)
                     {
                         <tr id="placeTR_@i">
-                            <td><span id="placeId_@i">@item.PlaceId</span></td>
-                            <td>@item.PlaceName</td>
-                            <td>@item.PlaceLocation</td>
+                            <td><span id="placeId_@i">@item.Id</span></td>
+                            <td>@item.Name</td>
+                            <td>@item.Location</td>
                             <td>
                                 <button type="button" id="deletePlaceButton_@i" onclick="DeleteCreatedPlace(this);">이 장소 제거</button>
                             </td>

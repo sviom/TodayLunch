@@ -9,7 +9,7 @@
     $(document).ready(function ()
     {
         // 회원 가입 후 들어왔을 때 해당 내용 설정
-        $("#OwnerName").val("@Model.OwnerName");
+        $("#OwnerName").val("@Model.Name");
 
         $("#loginButton").click(function () {
             if ($("#OwnerName").val().length > 30 || $("#OwnerName").val().length < 1) {
