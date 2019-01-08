@@ -20,7 +20,7 @@ namespace TodayLunchCore.Controllers
         public IActionResult Index(string ownerName)
         {
             // 아이디 생성 한 뒤에 들어오는 거면 아이디를 자동으로 텍스트 칸에 입력하게 해준다.
-            Owner ownerInfo = new Owner()
+            var ownerInfo = new Owner()
             {
                 Name = ownerName
             };
@@ -44,9 +44,9 @@ namespace TodayLunchCore.Controllers
         /// <param name="ownerId">사용자가 입력한 아이디</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<bool> CheckDuplicateUser([FromBody]string ownerName)
+        public bool CheckDuplicateUser([FromBody]string ownerName)
         {
-            return await _CheckDuplicateUserAsync(ownerName);
+            return _CheckDuplicateUserAsync(ownerName);
         }
 
         /// <summary>
@@ -55,19 +55,14 @@ namespace TodayLunchCore.Controllers
         /// <param name="ownerName"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> CheckUser(string ownerId, string ownerName)
+        public IActionResult CheckUser([FromBody]string ownerName)
         {
-            Common comm = new Common();
-            bool checkResult = await _CheckDuplicateUserAsync(ownerName);
-            Owner userInfo = await comm._GetUserInfoAsync(ownerName);
-            if (!checkResult && userInfo != null)
-            {
-                return RedirectToAction("LunchList", "Lunch", new { id = userInfo.Name });
-            }
+            bool checkResult = _CheckDuplicateUserAsync(ownerName);
+            var owner = LunchLibrary.SqlLauncher.GetByName<Owner>(ownerName);
+            if (!checkResult && owner != null)
+                return RedirectToAction("LunchList", "Lunch", new { id = owner.Name });
             else
-            {
                 return RedirectToAction("Index", "Home");
-            }
         }
 
         /// <summary>
@@ -75,43 +70,13 @@ namespace TodayLunchCore.Controllers
         /// </summary>
         /// <param name="_ownerId">사용자가 입력한 아이디</param>
         /// <returns></returns>
-        private async Task<bool> _CheckDuplicateUserAsync(string _ownerName)
+        private bool _CheckDuplicateUserAsync(string _ownerName)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                var response
-                    = await client.PostAsync
-                    (
-                        LunchLibrary.PreDefined.ServiceApiUrl + "SelectAPI/GetCheckUserDuplicate",
-                        new StringContent(JsonConvert.SerializeObject(_ownerName), Encoding.UTF8, "application/json")
-                    );
-
-                string content = await response.Content.ReadAsStringAsync();
-                if (response.IsSuccessStatusCode)
-                {
-                    //var model = JsonConvert.DeserializeObject<Owner>(content);
-                    //return View(model.results);
-                    if (int.TryParse(content, out int value))
-                    {
-                        if (value > 0)
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-
-                // an error occurred => here you could log the content returned by the remote server
-                //return Content("An error occurred: " + content);
+            int count = LunchLibrary.SqlLauncher.Count<Owner>(x => x.Name.Equals(_ownerName));
+            if (count > 0)
                 return true;
-            }
+
+            return false;
         }
 
         /// <summary>
@@ -119,58 +84,24 @@ namespace TodayLunchCore.Controllers
         /// </summary>
         /// <param name="ownerId">사용자가 입력한 아이디</param>
         /// <returns>생성된 사용자 고유번호</returns>
-        public async Task<IActionResult> PostUser(string ownerName)
+        public IActionResult PostUser(string ownerName)
         {
-            int userId = await _PostUserAsync(ownerName);
-            if (userId > 0)
-            {
-                return RedirectToAction("Index", "Home", new { ownerName = ownerName });
-            }
+            var owner = _PostUserAsync(ownerName);
+            if (owner != null)
+                return RedirectToAction("Index", "Home", new { ownerName = owner.Name });
             else
-            {
                 return RedirectToAction("Index", "Home");
-            }
-
         }
 
         /// <summary>
         /// 사용자 생성 실제 로직
         /// </summary>
-        /// <param name="_ownerId">사용자가 입력한 아이디</param>
+        /// <param name="name">사용자가 입력한 아이디</param>
         /// <returns>생성된 사용자 고유번호</returns>
-        private async Task<int> _PostUserAsync(string _ownerId)
+        private Owner _PostUserAsync(string name)
         {
-            int _userId = -1;
-            using (HttpClient client = new HttpClient())
-            {
-                var response
-                    = await client.PostAsync
-                    (
-                        LunchLibrary.PreDefined.ServiceApiUrl + "InsertAPI/CreateUser",
-                        
-                        new StringContent(JsonConvert.SerializeObject(_ownerId), Encoding.UTF8, "application/json")
-                    );
-
-                string content = await response.Content.ReadAsStringAsync();
-                if (response.IsSuccessStatusCode)
-                {
-                    //var model = JsonConvert.DeserializeObject<Owner>(content);
-                    //return View(model.results);
-                    int value;
-                    if (int.TryParse(content, out value))
-                    {
-                        if (value > 0)
-                        {
-                            _userId = value;
-                        }
-                    }
-                }
-
-                // an error occurred => here you could log the content returned by the remote server
-                //return Content("An error occurred: " + content);
-            }
-            return _userId;
+            var owner = LunchLibrary.SqlLauncher.Insert(new Owner() { Name = name });
+            return owner;
         }
-
     }
 }

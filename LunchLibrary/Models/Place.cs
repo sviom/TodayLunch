@@ -10,7 +10,7 @@ namespace LunchLibrary.Models
     /// 먹는 장소 관련
     /// </summary>
     [Table("Place")]
-    public class Place
+    public class Place : Common
     {
         /// <summary>
         /// 장소 이름

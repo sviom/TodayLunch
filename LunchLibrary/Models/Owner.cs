@@ -10,7 +10,7 @@ namespace LunchLibrary.Models
     /// 서비스 사용자 관련
     /// </summary>
     [Table("Owner")]
-    public class Owner
+    public class Owner : Common
     {
         /// <summary>
         /// 사용자 고유번호
