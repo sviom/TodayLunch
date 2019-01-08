@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using Newtonsoft.Json;
-using LunchCommon.Models;
+using LunchLibrary.Models;
 using System.Text;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -66,7 +66,7 @@ namespace TodayLunchCore.Controllers
                     var response
                         = await client.PostAsync
                         (
-                            LunchCommon.PreDefined.ServiceApiUrl + "SelectAPI/GetPlaceList",
+                            LunchLibrary.PreDefined.ServiceApiUrl + "SelectAPI/GetPlaceList",
                             new StringContent(JsonConvert.SerializeObject(_ownerInfo), Encoding.UTF8, "application/json")
                         );
 
@@ -124,7 +124,7 @@ namespace TodayLunchCore.Controllers
                 var response
                     = await client.PostAsync
                     (
-                        LunchCommon.PreDefined.ServiceApiUrl + "InsertAPI/CreatePlace",
+                        LunchLibrary.PreDefined.ServiceApiUrl + "InsertAPI/CreatePlace",
                         new StringContent(JsonConvert.SerializeObject(_placeList), Encoding.UTF8, "application/json")
                     );
 
@@ -171,7 +171,7 @@ namespace TodayLunchCore.Controllers
                 var response
                     = await client.PostAsync
                     (
-                        LunchCommon.PreDefined.ServiceApiUrl + "DeleteAPI/DeletePlace",
+                        LunchLibrary.PreDefined.ServiceApiUrl + "DeleteAPI/DeletePlace",
                         new StringContent(JsonConvert.SerializeObject(_placeInfo), Encoding.UTF8, "application/json")
                     );
 

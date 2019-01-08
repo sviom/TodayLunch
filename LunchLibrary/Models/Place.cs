@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace LunchCommon.Models
+namespace LunchLibrary.Models
 {
     /// <summary>
     /// 먹는 장소 관련

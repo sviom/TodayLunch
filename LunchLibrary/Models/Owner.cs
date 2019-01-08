@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace LunchCommon.Models
+namespace LunchLibrary.Models
 {
     /// <summary>
     /// 서비스 사용자 관련

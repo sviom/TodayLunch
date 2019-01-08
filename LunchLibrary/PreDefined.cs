@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LunchCommon
+namespace LunchLibrary
 {
     public static class PreDefined
     {

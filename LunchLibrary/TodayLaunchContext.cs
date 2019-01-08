@@ -1,11 +1,11 @@
-﻿using LunchCommon.Models;
+﻿using LunchLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LunchCommon
+namespace LunchLibrary
 {
     public class TodayLunchContext : DbContext
     {

@@ -1,4 +1,4 @@
-﻿using LunchCommon.Models;
+﻿using LunchLibrary.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ namespace TodayLunchCore.Controllers
                     var response
                         = await client.PostAsync
                         (
-                            LunchCommon.PreDefined.ServiceApiUrl + "SelectAPI/GetUserInfo",
+                            LunchLibrary.PreDefined.ServiceApiUrl + "SelectAPI/GetUserInfo",
                             new StringContent(JsonConvert.SerializeObject(_ownerName), Encoding.UTF8, "application/json")
                         );
 

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Data.SqlClient;
 using System.Data;
-using LunchCommon.Models;
+using LunchLibrary.Models;
 using Newtonsoft.Json;
 
 namespace TodayLunchAPI.Controllers

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using Newtonsoft.Json;
-using LunchCommon.Models;
+using LunchLibrary.Models;
 using System.Text;
 
 namespace TodayLunchCore.Controllers
@@ -82,7 +82,7 @@ namespace TodayLunchCore.Controllers
                 var response
                     = await client.PostAsync
                     (
-                        LunchCommon.PreDefined.ServiceApiUrl + "SelectAPI/GetCheckUserDuplicate",
+                        LunchLibrary.PreDefined.ServiceApiUrl + "SelectAPI/GetCheckUserDuplicate",
                         new StringContent(JsonConvert.SerializeObject(_ownerName), Encoding.UTF8, "application/json")
                     );
 
@@ -146,7 +146,7 @@ namespace TodayLunchCore.Controllers
                 var response
                     = await client.PostAsync
                     (
-                        LunchCommon.PreDefined.ServiceApiUrl + "InsertAPI/CreateUser",
+                        LunchLibrary.PreDefined.ServiceApiUrl + "InsertAPI/CreateUser",
                         
                         new StringContent(JsonConvert.SerializeObject(_ownerId), Encoding.UTF8, "application/json")
                     );
