@@ -48,7 +48,7 @@ namespace TodayLunchAPI.Controllers
                 };
                 SqlParameter[] parameterList = new SqlParameter[]
                 {
-                        new SqlParameter() {ParameterName="@placeOwnerId",SqlDbType=SqlDbType.Int,Value=Convert.ToInt32( inOwner.OwnerId) }
+                        new SqlParameter() {ParameterName="@placeOwnerId",SqlDbType=SqlDbType.Int,Value=Convert.ToInt32( inOwner.Id) }
                 };
 
                 sqlQuery.Parameters.AddRange(parameterList);
@@ -59,18 +59,18 @@ namespace TodayLunchAPI.Controllers
                 {
                     Place launchPlace = new Place()
                     {
-                        PlaceId = Convert.ToInt32(resultData["placeId"]),
-                        PlaceOwner = new Owner() { OwnerId = Convert.ToInt32(resultData["placeOwnerId"]) },
-                        PlaceName = resultData["placeName"].ToString()
+                        Id = Convert.ToInt32(resultData["placeId"]),
+                        Owner = new Owner() { Id = Convert.ToInt32(resultData["placeOwnerId"]) },
+                        Name = resultData["placeName"].ToString()
                     };
                     if (resultData["placeLocation"] != DBNull.Value)
                     {
-                        launchPlace.PlaceLocation = resultData["placeLocation"].ToString();
+                        launchPlace.Location = resultData["placeLocation"].ToString();
                     }
 
                     if (resultData["placeTakeNum"] != DBNull.Value)
                     {
-                        launchPlace.PlaceTakeNum = Convert.ToInt32(resultData["placeTakeNum"]);
+                        launchPlace.UsingCount = Convert.ToInt32(resultData["placeTakeNum"]);
                     }
 
                     placeList.Add(launchPlace);
@@ -162,8 +162,8 @@ namespace TodayLunchAPI.Controllers
                 SqlDataReader resultData = sqlQuery.ExecuteReader();
                 while (resultData.Read())
                 {
-                    _owner.OwnerId = Convert.ToInt32( resultData["ownerId"]);
-                    _owner.OwnerName = resultData["ownerName"].ToString();
+                    _owner.Id = Convert.ToInt32( resultData["ownerId"]);
+                    _owner.Name = resultData["ownerName"].ToString();
                 }
 
                 conn.Close();

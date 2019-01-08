@@ -12,11 +12,11 @@ namespace LunchCommon.Models
         /// <summary>
         /// 사용자 고유번호
         /// </summary>
-        public int OwnerId { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// 사용자 이름
         /// </summary>
-        public string OwnerName { get; set; }
+        public string Name { get; set; }
     }
 }

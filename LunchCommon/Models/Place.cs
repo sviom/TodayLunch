@@ -12,26 +12,26 @@ namespace LunchCommon.Models
         /// <summary>
         /// 장소 이름
         /// </summary>
-        public string PlaceName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 장소 고유번호
         /// </summary>
-        public int PlaceId { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// 장소 위치
         /// </summary>
-        public string PlaceLocation { get; set; }
+        public string Location { get; set; }
 
         /// <summary>
         /// 장소 관련 입력/소유자
         /// </summary>
-        public Owner PlaceOwner { get; set; }
+        public Owner Owner { get; set; }
 
         /// <summary>
         /// 장소 이용 횟수
         /// </summary>
-        public int PlaceTakeNum { get; set; }
+        public int UsingCount { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace TodayLunchCore.Controllers
             // 아이디 생성 한 뒤에 들어오는 거면 아이디를 자동으로 텍스트 칸에 입력하게 해준다.
             Owner ownerInfo = new Owner()
             {
-                OwnerName = ownerName
+                Name = ownerName
             };
             return View(ownerInfo);
         }
@@ -62,7 +62,7 @@ namespace TodayLunchCore.Controllers
             Owner userInfo = await comm._GetUserInfoAsync(ownerName);
             if (!checkResult && userInfo != null)
             {
-                return RedirectToAction("LunchList", "Lunch", new { id = userInfo.OwnerName });
+                return RedirectToAction("LunchList", "Lunch", new { id = userInfo.Name });
             }
             else
             {
