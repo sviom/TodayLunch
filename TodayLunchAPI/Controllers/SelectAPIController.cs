@@ -47,7 +47,7 @@ namespace TodayLunchAPI.Controllers
                 };
                 SqlParameter[] parameterList = new SqlParameter[]
                 {
-                        new SqlParameter() {ParameterName="@placeOwnerId",SqlDbType=SqlDbType.Int,Value=Convert.ToInt32( inOwner.Id) }
+                        new SqlParameter() {ParameterName="@placeOwnerId",SqlDbType=SqlDbType.Int,Value=Convert.ToInt32( 0) }
                 };
 
                 sqlQuery.Parameters.AddRange(parameterList);
@@ -58,8 +58,8 @@ namespace TodayLunchAPI.Controllers
                 {
                     Place launchPlace = new Place()
                     {
-                        Id = Convert.ToInt32(resultData["placeId"]),
-                        Owner = new Owner() { Id = Convert.ToInt32(resultData["placeOwnerId"]) },
+                        //Id = Convert.ToInt32(resultData["placeId"]),
+                        //Owner = new Owner() { Id = Convert.ToInt32(resultData["placeOwnerId"]) },
                         Name = resultData["placeName"].ToString()
                     };
                     if (resultData["placeLocation"] != DBNull.Value)
@@ -161,7 +161,7 @@ namespace TodayLunchAPI.Controllers
                 SqlDataReader resultData = sqlQuery.ExecuteReader();
                 while (resultData.Read())
                 {
-                    _owner.Id = Convert.ToInt32( resultData["ownerId"]);
+                    //_owner.Id = Convert.ToInt32( resultData["ownerId"]);
                     _owner.Name = resultData["ownerName"].ToString();
                 }
 

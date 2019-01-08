@@ -105,7 +105,7 @@ namespace TodayLunchAPI.Controllers
                 {
                     SqlParameter[] parameterList = new SqlParameter[]
                     {
-                        new SqlParameter() {ParameterName="@placeOwnerId",SqlDbType=SqlDbType.Int,Value=placeList[i].Owner.Id },
+                        new SqlParameter() {ParameterName="@placeOwnerId",SqlDbType=SqlDbType.Int,Value=0 },
                         new SqlParameter() {ParameterName="@placeName",SqlDbType=SqlDbType.NVarChar,Size=50,Value=placeList[i].Name },
                         new SqlParameter() {ParameterName="@placeLocation",SqlDbType=SqlDbType.NVarChar,Size=1000,Value=placeList[i].Location }
                     };
