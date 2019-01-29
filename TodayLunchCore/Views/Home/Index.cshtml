@@ -8,9 +8,6 @@
 <script type="text/javascript">
     $(document).ready(function ()
     {
-        // 회원 가입 후 들어왔을 때 해당 내용 설정
-        $("#OwnerName").val("@Model.Name");
-
         $("#loginButton").click(function () {
             if ($("#OwnerName").val().length > 30 || $("#OwnerName").val().length < 1) {
                 alert("아이디가 너무 길거나 없습니다.");
