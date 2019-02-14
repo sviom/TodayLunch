@@ -122,7 +122,7 @@ namespace LunchLibrary
                         count = dbSet.ToList().Count;
                 }
             }
-            catch
+            catch(Exception ex)
             {
             }
             return count;

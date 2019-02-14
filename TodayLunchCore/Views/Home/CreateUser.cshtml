@@ -7,16 +7,22 @@
     $(document).ready(function () {
         $("#duplicateCheck").click(function () {
             if ($("#ownerName").val().length > 30) {
-                $("#duplicateInfo").html("입력하신 값이 너무 깁니다. 줄여서 입력하세요.");
+                ShowAlertWithMessage("duplicateInfo", "입력하신 값이 너무 깁니다. 줄여서 입력하세요.");
                 return false;
             }
+
+            if ($("#ownerName").val().length <= 0) {
+                ShowAlertWithMessage("duplicateInfo", "아이디를 입력하세요.");
+                return false;
+            }
+
             var resultData =
                 ExecuteAjax("POST", "/Home/CheckDuplicateUser", "json", "application/json", JSON.stringify($("#ownerName").val()));
 
-            if (!resultData) {
-                $("#duplicateInfo").html("중복되는 값이 존재합니다. 다른 값을 입력하세요.");
+            if (resultData) {
+                ShowAlertWithMessage("duplicateInfo", "중복되는 값이 존재합니다. 다른 값을 입력하세요.");
             } else {
-                $("#duplicateInfo").html("사용 가능한 값입니다.");
+                ShowAlertWithMessage("duplicateInfo", "사용 가능한 값입니다.");
                 $("#regist").prop("disabled", false);
             }
         });
@@ -32,6 +38,12 @@
             $("#createUserForm").submit();
         });
     });
+
+    function ShowAlertWithMessage(elementName, message) {
+        $("#" + elementName).show();
+        $("#" + elementName).html(message);
+        //$("#" + elementName).alert();
+    }
 </script>
 
 <div class="row justify-content-center">
@@ -50,9 +62,15 @@
                        class="form-control" />
             </div>
 
+            <div id="duplicateInfo" class="alert alert-warning alert-dismissible fade show" style="display:none;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
             <button type="button" id="duplicateCheck" class="btn btn-secondary btn-block">중복검사</button>
             <button type="submit" id="regist" disabled class="btn btn-primary btn-block">등록</button>
-            <span id="duplicateInfo"></span>
+
         </form>
     </div>    
 </div>
