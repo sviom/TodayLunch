@@ -6,8 +6,7 @@
 }
 
 <script type="text/javascript">
-    $(document).ready(function ()
-    {
+    $(document).ready(function () {
         $("#loginButton").click(function () {
             if ($("#OwnerName").val().length > 30 || $("#OwnerName").val().length < 1) {
                 alert("아이디가 너무 길거나 없습니다.");
@@ -21,33 +20,35 @@
     });
 </script>
 
-<h2>오늘 점심 뭐먹지</h2>
-<h3>로그인</h3>
-
-<div>
-    오늘 점심 뭐먹지는 점심 가게를 고르는데 지친 사람들을 위한 점심고르기 서비스 입니다.
-    <form id="loginForm">
-        <label>아이디</label>
-        <input type="text" id="OwnerName" name="OwnerName" />
-        <button type="submit" id="loginButton">로그인</button>
-    </form>
-
-    <nav>
-        <a href="/Home/CreateUser">아이디 생성</a>
-    </nav>
+<div class="row" style="margin-top:100px;">
+    <div class="col-4 offset-4">
+        <div class="h2 font-weight-bold">
+            오늘 점심 뭐먹지
+        </div>
+    </div>
 </div>
 
-<div>
-    <img src="https://dev.azure.com/designmeteam/DesignMe/_apis/build/status/DesignMe.Android-Develop?branchName=develop" />
-    <img src="https://dev.azure.com/designmeteam/DesignMe/_apis/build/status/DesignMe.Automation-Develop?branchName=feature/designme_automation_pipeline" />
-    <img src="https://dev.azure.com/designmeteam/DesignMe/_apis/build/status/DesignMe.FunctionService-Develop?branchName=develop" />
-    <img src="https://dev.azure.com/designmeteam/DesignMe/_apis/build/status/DesignMe.iOS-Develop?branchName=develop" />
-    <img src="https://dev.azure.com/designmeteam/DesignMe/_apis/build/status/DesignMe.Windows-Develop?branchName=develop" />
-    <img src="https://dev.azure.com/designmeteam/DesignMe/_apis/build/status/DesignMeService-Develop?branchName=develop" />
+<div class="row">
+    <div class="col-4 offset-4">
+        오늘 점심 뭐먹지는 점심 가게를 고르는데 지친 사람들을 위한 점심고르기 서비스 입니다.
+    </div>
 </div>
 
-<div>
-    <img src="https://build.appcenter.ms/v0.1/apps/409684bf-25b9-417e-a56e-b9bff971c76a/branches/feature%2Fappcenter_inappupdate/badge" />
-    <img src="https://build.appcenter.ms/v0.1/apps/409684bf-25b9-417e-a56e-b9bff971c76a/branches/develop/badge" />
+<div class="row">
+    <div class="col-4 offset-4">
+        <hr />
+        <form id="loginForm">
+            <div class="form-group">
+                <label>아이디</label>
+                <input type="text" id="OwnerName" name="OwnerName" class="form-control" />
+            </div>
+            <button type="submit" id="loginButton" class="btn btn-primary btn-block">로그인</button>
+        </form>
+    </div>
+</div>
 
+<div class="row justify-content-center" style="margin-top:10px;">
+    <div class="col-4">
+        <a href="/Home/CreateUser" class="btn btn-secondary btn-block">아이디 생성</a>
+    </div>
 </div>
