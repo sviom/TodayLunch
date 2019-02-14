@@ -34,20 +34,31 @@
     });
 </script>
 
-<div>
-    <div>
-        <h2>등록을 환영합니다.</h2>
-    </div>
-    <hr />
-    <form id="createUserForm">
-        <span>아이디 입력</span>
-        <input type="text" id="ownerName" name="ownerName" placeholder="원하시는 아이디를 입력하세요." />
-        <button type="button" id="duplicateCheck">중복검사</button>
-        <button type="submit" id="regist" disabled>등록</button>
-        <span id="duplicateInfo"></span>
-    </form>
+<div class="row justify-content-center">
+    <div class="col-4">
+        <div class="h3">등록을 환영합니다.</div>
+    </div>    
+</div>
 
-    <nav>
-        <a href="/Home/Index">홈으로</a>
-    </nav>
+<div class="row justify-content-center">    
+    <div class="col-4">
+        <hr />
+        <form id="createUserForm">
+            <div class="form-group">
+                <label>아이디 입력</label>
+                <input type="text" id="ownerName" name="ownerName" placeholder="원하시는 아이디를 입력하세요."
+                       class="form-control" />
+            </div>
+
+            <button type="button" id="duplicateCheck" class="btn btn-secondary btn-block">중복검사</button>
+            <button type="submit" id="regist" disabled class="btn btn-primary btn-block">등록</button>
+            <span id="duplicateInfo"></span>
+        </form>
+    </div>    
+</div>
+
+<div class="row justify-content-center" style="margin-top:10px;">
+    <div class="col-4">
+        <a href="/Home/Index" class="btn btn-secondary btn-block">홈으로</a>
+    </div>
 </div>
