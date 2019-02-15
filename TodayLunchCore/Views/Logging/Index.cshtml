@@ -4,17 +4,35 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-
-<div>
-    @{
-        foreach (var item in Model)
-        {
-            string dd = item.Id + "/" + item.CreatedTime + "/" + item.Message + "";
-            <span>
-                @dd
-            </span>
-        }
-    }
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Create Time</th>
+                <th scope="col">Message</th>
+                <th scope="col">StackTrace</th>
+            </tr>
+        </thead>
+        <tbody>
+            @*<tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td></td>
+                </tr>*@
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var ss = Model[i];
+                <tr>
+                    @{
+                        <th scope="row">@(i + 1)</th>
+                        <td>@ss.CreatedTime</td>
+                        <td>@ss.Message</td>
+                        <td>@ss.StackTrace</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

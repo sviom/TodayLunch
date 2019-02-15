@@ -12,11 +12,6 @@ namespace TodayLunchCore.Controllers
     {
         public IActionResult Index()
         {
-            SqlLauncher.Insert<Log>(new Log() { Message = "TestMessage", StackTrace= "StackTrace" });
-            SqlLauncher.Insert<Log>(new Log() { Message = "TestMessage", StackTrace = "StackTrace" });
-            SqlLauncher.Insert<Log>(new Log() { Message = "TestMessage", StackTrace = "StackTrace" });
-            SqlLauncher.Insert<Log>(new Log() { Message = "TestMessage", StackTrace = "StackTrace" });
-
             var logList = SqlLauncher.GetAll<Log>();
             return View(logList);
         }
