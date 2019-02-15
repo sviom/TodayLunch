@@ -4,6 +4,9 @@
 
 
 <script type="text/javascript">
+    var IsPasswordCompleted = false;
+    var IsDuplicated = false;
+
     $(document).ready(function () {
         $("#duplicateCheck").click(function () {
             if ($("#ownerName").val().length > 30) {
@@ -21,9 +24,10 @@
 
             if (resultData) {
                 ShowAlertWithMessage("duplicateInfo", "중복되는 값이 존재합니다. 다른 값을 입력하세요.");
+                IsDuplicated = false;
             } else {
                 ShowAlertWithMessage("duplicateInfo", "사용 가능한 값입니다.");
-                $("#regist").prop("disabled", false);
+                IsDuplicated = true;
             }
         });
 
@@ -44,35 +48,77 @@
         $("#" + elementName).html(message);
         //$("#" + elementName).alert();
     }
+
+    function PasswordEqualCheck() {
+        if (!IsDuplicated) {
+            alert("중복검사를 먼저 해주세요.");
+            return;
+        }
+
+        var original = $("#ownerPw").val();
+        var recheck = $("#ownerRePw").val();
+                
+        if (original == recheck) {
+            ShowAlertWithMessage("passwordInfo", "비밀번호가 일치합니다.");
+            IsPasswordCompleted = true;
+            if (IsDuplicated && IsPasswordCompleted) {
+                $("#regist").prop("disabled", false);
+            }
+        }
+        else {
+            ShowAlertWithMessage("passwordInfo", "비밀번호가 일치하지 않습니다.");
+            IsPasswordCompleted = false;
+            $("#regist").prop("disabled", true);
+        }
+    }
 </script>
 
 <div class="row justify-content-center">
     <div class="col-4">
         <div class="h3">등록을 환영합니다.</div>
-    </div>    
+    </div>
 </div>
 
-<div class="row justify-content-center">    
+<div class="row justify-content-center">
     <div class="col-4">
         <hr />
         <form id="createUserForm">
             <div class="form-group">
                 <label>아이디 입력</label>
-                <input type="text" id="ownerName" name="ownerName" placeholder="원하시는 아이디를 입력하세요."
+                <input type="text" id="ownerName" name="Name" placeholder="원하시는 아이디를 입력하세요."
                        class="form-control" />
+                <button type="button" id="duplicateCheck" class="btn btn-secondary btn-block"
+                        style="margin-top:5px;">중복검사</button>
             </div>
 
             <div id="duplicateInfo" class="alert alert-warning alert-dismissible fade show" style="display:none;">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+            </div>            
+
+            <div class="form-group">
+                <label>비밀번호</label>
+                <input type="password" id="ownerPw" name="Password" placeholder="비밀번호"
+                       class="form-control" />
             </div>
 
-            <button type="button" id="duplicateCheck" class="btn btn-secondary btn-block">중복검사</button>
+            <div class="form-group">
+                <label>비밀번호 재입력</label>
+                <input type="password" id="ownerRePw" name="RecheckPassword" placeholder="비밀번호 다시 입력"
+                       class="form-control" onkeyup="PasswordEqualCheck();" />
+            </div>
+
+            <div id="passwordInfo" class="alert alert-warning alert-dismissible fade show" style="display:none;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
             <button type="submit" id="regist" disabled class="btn btn-primary btn-block">등록</button>
 
         </form>
-    </div>    
+    </div>
 </div>
 
 <div class="row justify-content-center" style="margin-top:10px;">
