@@ -16,14 +16,14 @@ namespace LunchLibrary.Models
         /// 장소 이름
         /// </summary>
         [Required]
-        public string Name { get; set; }
+        public new string Name { get; set; }
 
         /// <summary>
         /// 장소 고유번호
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public new Guid Id { get; set; }
 
         /// <summary>
         /// 장소 위치

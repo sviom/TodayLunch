@@ -17,13 +17,19 @@ namespace LunchLibrary.Models
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public new Guid Id { get; set; }
 
         /// <summary>
         /// 사용자 이름
         /// </summary>
         [Required]
-        public string Name { get; set; }
+        public new string Name { get; set; }
+
+        /// <summary>
+        /// 비밀번호
+        /// </summary>
+        [Required]
+        public string Password { get; set; }
 
         /// <summary>
         /// 사용자 생성 시간

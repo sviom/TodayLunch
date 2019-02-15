@@ -23,5 +23,7 @@ namespace LunchLibrary
 
         public DbSet<Place> Places { get; set; }
         public DbSet<Owner> Owners { get; set; }
+
+        public DbSet<Log> Logs { get; set; }
     }
 }

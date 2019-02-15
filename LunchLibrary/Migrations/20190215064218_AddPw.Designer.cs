@@ -4,38 +4,22 @@ using LunchLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LunchLibrary.Migrations
 {
     [DbContext(typeof(TodayLunchContext))]
-    partial class TodayLunchContextModelSnapshot : ModelSnapshot
+    [Migration("20190215064218_AddPw")]
+    partial class AddPw
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("LunchLibrary.Models.Log", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset>("CreatedTime");
-
-                    b.Property<string>("Message")
-                        .IsRequired();
-
-                    b.Property<string>("StackTrace")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Logs");
-                });
 
             modelBuilder.Entity("LunchLibrary.Models.Owner", b =>
                 {

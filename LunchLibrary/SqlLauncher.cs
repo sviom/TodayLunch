@@ -124,6 +124,7 @@ namespace LunchLibrary
             }
             catch(Exception ex)
             {
+                Insert(new Log() { Message = ex.Message, StackTrace = ex.StackTrace });
             }
             return count;
         }
