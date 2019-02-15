@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LunchLibrary;
+using LunchLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TodayLunchCore.Controllers
@@ -10,7 +12,13 @@ namespace TodayLunchCore.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            SqlLauncher.Insert<Log>(new Log() { Message = "TestMessage", StackTrace= "StackTrace" });
+            SqlLauncher.Insert<Log>(new Log() { Message = "TestMessage", StackTrace = "StackTrace" });
+            SqlLauncher.Insert<Log>(new Log() { Message = "TestMessage", StackTrace = "StackTrace" });
+            SqlLauncher.Insert<Log>(new Log() { Message = "TestMessage", StackTrace = "StackTrace" });
+
+            var logList = SqlLauncher.GetAll<Log>();
+            return View(logList);
         }
     }
 }

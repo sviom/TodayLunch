@@ -9,11 +9,11 @@ namespace LunchLibrary.Models
     /// <summary>
     /// 로깅 정보
     /// </summary>
-    public class Log
+    public class Log : Common
     {
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public new Guid Id { get; set; }
 
         [Required]
         public string Message { get; set; }

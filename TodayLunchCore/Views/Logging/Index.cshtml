@@ -1,7 +1,20 @@
-﻿
+﻿@model List<LunchLibrary.Models.Log>
+
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
 
+
+<div>
+    @{
+        foreach (var item in Model)
+        {
+            string dd = item.Id + "/" + item.CreatedTime + "/" + item.Message + "";
+            <span>
+                @dd
+            </span>
+        }
+    }
+</div>

@@ -31,6 +31,7 @@ namespace LunchLibrary
             }
             catch
             {
+                
             }
 
             return addedObject;
@@ -100,6 +101,29 @@ namespace LunchLibrary
             {
             }
             return null;
+        }
+
+        /// <summary>
+        /// 전체 목록 얻어오기
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static List<T> GetAll<T>() where T : Common
+        {
+            List<T> returnList = new List<T>();
+            try
+            {
+                using (var db = new TodayLunchContext())
+                {
+                    var dbSet = db.Set<T>();
+                    returnList = dbSet.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Insert(new Log() { Message = ex.Message, StackTrace = ex.StackTrace });
+            }
+            return returnList;
         }
 
         /// <summary>

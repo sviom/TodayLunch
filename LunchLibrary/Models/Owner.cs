@@ -23,7 +23,7 @@ namespace LunchLibrary.Models
         /// 사용자 이름
         /// </summary>
         [Required]
-        public new string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 비밀번호
