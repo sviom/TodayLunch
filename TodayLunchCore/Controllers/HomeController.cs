@@ -87,9 +87,9 @@ namespace TodayLunchCore.Controllers
         /// </summary>
         /// <param name="ownerId">사용자가 입력한 아이디</param>
         /// <returns>생성된 사용자 고유번호</returns>
-        public IActionResult PostUser(string ownerName)
+        public IActionResult PostUser(string name, string password)
         {
-            var owner = _PostUserAsync(ownerName);
+            var owner = _PostUserAsync(name,password);
             if (owner != null)
                 return RedirectToAction("Index", "Home", new { ownerName = owner.Name });
             else
@@ -101,9 +101,12 @@ namespace TodayLunchCore.Controllers
         /// </summary>
         /// <param name="name">사용자가 입력한 아이디</param>
         /// <returns>생성된 사용자 고유번호</returns>
-        private Owner _PostUserAsync(string name)
+        private Owner _PostUserAsync(string name, string password)
         {
-            var owner = LunchLibrary.SqlLauncher.Insert(new Owner() { Name = name });
+            // 사용자 입력 암호 암호화작업
+            var hashedPw = LunchLibrary.UtilityLauncher.EncryptSHA256(password);
+
+            var owner = LunchLibrary.SqlLauncher.Insert(new Owner() { Name = name, Password = hashedPw });
             return owner;
         }
     }

@@ -43,7 +43,7 @@ namespace LunchLibrary
         /// <typeparam name="T"></typeparam>
         /// <param name="inputObject"></param>
         /// <returns></returns>
-        public static T Get<T>(T inputObject) where T : Common
+        public static T Get<T>(T inputObject) where T : Models.Common
         {
             try
             {
@@ -65,7 +65,7 @@ namespace LunchLibrary
         /// <typeparam name="T"></typeparam>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public static T GetById<T>(string Id) where T : Common
+        public static T GetById<T>(string Id) where T : Models.Common
         {
             try
             {
@@ -87,7 +87,7 @@ namespace LunchLibrary
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static T GetByName<T>(string name) where T : Common
+        public static T GetByName<T>(string name) where T : Models.Common
         {
             try
             {
@@ -108,7 +108,7 @@ namespace LunchLibrary
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static List<T> GetAll<T>() where T : Common
+        public static List<T> GetAll<T>() where T : Models.Common
         {
             List<T> returnList = new List<T>();
             try
