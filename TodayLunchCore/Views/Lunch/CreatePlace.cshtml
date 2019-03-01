@@ -95,16 +95,14 @@
             </tbody>
         </table>
 
-        <button type="button" id="addPlaceButton" class="addPlaceButton" onclick="AddPlaceInput();">장소 추가</button>
+        <button type="button" id="addPlaceButton" class="btn btn-secondary btn-block" onclick="AddPlaceInput();">장소 추가</button>
     </div>
 </div>
 
 <div class="row">
     <div class="col-8 offset-2">
-        <button type="button" id="savePlaceButton">장소 저장</button>
-        <nav>
-            <a href="/Lunch/LunchList/@Model.Name">뒤로 이동</a>
-            <a href="/Home/Index">홈으로</a>
-        </nav>
+        <button type="button" id="savePlaceButton" class="btn btn-primary btn-block">장소 저장</button>
+        <a href="/Lunch/LunchList/@Model.Name" class="btn btn-secondary btn-block">뒤로 이동</a>
+        <a href="/Home/Index" class="btn btn-secondary btn-block">홈으로</a>
     </div>
 </div>
