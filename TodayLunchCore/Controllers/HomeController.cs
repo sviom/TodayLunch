@@ -60,15 +60,21 @@ namespace TodayLunchCore.Controllers
         [HttpPost]
         public IActionResult CheckUser(string ownerName, string password)
         {
-            bool checkResult = Login(ownerName, password);
-            if (checkResult)
-                return RedirectToAction("LunchList", "Lunch", new { id = ownerName });
+            (Owner ownerVal, bool isOnwer) = Login(ownerName, password);
+            if (isOnwer)
+                return RedirectToAction("LunchList", "Lunch", new { ownerVal });
             else
                 return RedirectToAction("Index", "Home");
         }
 
+        /// <summary>
+        /// 로그인 체크
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         [HttpPost]
-        public bool Login(string name, string password)
+        public (Owner ownerVal, bool isOnwer) Login(string name, string password)
         {
             var hashedPw = LunchLibrary.UtilityLauncher.EncryptSHA256(password);
             var _owner = new Owner
@@ -77,11 +83,15 @@ namespace TodayLunchCore.Controllers
                 Password = hashedPw
             };
 
-            var isOwner = LunchLibrary.SqlLauncher.Get(_owner, x=>x.Name.Equals(name) && x.Password.Equals(hashedPw));
+            var isOwner = LunchLibrary.SqlLauncher.Get(_owner, x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
+            var returnTuple = (ownerVal: isOwner, isOnwer: true);
             if (isOwner != null)
-                return true;
+                return returnTuple;
             else
-                return false;
+            {
+                returnTuple.isOnwer = false;
+                return returnTuple;
+            }
         }
 
         /// <summary>
