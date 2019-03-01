@@ -4,10 +4,10 @@ using System.Text;
 
 namespace LunchLibrary.Models
 {
-    public class Common
+    public interface ICommon
     {
-        public Guid Id { get; set; }
+        Guid Id { get; set; }
 
-        public string Name { get; set; }
+        string Name { get; set; }
     }
 }

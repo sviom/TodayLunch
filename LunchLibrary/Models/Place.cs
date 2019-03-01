@@ -10,20 +10,20 @@ namespace LunchLibrary.Models
     /// 먹는 장소 관련
     /// </summary>
     [Table("Place")]
-    public class Place : Common
+    public class Place : ICommon
     {
         /// <summary>
         /// 장소 이름
         /// </summary>
         [Required]
-        public new string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 장소 고유번호
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public new Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// 장소 위치

@@ -9,11 +9,11 @@ namespace LunchLibrary.Models
     /// <summary>
     /// 로깅 정보
     /// </summary>
-    public class Log : Common
+    public class Log : ICommon
     {
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public new Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         public string Message { get; set; }
@@ -23,5 +23,8 @@ namespace LunchLibrary.Models
 
         [Required]
         public DateTimeOffset CreatedTime { get; set; } = DateTimeOffset.Now;
+
+
+        public string Name { get; set; }
     }
 }

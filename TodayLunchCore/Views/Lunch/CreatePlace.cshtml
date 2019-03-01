@@ -22,17 +22,26 @@
         var jsonPlaceList = new Array();
         for (var i = 0; i < rows; i++) {
             var rw = parseInt(document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr")[i].id.replace("placeTR", ""));
+
+            var PlaceList = new Object();
             var Place = new Object();
             Place.Name = $("#placeNameText" + rw).val();
             Place.Location = $("#placeLocationText" + rw).val();
 
             var Owner = new Object();
-            Owner.Id = parseInt("@owner.Id");
+            Owner.Id = "@owner.Id";
             Owner.Name = "@owner.Name";
             Place.Owner = Owner;
-
-            jsonPlaceList.push(Place);
+            PlaceList.Place = Place;
+            jsonPlaceList.push(PlaceList);
         }
+
+        console.log("내용");
+        console.log(jsonPlaceList);
+        console.log(JSON.stringify(jsonPlaceList));
+
+        
+        
 
         var resultData = ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList));
         console.log("결과");

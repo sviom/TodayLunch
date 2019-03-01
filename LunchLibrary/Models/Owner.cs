@@ -10,14 +10,14 @@ namespace LunchLibrary.Models
     /// 서비스 사용자 관련
     /// </summary>
     [Table("Owner")]
-    public class Owner : Common
+    public class Owner : ICommon
     {
         /// <summary>
         /// 사용자 고유번호
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public new Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// 사용자 이름

@@ -44,7 +44,7 @@ namespace LunchLibrary
         /// <typeparam name="T"></typeparam>
         /// <param name="inputObject"></param>
         /// <returns></returns>
-        public static T Get<T>(T inputObject) where T : Models.Common
+        public static T Get<T>(T inputObject) where T : class, ICommon
         {
             try
             {
@@ -66,7 +66,7 @@ namespace LunchLibrary
         /// <typeparam name="T"></typeparam>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public static T GetById<T>(string Id) where T : Models.Common
+        public static T GetById<T>(string Id) where T : class, ICommon
         {
             try
             {
@@ -88,7 +88,7 @@ namespace LunchLibrary
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static T GetByName<T>(string name) where T : Models.Common
+        public static T GetByName<T>(string name) where T : class, ICommon
         {
             try
             {
@@ -109,7 +109,7 @@ namespace LunchLibrary
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static List<T> GetAll<T>(Expression<Func<T, bool>> expression = null) where T : Models.Common
+        public static List<T> GetAll<T>(Expression<Func<T, bool>> expression = null) where T : class, ICommon
         {
             List<T> returnList = new List<T>();
             try
@@ -127,7 +127,7 @@ namespace LunchLibrary
             return returnList;
         }
 
-        public static T Get<T>(T inputObject, Expression<Func<T, bool>> expression) where T : Models.Common
+        public static T Get<T>(T inputObject, Expression<Func<T, bool>> expression) where T : class, ICommon
         {
             try
             {
