@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace LunchLibrary
@@ -124,6 +125,23 @@ namespace LunchLibrary
                 Insert(new Log() { Message = ex.Message, StackTrace = ex.StackTrace });
             }
             return returnList;
+        }
+
+        public static T Get<T>(T inputObject, Expression<Func<T, bool>> expression) where T : Models.Common
+        {
+            try
+            {
+                using (var db = new TodayLunchContext())
+                {
+                    var dbSet = db.Set<T>();
+                    var ss = dbSet.Where(expression).FirstOrDefault();
+                    return ss;
+                }
+            }
+            catch
+            {
+            }
+            return null;
         }
 
         /// <summary>

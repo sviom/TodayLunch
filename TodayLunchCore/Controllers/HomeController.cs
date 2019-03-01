@@ -58,14 +58,30 @@ namespace TodayLunchCore.Controllers
         /// <param name="ownerName"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult CheckUser([FromBody]string ownerName)
+        public IActionResult CheckUser(string ownerName, string password)
         {
-            bool checkResult = _CheckDuplicateUserAsync(ownerName);
-            var owner = LunchLibrary.SqlLauncher.GetByName<Owner>(ownerName);
-            if (!checkResult && owner != null)
-                return RedirectToAction("LunchList", "Lunch", new { id = owner.Name });
+            bool checkResult = Login(ownerName, password);
+            if (checkResult)
+                return RedirectToAction("LunchList", "Lunch", new { id = ownerName });
             else
                 return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public bool Login(string name, string password)
+        {
+            var hashedPw = LunchLibrary.UtilityLauncher.EncryptSHA256(password);
+            var _owner = new Owner
+            {
+                Name = name,
+                Password = hashedPw
+            };
+
+            var isOwner = LunchLibrary.SqlLauncher.Get(_owner, x=>x.Name.Equals(name) && x.Password.Equals(hashedPw));
+            if (isOwner != null)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>
