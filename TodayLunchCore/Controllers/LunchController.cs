@@ -32,7 +32,16 @@ namespace TodayLunchCore.Controllers
 
         public IActionResult CreatePlace()
         {
-            return View(_owner);
+            if (_owner != null)
+            {
+                ViewBag.Owner = _owner;
+                var placeList = LunchLibrary.SqlLauncher.GetAll<Place>(x => x.Owner.Id.Equals(_owner.Id));
+                return View(placeList);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         /// <summary>

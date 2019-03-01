@@ -1,5 +1,8 @@
 ﻿@using LunchLibrary.Models
-@model Owner
+@model IEnumerable<LunchLibrary.Models.Place>
+@{
+    Owner owner = ViewBag.Owner as Owner;
+}
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -24,8 +27,8 @@
             placeInfo.PlaceLocation = $("#placeLocationText" + rw).val();
 
             var Owner = new Object();
-            Owner.OwnerId = parseInt("@Model.Id");
-            Owner.OwnerName = "@Model.Name";
+            Owner.OwnerId = parseInt("@owner.Id");
+            Owner.OwnerName = "@owner.Name";
             placeInfo.PlaceOwner = Owner;
 
             placeList.push(placeInfo);
@@ -35,7 +38,7 @@
         console.log("결과");
         console.log(resultData);
         if (resultData) {
-            location.href = '/Lunch/LunchList/@Model.Name';
+            location.href = '/Lunch/LunchList/@owner.Name';
         }
         else {
             location.href = "/Home/Index";
@@ -46,9 +49,9 @@
     function AddPlaceInput() {
         var rows = document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
         var assembleText = '<tr id="placeTR' + rows + '">';
-        assembleText += '<td><input type="text" id="placeNameText' + rows + '" placeholder="점심 장소 이름" /></td >';
-        assembleText += '<td><input type="text" id="placeLocationText' + rows + '" placeholder="점심 장소 위치" /></td>';
-        assembleText += '<td><button type="button" id="deletePlaceButton' + rows + '" class="deletePlaceButton" onclick="DeletePlaceInput(this);">장소 제거</button></td>';
+        assembleText += '<td><input type="text" id="placeNameText' + rows + '" class="form-control" placeholder="점심 장소 이름" /></td >';
+        assembleText += '<td><input type="text" id="placeLocationText' + rows + '" class="form-control" placeholder="점심 장소 위치" /></td>';
+        assembleText += '<td><button type="button" id="deletePlaceButton' + rows + '" class="deletePlaceButton btn btn-secondary btn-block" onclick="DeletePlaceInput(this);">장소 제거</button></td>';
         assembleText += '</tr>';
 
         document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].innerHTML += assembleText;
@@ -64,8 +67,8 @@
 <div class="row">
     <div class="col-8 offset-2">
         <h3>주변에 어떠한 장소가 있나요?</h3>
-        <h4>@Model.Name 님, 환영합니다.</h4>
-        <input type="hidden" value="@Model.Id" />
+        <h4>@owner.Name 님, 환영합니다.</h4>
+        <input type="hidden" value="@owner.Id" />
     </div>
 </div>
 
@@ -81,28 +84,38 @@
                 </tr>
             </thead>
             <tbody>
-                <tr id="placeTR0">
-                    <td>
-                        <input type="text" id="placeNameText0" placeholder="점심 장소 이름" />
-                    </td>
-                    <td>
-                        <input type="text" id="placeLocationText0" placeholder="점심 장소 위치" />
-                    </td>
-                    <td>
-                        <button type="button" id="deletePlaceButton0" class="deletePlaceButton" onclick="DeletePlaceInput(this);">장소 제거</button>
-                    </td>
-                </tr>
+                @{
+                    for (int i = 0; i < Model.Count(); i++)
+                    {
+                        <tr id="placeTR@(i)">
+                            <td>
+                                <input type="text" id="placeNameText@(i)" class="form-control" placeholder="점심 장소 이름" />
+                            </td>
+                            <td>
+                                <input type="text" id="placeLocationText@(i)" class="form-control" placeholder="점심 장소 위치" />
+                            </td>
+                            <td>
+                                <button type="button" id="deletePlaceButton@(i)" class="deletePlaceButton btn btn-secondary btn-block" onclick="DeletePlaceInput(this);">장소 제거</button>
+                            </td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
-
-        <button type="button" id="addPlaceButton" class="btn btn-secondary btn-block" onclick="AddPlaceInput();">장소 추가</button>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-8 offset-2">
+    <div class="col-2 offset-2">
+        <button type="button" id="addPlaceButton" class="btn btn-secondary btn-block" onclick="AddPlaceInput();">장소 추가</button>
+    </div>
+    <div class="col-2">
         <button type="button" id="savePlaceButton" class="btn btn-primary btn-block">장소 저장</button>
-        <a href="/Lunch/LunchList/@Model.Name" class="btn btn-secondary btn-block">뒤로 이동</a>
+    </div>
+    <div class="col-2">
         <a href="/Home/Index" class="btn btn-secondary btn-block">홈으로</a>
+    </div>
+    <div class="col-2">
+        <a href="/Lunch/LunchList/@owner.Name" class="btn btn-secondary btn-block">뒤로 이동</a>
     </div>
 </div>
