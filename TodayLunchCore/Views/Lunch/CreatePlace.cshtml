@@ -19,22 +19,22 @@
             return false;
         }
 
-        var placeList = new Array();
+        var jsonPlaceList = new Array();
         for (var i = 0; i < rows; i++) {
             var rw = parseInt(document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr")[i].id.replace("placeTR", ""));
-            var placeInfo = new Object();
-            placeInfo.PlaceName = $("#placeNameText" + rw).val();
-            placeInfo.PlaceLocation = $("#placeLocationText" + rw).val();
+            var Place = new Object();
+            Place.Name = $("#placeNameText" + rw).val();
+            Place.Location = $("#placeLocationText" + rw).val();
 
             var Owner = new Object();
-            Owner.OwnerId = parseInt("@owner.Id");
-            Owner.OwnerName = "@owner.Name";
-            placeInfo.PlaceOwner = Owner;
+            Owner.Id = parseInt("@owner.Id");
+            Owner.Name = "@owner.Name";
+            Place.Owner = Owner;
 
-            placeList.push(placeInfo);
+            jsonPlaceList.push(Place);
         }
 
-        var resultData = ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(placeList));
+        var resultData = ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList));
         console.log("결과");
         console.log(resultData);
         if (resultData) {
