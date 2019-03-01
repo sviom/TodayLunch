@@ -27,23 +27,22 @@
     }
 </script>
 
-<div>
-    <div>
+<div class="row">
+    <div class="col-8 offset-2">
         <h2>점심을 골라봅시다.</h2>
     </div>
+</div>
 
-    <hr />
-
-    <button type="button" id="selectLunch">점심 고르기</button>
-
-    <div>
-        <table>
+<div class="row">
+    <div class="col-8 offset-2">
+        <button type="button" id="selectLunch" class="btn btn-primary btn-block">점심 고르기</button>
+        <table class="table">
             <thead>
                 <tr>
-                    <td style="border:1px solid black;">번호</td>
-                    <td style="border:1px solid black;">이름</td>
-                    <td style="border:1px solid black;">위치</td>
-                    <td></td>
+                    <th scope="col">번호</th>
+                    <th scope="col">이름</th>
+                    <th scope="col">위치</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -52,8 +51,9 @@
                     int i = 0;
                     @foreach (Place item in Model)
                     {
-                        <tr id="placeTR_@i">
-                            <td><span id="placeId_@i">@item.Id</span></td>
+                        <tr id="placeTR_@i" >
+                            <th scope="row">@(i+1)</th>
+                            @*<td><span id="placeId_@i">@item.Id</span></td>*@
                             <td>@item.Name</td>
                             <td>@item.Location</td>
                             <td>
@@ -66,9 +66,11 @@
             </tbody>
         </table>
     </div>
-
-    <nav>
-        <a href="/Lunch/CreatePlace">장소 입력</a>
-        <a href="/Home/Index">홈으로</a>
-    </nav>
+    <hr />
+</div>
+<div class="row">
+    <div class="col-8 offset-2">
+        <a href="/Lunch/CreatePlace" class="btn btn-secondary btn-block">장소 입력</a>
+        <a href="/Home/Index" class="btn btn-secondary btn-block">홈으로</a>
+    </div>
 </div>
