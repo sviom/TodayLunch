@@ -14,13 +14,13 @@ namespace TodayLunchCore.Controllers
 {
     public class LunchController : Controller
     {
-        Common comm = new Common();
-        static Owner userInfo = new Owner();
+        private static Owner _owner = new Owner();
 
         public IActionResult LunchList(Owner owner)
         {
             if (owner != null)
             {
+                _owner = owner;
                 var placeList = LunchLibrary.SqlLauncher.GetAll<Place>(x=>x.Owner.Id.Equals(owner.Id));
                 return View(placeList);
             }
@@ -32,7 +32,7 @@ namespace TodayLunchCore.Controllers
 
         public IActionResult CreatePlace()
         {
-            return View(userInfo);
+            return View(_owner);
         }
 
         /// <summary>

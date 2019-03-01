@@ -61,41 +61,50 @@
     }
 </script>
 
-<div>
-    <div>
-        <h2>주변에 어떠한 장소가 있나요?</h2>
+<div class="row">
+    <div class="col-8 offset-2">
+        <h3>주변에 어떠한 장소가 있나요?</h3>
         <h4>@Model.Name 님, 환영합니다.</h4>
         <input type="hidden" value="@Model.Id" />
     </div>
+</div>
 
-    <hr />
-    <button type="button" id="addPlaceButton" class="addPlaceButton" onclick="AddPlaceInput();">장소 추가</button>
-    <table id="inputPlaceTable">
-        <thead>
-            <tr>
-                <td>이름</td>
-                <td>위치</td>
-                <td></td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr id="placeTR0">
-                <td>
-                    <input type="text" id="placeNameText0" placeholder="점심 장소 이름" />
-                </td>
-                <td>
-                    <input type="text" id="placeLocationText0" placeholder="점심 장소 위치" />
-                </td>
-                <td>
-                    <button type="button" id="deletePlaceButton0" class="deletePlaceButton" onclick="DeletePlaceInput(this);">장소 제거</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <br />
-    <button type="button" id="savePlaceButton">장소 저장</button>
-    <nav>
-        <a href="/Lunch/LunchList/@Model.Name">뒤로 이동</a>
-        <a href="/Home/Index">홈으로</a>
-    </nav>
+
+<div class="row">
+    <div class="col-8 offset-2">
+        <table id="inputPlaceTable" class="table">
+            <thead>
+                <tr>
+                    <th scope="col">이름</th>
+                    <th scope="col">위치</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="placeTR0">
+                    <td>
+                        <input type="text" id="placeNameText0" placeholder="점심 장소 이름" />
+                    </td>
+                    <td>
+                        <input type="text" id="placeLocationText0" placeholder="점심 장소 위치" />
+                    </td>
+                    <td>
+                        <button type="button" id="deletePlaceButton0" class="deletePlaceButton" onclick="DeletePlaceInput(this);">장소 제거</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button type="button" id="addPlaceButton" class="addPlaceButton" onclick="AddPlaceInput();">장소 추가</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-8 offset-2">
+        <button type="button" id="savePlaceButton">장소 저장</button>
+        <nav>
+            <a href="/Lunch/LunchList/@Model.Name">뒤로 이동</a>
+            <a href="/Home/Index">홈으로</a>
+        </nav>
+    </div>
 </div>
