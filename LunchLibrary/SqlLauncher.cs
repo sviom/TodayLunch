@@ -109,7 +109,7 @@ namespace LunchLibrary
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static List<T> GetAll<T>() where T : Models.Common
+        public static List<T> GetAll<T>(Expression<Func<T, bool>> expression = null) where T : Models.Common
         {
             List<T> returnList = new List<T>();
             try
@@ -117,7 +117,7 @@ namespace LunchLibrary
                 using (var db = new TodayLunchContext())
                 {
                     var dbSet = db.Set<T>();
-                    returnList = dbSet.ToList();
+                    returnList = dbSet.Where(expression).ToList();
                 }
             }
             catch (Exception ex)

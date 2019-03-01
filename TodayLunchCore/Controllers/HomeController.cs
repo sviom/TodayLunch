@@ -62,7 +62,7 @@ namespace TodayLunchCore.Controllers
         {
             (Owner ownerVal, bool isOnwer) = Login(ownerName, password);
             if (isOnwer)
-                return RedirectToAction("LunchList", "Lunch", new { ownerVal });
+                return RedirectToAction("LunchList", "Lunch", ownerVal);
             else
                 return RedirectToAction("Index", "Home");
         }
@@ -115,7 +115,7 @@ namespace TodayLunchCore.Controllers
         /// <returns>생성된 사용자 고유번호</returns>
         public IActionResult PostUser(string name, string password)
         {
-            var owner = _PostUserAsync(name,password);
+            var owner = _PostUserAsync(name, password);
             if (owner != null)
                 return RedirectToAction("Index", "Home", new { ownerName = owner.Name });
             else

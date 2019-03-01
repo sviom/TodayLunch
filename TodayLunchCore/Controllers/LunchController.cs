@@ -17,17 +17,12 @@ namespace TodayLunchCore.Controllers
         Common comm = new Common();
         static Owner userInfo = new Owner();
 
-        public async Task<IActionResult> LunchList(Owner owner)
+        public IActionResult LunchList(Owner owner)
         {
-            if (!string.IsNullOrEmpty(owner.Id))
+            if (owner != null)
             {
-                userInfo = await comm._GetUserInfoAsync(owner);
-                string placeList = await _GetPlaceListAsync(userInfo);
-                if (!placeList.Equals("실패"))
-                {
-                    return View(JsonConvert.DeserializeObject<List<Place>>(placeList));
-                }
-                return View();
+                var placeList = LunchLibrary.SqlLauncher.GetAll<Place>(x=>x.Owner.Id.Equals(owner.Id));
+                return View(placeList);
             }
             else
             {
