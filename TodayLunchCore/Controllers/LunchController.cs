@@ -72,11 +72,8 @@ namespace TodayLunchCore.Controllers
         /// <returns>생성된 장소 갯수</returns>
         private int _PostPlaceAsync(List<Place> _placeList)
         {
-            int _createdPlaceCount = -1;
-
-            var sss = LunchLibrary.SqlLauncher.Insert(_placeList);
-            
-            return _createdPlaceCount;
+            var aa  = LunchLibrary.SqlLauncher.InsertList(_placeList);
+            return aa.Count;
         }
 
         /// <summary>

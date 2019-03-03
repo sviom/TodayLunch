@@ -38,70 +38,23 @@ namespace LunchLibrary
             return addedObject;
         }
 
-        /// <summary>
-        /// Get By Object
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="inputObject"></param>
-        /// <returns></returns>
-        public static T Get<T>(T inputObject) where T : class, ICommon
+        public static List<T> InsertList<T>(List<T> inputList) where T : class, ICommon
         {
-            try
+            List<T> resultList = new List<T>();
+            using (var db = new TodayLunchContext())
             {
-                using (var db = new TodayLunchContext())
+                foreach (var item in inputList)
                 {
-                    var dbSet = db.Set<T>();
-                    return dbSet.Where(x => x.Id.Equals(inputObject.Id)).FirstOrDefault();
+                    var set = db.Set<T>();
+                    set.Add(item);
                 }
-            }
-            catch
-            {
-            }
-            return null;
-        }
 
-        /// <summary>
-        /// Get By Id, Common Class를 상속하고 있는 Class 한정.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public static T GetById<T>(string Id) where T : class, ICommon
-        {
-            try
-            {
-                using (var db = new TodayLunchContext())
-                {
-                    var dbSet = db.Set<T>();
-                    return dbSet.Where(x => x.Id.Equals(Id)).FirstOrDefault();
-                }
+                int saveResult = db.SaveChanges();
+                if (saveResult > 0)
+                    resultList = inputList;
             }
-            catch
-            {
-            }
-            return null;
-        }
 
-        /// <summary>
-        /// Get By Name, Common Class를 상속하고 있는 Class 한정.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static T GetByName<T>(string name) where T : class, ICommon
-        {
-            try
-            {
-                using (var db = new TodayLunchContext())
-                {
-                    var dbSet = db.Set<T>();
-                    return dbSet.Where(x => x.Name.Equals(name)).FirstOrDefault();
-                }
-            }
-            catch
-            {
-            }
-            return null;
+            return resultList;
         }
 
         /// <summary>

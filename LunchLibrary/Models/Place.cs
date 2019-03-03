@@ -50,6 +50,6 @@ namespace LunchLibrary.Models
         /// <summary>
         /// 장소 업데이트 시간
         /// </summary>
-        public DateTime UpdatedTime { get; set; }
+        public DateTime UpdatedTime { get; set; } = DateTime.Now;
     }
 }
