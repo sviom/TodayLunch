@@ -16,19 +16,22 @@ namespace TodayLunchCore.Controllers
     {
         private static Owner _owner = new Owner();
 
-        public IActionResult LunchList(Owner owner)
+        public IActionResult LunchList(Owner owner = null)
         {
-            if (owner != null)
+            if (owner.Id != Guid.Empty && owner != null)
             {
                 _owner = owner;
-                var placeList = LunchLibrary.SqlLauncher.GetAll<Place>(x=>x.OwnerId.Equals(owner.Id));
+                var placeList = LunchLibrary.SqlLauncher.GetAll<Place>(x => x.OwnerId.Equals(owner.Id));
                 return View(placeList);
             }
-            else
+            else if (_owner != null)
             {
-                return View();
+                var placeList = LunchLibrary.SqlLauncher.GetAll<Place>(x => x.OwnerId.Equals(_owner.Id));
+                return View(placeList);
             }
+            return View();
         }
+
 
         public IActionResult CreatePlace()
         {

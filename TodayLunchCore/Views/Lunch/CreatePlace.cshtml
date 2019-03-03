@@ -26,21 +26,10 @@
             var Place = new Object();
             Place.Name = $("#placeNameText" + rw).val();
             Place.Location = $("#placeLocationText" + rw).val();
+            Place.OwnerId = "@owner.Id";
 
-            var Owner = new Object();
-            Owner.Id = "@owner.Id";
-            Owner.Name = "@owner.Name";
-            Place.Owner = Owner;
-            //PlaceList.Place = Place;
             jsonPlaceList.push(Place);
         }
-
-        console.log("내용");
-        console.log(jsonPlaceList);
-        console.log(JSON.stringify(jsonPlaceList));
-
-        
-        
 
         var resultData = ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList));
         console.log("결과");
