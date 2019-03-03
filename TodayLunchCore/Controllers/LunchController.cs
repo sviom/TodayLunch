@@ -21,7 +21,7 @@ namespace TodayLunchCore.Controllers
             if (owner != null)
             {
                 _owner = owner;
-                var placeList = LunchLibrary.SqlLauncher.GetAll<Place>(x=>x.Owner.Id.Equals(owner.Id));
+                var placeList = LunchLibrary.SqlLauncher.GetAll<Place>(x=>x.OwnerId.Equals(owner.Id));
                 return View(placeList);
             }
             else
@@ -35,7 +35,7 @@ namespace TodayLunchCore.Controllers
             if (_owner != null)
             {
                 ViewBag.Owner = _owner;
-                var placeList = LunchLibrary.SqlLauncher.GetAll<Place>(x => x.Owner.Id.Equals(_owner.Id));
+                var placeList = LunchLibrary.SqlLauncher.GetAll<Place>(x => x.OwnerId.Equals(_owner.Id));
                 return View(placeList);
             }
             else

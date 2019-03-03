@@ -23,7 +23,6 @@
         for (var i = 0; i < rows; i++) {
             var rw = parseInt(document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr")[i].id.replace("placeTR", ""));
 
-            var PlaceList = new Object();
             var Place = new Object();
             Place.Name = $("#placeNameText" + rw).val();
             Place.Location = $("#placeLocationText" + rw).val();

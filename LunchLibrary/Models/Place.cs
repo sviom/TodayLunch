@@ -33,8 +33,11 @@ namespace LunchLibrary.Models
         /// <summary>
         /// 장소 관련 입력/소유자
         /// </summary>
+        //[Required]
+        //public Owner Owner { get; set; }
+
         [Required]
-        public Owner Owner { get; set; }
+        public Guid OwnerId { get; set; }
 
         /// <summary>
         /// 장소 이용 횟수
