@@ -84,9 +84,9 @@ namespace TodayLunchCore.Controllers
         /// </summary>
         /// <param name="placeInfo"></param>
         /// <returns></returns>
-        public async Task<bool> DeletePlace([FromBody]Place placeInfo)
+        public bool DeletePlace([FromBody]Place placeInfo)
         {
-            return await _DeletePlaceAsync(placeInfo);
+            return _DeletePlace(placeInfo);
         }
 
         /// <summary>
@@ -94,34 +94,10 @@ namespace TodayLunchCore.Controllers
         /// </summary>
         /// <param name="_placeInfo"></param>
         /// <returns></returns>
-        private async Task<bool> _DeletePlaceAsync(Place _placeInfo)
+        private bool _DeletePlace(Place _placeInfo)
         {
             bool _deleteResult = false;
-            using (HttpClient client = new HttpClient())
-            {
-                var response
-                    = await client.PostAsync
-                    (
-                        LunchLibrary.PreDefined.ServiceApiUrl + "DeleteAPI/DeletePlace",
-                        new StringContent(JsonConvert.SerializeObject(_placeInfo), Encoding.UTF8, "application/json")
-                    );
-
-                string content = await response.Content.ReadAsStringAsync();
-                if (response.IsSuccessStatusCode)
-                {
-                    //var model = JsonConvert.DeserializeObject<Owner>(content);
-                    //return View(model.results);
-
-                    if (Convert.ToBoolean(content))
-                    {
-                        _deleteResult = true;
-                    }
-                    
-                }
-
-                // an error occurred => here you could log the content returned by the remote server
-                //return Content("An error occurred: " + content);
-            }
+            _deleteResult = LunchLibrary.SqlLauncher.Delete(_placeInfo);
             return _deleteResult;
         }
     }

@@ -1,4 +1,5 @@
 ﻿@using LunchLibrary.Models
+@using Newtonsoft.Json;
 @model IEnumerable<LunchLibrary.Models.Place>
 
 @{
@@ -11,15 +12,15 @@
         });
     });
 
-    function DeleteCreatedPlace(BtnObject) {
-        var rowCount = parseInt(BtnObject.id.replace("deletePlaceButton_", ""));
+    function DeleteCreatedPlace(itemString, btnObject) {
+        var rowCount = parseInt(btnObject.id.replace("deletePlaceButton_", ""));
 
-        var placeInfo = new Object();
-        placeInfo.PlaceId = parseInt($("#placeId_" + rowCount).html());
+        if (!confirm("정말로 해당 장소를 삭제하시겠습니까?")) {
+            return;
+        }
 
-        var resultData = ExecuteAjax("POST", "/Lunch/DeletePlace", "json", "application/json", JSON.stringify(placeInfo));
-        console.log("결과");
-        console.log(resultData);
+        var resultData = ExecuteAjax("POST", "/Lunch/DeletePlace", "json", "application/json", itemString);
+        
         if (resultData) {
             alert("삭제하였습니다.");
             document.getElementById("placeTR_" + rowCount).outerHTML = "";
@@ -51,15 +52,17 @@
                     int i = 0;
                     @foreach (Place item in Model)
                     {
-                        <tr id="placeTR_@i" >
-                            <th scope="row">@(i+1)</th>
+                        <tr id="placeTR_@i">
+                            <th scope="row">@(i + 1)</th>
                             @*<td><span id="placeId_@i">@item.Id</span></td>*@
                             <td>@item.Name</td>
                             <td>@item.Location</td>
                             <td>
-                                <button type="button" id="deletePlaceButton_@i" 
+                                <button type="button" id="deletePlaceButton_@i"
                                         class="btn btn-danger float-right"
-                                        onclick="DeleteCreatedPlace(this);">이 장소 제거</button>
+                                        onclick="DeleteCreatedPlace('@JsonConvert.SerializeObject(item)',this);">
+                                    이 장소 제거
+                                </button>
                             </td>
                         </tr>
                         i++;

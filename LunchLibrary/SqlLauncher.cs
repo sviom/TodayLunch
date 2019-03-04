@@ -123,5 +123,30 @@ namespace LunchLibrary
             }
             return count;
         }
+
+        public static bool Delete<T>(T deleteObject) where T : class, ICommon
+        {
+            bool result = false;
+            try
+            {
+                if (deleteObject == null || deleteObject.Id == Guid.Empty)
+                    return false;
+
+                using (var db = new TodayLunchContext())
+                {
+                    db.Entry(deleteObject).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+                    var set = db.Set<T>();
+                    set.Remove(deleteObject);
+                    int saveResult = db.SaveChanges();
+                    if (saveResult > 0)
+                        result = true;
+                }
+            }
+            catch
+            {
+
+            }
+            return result;
+        }
     }
 }
