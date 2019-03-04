@@ -2,6 +2,9 @@
 @model IEnumerable<LunchLibrary.Models.Place>
 @{
     Owner owner = ViewBag.Owner as Owner;
+
+    List<Place> places = new List<Place>();
+    places = Model.ToList();
 }
 
 <script type="text/javascript">
@@ -86,13 +89,16 @@
                     {
                         <tr id="placeTR@(i)">
                             <td>
-                                <input type="text" id="placeNameText@(i)" class="form-control" placeholder="점심 장소 이름" />
+                                <input type="text" id="placeNameText@(i)" class="form-control" placeholder="점심 장소 이름"
+                                       value="@(places[i].Name)"
+                                       />
                             </td>
                             <td>
-                                <input type="text" id="placeLocationText@(i)" class="form-control" placeholder="점심 장소 위치" />
+                                <input type="text" id="placeLocationText@(i)" class="form-control" placeholder="점심 장소 위치" 
+                                       value="@(places[i].Location)" />
                             </td>
                             <td>
-                                <button type="button" id="deletePlaceButton@(i)" class="deletePlaceButton btn btn-secondary btn-block" onclick="DeletePlaceInput(this);">장소 제거</button>
+                                <button type="button" id="deletePlaceButton@(i)" class="deletePlaceButton btn btn-danger float-right" onclick="DeletePlaceInput(this);">장소 제거</button>
                             </td>
                         </tr>
                     }
