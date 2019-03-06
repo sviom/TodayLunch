@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LunchLibrary.Models;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -38,4 +39,16 @@ namespace LunchLibrary
         }
     }
 
+    public abstract class ModelActionGuide
+    {
+        public abstract T Insert<T>(T input) where T : class, ICommon;
+    }
+
+    public static class ModelExtension
+    {
+        public static T Inserddt<T>(this T input) where T: class, ICommon
+        {
+            return input;
+        }
+    }
 }

@@ -88,6 +88,8 @@ namespace TodayLunchCore.Controllers
                     LunchLibrary.SqlLauncher.Update(item);
                     forRemove.Add(item);
                     updateCount++;
+
+                    //item.Insert();
                 }
             }
 
@@ -95,6 +97,7 @@ namespace TodayLunchCore.Controllers
             {
                 _placeList.Remove(item);
             }
+
 
             insertCount = LunchLibrary.SqlLauncher.InsertList(_placeList).Count;
             return insertCount;

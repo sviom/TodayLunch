@@ -10,7 +10,7 @@ namespace LunchLibrary.Models
     /// 먹는 장소 관련
     /// </summary>
     [Table("Place")]
-    public class Place : ICommon
+    public class Place : ModelActionGuide, ICommon
     {
         /// <summary>
         /// 장소 이름
@@ -54,5 +54,12 @@ namespace LunchLibrary.Models
         /// 장소 업데이트 시간
         /// </summary>
         public DateTime UpdatedTime { get; set; } = DateTime.Now;
+
+        public override T Insert<T>(this T input)
+        {
+
+            var ss = SqlLauncher.Insert(input);
+            return ss;
+        }
     }
 }
