@@ -75,8 +75,29 @@ namespace TodayLunchCore.Controllers
         /// <returns>생성된 장소 갯수</returns>
         private int _PostPlaceAsync(List<Place> _placeList)
         {
-            var aa  = LunchLibrary.SqlLauncher.InsertList(_placeList);
-            return aa.Count;
+            int insertCount = 0;
+            int updateCount = 0;
+
+            List<Place> forRemove = new List<Place>();
+            foreach (var item in _placeList)
+            {
+                if (item.Id != Guid.Empty)
+                {
+                    item.UsingCount++;
+                    item.UpdatedTime = DateTime.Now;
+                    LunchLibrary.SqlLauncher.Update(item);
+                    forRemove.Add(item);
+                    updateCount++;
+                }
+            }
+
+            foreach (var item in forRemove)
+            {
+                _placeList.Remove(item);
+            }
+
+            insertCount = LunchLibrary.SqlLauncher.InsertList(_placeList).Count;
+            return insertCount;
         }
 
         /// <summary>

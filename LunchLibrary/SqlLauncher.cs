@@ -148,5 +148,33 @@ namespace LunchLibrary
             }
             return result;
         }
+
+        public static T Update<T>(T updateObject) where T : class, ICommon
+        {
+            T addedObject = null;
+            try
+            {
+                using (var db = new TodayLunchContext())
+                {
+                    db.Entry(updateObject).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    var set = db.Set<T>();
+                    set.Update(updateObject);
+                    int saveResult = db.SaveChanges();
+                    if (saveResult > 0)
+                        addedObject = updateObject;
+                }
+            }
+            catch
+            {
+
+            }
+
+            return addedObject;
+        }
+
+        public static void InsertOrUpdate<T>(T objeee) where T :class, ICommon
+        {
+
+        }
     }
 }

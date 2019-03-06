@@ -27,9 +27,10 @@
             var rw = parseInt(document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr")[i].id.replace("placeTR", ""));
 
             var Place = new Object();
+            Place.Id = $("#placeId" + rw).val();
             Place.Name = $("#placeNameText" + rw).val();
             Place.Location = $("#placeLocationText" + rw).val();
-            Place.OwnerId = "@owner.Id";
+            Place.OwnerId = $("#placeOwnerId" + rw).val();
 
             jsonPlaceList.push(Place);
         }
@@ -51,8 +52,11 @@
         var assembleText = '<tr id="placeTR' + rows + '">';
         assembleText += '<td><input type="text" id="placeNameText' + rows + '" class="form-control" placeholder="점심 장소 이름" /></td >';
         assembleText += '<td><input type="text" id="placeLocationText' + rows + '" class="form-control" placeholder="점심 장소 위치" /></td>';
-        assembleText += '<td><button type="button" id="deletePlaceButton' + rows + '" class="deletePlaceButton btn btn-secondary btn-block" onclick="DeletePlaceInput(this);">장소 제거</button></td>';
+        assembleText += '<td><button type="button" id="deletePlaceButton' + rows + '" class="deletePlaceButton btn btn-danger float-right" onclick="DeletePlaceInput(this);">장소 제거</button></td>';
         assembleText += '</tr>';
+
+        console.log("현재 테이블");
+        console.log(document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].innerHTML);
 
         document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].innerHTML += assembleText;
     }
@@ -89,6 +93,8 @@
                     {
                         <tr id="placeTR@(i)">
                             <td>
+                                <input type="hidden" id="placeId@(i)" value="@(places[i].Id)" />
+                                <input type="hidden" id="placeOwnerId@(i)" value="@(places[i].OwnerId)" />
                                 <input type="text" id="placeNameText@(i)" class="form-control" placeholder="점심 장소 이름"
                                        value="@(places[i].Name)" />
                             </td>
