@@ -32,7 +32,6 @@ namespace TodayLunchCore.Controllers
             return View();
         }
 
-
         public IActionResult CreatePlace()
         {
             if (_owner != null)
@@ -110,7 +109,7 @@ namespace TodayLunchCore.Controllers
         private bool _DeletePlace(Place _placeInfo)
         {
             bool _deleteResult = false;
-            _deleteResult = LunchLibrary.SqlLauncher.Delete(_placeInfo);
+            _deleteResult = Place.Current.Delete(_placeInfo);
             return _deleteResult;
         }
     }

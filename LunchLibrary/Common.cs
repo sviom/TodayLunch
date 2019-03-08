@@ -46,6 +46,7 @@ namespace LunchLibrary
     {
         public abstract bool Insert<T>(T input) where T : class, ICommon;
         public abstract bool Update<T>(T input) where T : class, ICommon;
+        public abstract bool Delete<T>(T input) where T : class, ICommon;
     }
 
     /// <summary>
@@ -60,6 +61,10 @@ namespace LunchLibrary
         public static T Update<T>(this T input) where T : class, ICommon
         {
             return SqlLauncher.Update(input);
+        }
+        public static bool Delete<T>(this T input) where T : class, ICommon
+        {
+            return SqlLauncher.Delete(input);
         }
     }
 }

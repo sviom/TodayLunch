@@ -51,6 +51,11 @@ namespace LunchLibrary.Models
         /// </summary>
         public DateTime UpdatedTime { get; set; } = DateTime.Now;
 
+        public override bool Delete<T>(T input)
+        {
+            return input.Delete();
+        }
+
         public override bool Insert<T>(T input)
         {
             if (input is Place place)
