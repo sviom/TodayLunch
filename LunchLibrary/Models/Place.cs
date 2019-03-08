@@ -57,17 +57,6 @@ namespace LunchLibrary.Models
         /// </summary>
         public DateTime UpdatedTime { get; set; } = DateTime.Now;
 
-        /// <summary>
-        /// Place가 update될 때 필요한 내용들 수정
-        /// </summary>
-        /// <param name="place"></param>
-        private static void UpdatePlace(Place place)
-        {
-            place.UsingCount++;
-            place.UpdatedTime = DateTime.Now;
-            place.Update();
-        }
-
         public override T Insert<T>(T input)
         {
             if (input is Place place)
@@ -78,11 +67,19 @@ namespace LunchLibrary.Models
             return null;
         }
 
+        /// <summary>
+        /// Place가 update될 때 필요한 내용들 수정
+        /// </summary>
+        /// <param name="place"></param>
         public override T Update<T>(T input)
         {
             if (input is Place place)
             {
-                UpdatePlace(place);
+                place.UsingCount++;
+                place.UpdatedTime = DateTime.Now;
+                place.Update();
+
+                //UpdatePlace(place);
                 return input;
             }
             return null;
