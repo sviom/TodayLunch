@@ -131,9 +131,13 @@ namespace TodayLunchCore.Controllers
         {
             // 사용자 입력 암호 암호화작업
             var hashedPw = LunchLibrary.UtilityLauncher.EncryptSHA256(password);
-
-            var owner = LunchLibrary.SqlLauncher.Insert(new Owner() { Name = name, Password = hashedPw });
-            return owner;
+            var newOwner = new Owner() { Name = name, Password = hashedPw };
+            if (Owner.Current.Insert(newOwner))
+            {
+                var owner = LunchLibrary.SqlLauncher.Get(newOwner, x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
+                return owner;
+            }
+            return null;
         }
     }
 }

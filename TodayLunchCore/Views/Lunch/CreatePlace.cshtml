@@ -30,7 +30,7 @@
             Place.Id = $("#placeId" + rw).val();
             Place.Name = $("#placeNameText" + rw).val();
             Place.Location = $("#placeLocationText" + rw).val();
-            Place.OwnerId = $("#placeOwnerId" + rw).val();
+            Place.OwnerId = "@(owner.Id)";
 
             jsonPlaceList.push(Place);
         }

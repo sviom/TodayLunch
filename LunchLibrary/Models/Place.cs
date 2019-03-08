@@ -12,6 +12,8 @@ namespace LunchLibrary.Models
     [Table("Place")]
     public class Place : ModelActionGuide, ICommon
     {
+        public static Place Current { get; set; } = new Place();
+
         /// <summary>
         /// 장소 이름
         /// </summary>
@@ -30,36 +32,60 @@ namespace LunchLibrary.Models
         /// </summary>
         public string Location { get; set; }
 
-        /// <summary>
-        /// 장소 관련 입력/소유자
-        /// </summary>
-        //[Required]
-        //public Owner Owner { get; set; }
-
         [Required]
         public Guid OwnerId { get; set; }
 
         /// <summary>
         /// 장소 이용 횟수
         /// </summary>
-        public int UsingCount { get; set; } = 0;
+        public int UsingCount { get; set; }
 
         /// <summary>
         /// 장소 작성 시간
         /// </summary>
         [Required]
-        public DateTime CreatedTime { get; set; } = DateTime.Now;
+        public DateTime CreatedTime { get; set; }
 
         /// <summary>
         /// 장소 업데이트 시간
         /// </summary>
         public DateTime UpdatedTime { get; set; } = DateTime.Now;
 
-        public override T Insert<T>(this T input)
+        public override bool Delete<T>(T input)
         {
+            return input.Delete();
+        }
 
-            var ss = SqlLauncher.Insert(input);
-            return ss;
+        public override bool Insert<T>(T input)
+        {
+            if (input is Place place)
+            {
+                place.CreatedTime = DateTime.Now;
+                place.UsingCount = 0;
+
+                var result = place.Insert();
+                if (result.Id != Guid.Empty)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Place가 update될 때 필요한 내용들 수정
+        /// </summary>
+        /// <param name="place"></param>
+        public override bool Update<T>(T input)
+        {
+            if (input is Place place)
+            {
+                place.UsingCount++;
+                place.UpdatedTime = DateTime.Now;
+                var result = place.Update();
+
+                if (result.Id != Guid.Empty)
+                    return true;
+            }
+            return false;
         }
     }
 }
