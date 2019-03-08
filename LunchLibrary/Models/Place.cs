@@ -12,6 +12,8 @@ namespace LunchLibrary.Models
     [Table("Place")]
     public class Place : ModelActionGuide, ICommon
     {
+        public static Place Current { get; set; }
+
         /// <summary>
         /// 장소 이름
         /// </summary>
@@ -55,11 +57,35 @@ namespace LunchLibrary.Models
         /// </summary>
         public DateTime UpdatedTime { get; set; } = DateTime.Now;
 
-        public override T Insert<T>(this T input)
+        /// <summary>
+        /// Place가 update될 때 필요한 내용들 수정
+        /// </summary>
+        /// <param name="place"></param>
+        private static void UpdatePlace(Place place)
         {
+            place.UsingCount++;
+            place.UpdatedTime = DateTime.Now;
+            place.Update();
+        }
 
-            var ss = SqlLauncher.Insert(input);
-            return ss;
+        public override T Insert<T>(T input)
+        {
+            if (input is Place place)
+            {
+                var ss = place.Insert();
+                return input;
+            }
+            return null;
+        }
+
+        public override T Update<T>(T input)
+        {
+            if (input is Place place)
+            {
+                UpdatePlace(place);
+                return input;
+            }
+            return null;
         }
     }
 }

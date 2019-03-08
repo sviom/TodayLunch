@@ -83,13 +83,10 @@ namespace TodayLunchCore.Controllers
             {
                 if (item.Id != Guid.Empty)
                 {
-                    item.UsingCount++;
-                    item.UpdatedTime = DateTime.Now;
-                    LunchLibrary.SqlLauncher.Update(item);
+                    Place.Current.Update(item);
+
                     forRemove.Add(item);
                     updateCount++;
-
-                    //item.Insert();
                 }
             }
 
