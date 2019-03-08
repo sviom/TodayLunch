@@ -45,7 +45,7 @@ namespace TodayLunchCore.Controllers
             {
                 return View();
             }
-        }     
+        }
 
         /// <summary>
         /// 장소 생성
@@ -54,18 +54,15 @@ namespace TodayLunchCore.Controllers
         /// <returns>장소 생성이 정상적으로 이루어지면 장소 목록으로 이동</returns>
         public bool PostPlace([FromBody]List<Place> jsonPlaceList)
         {
-            int createdPlaceCount = _PostPlaceAsync(jsonPlaceList);
-            if (createdPlaceCount >= 0)
+            var (insertCount, updateCount) = _PostPlaceAsync(jsonPlaceList);
+            if (insertCount > 0 || updateCount > 0)
             {
-                //return RedirectToAction("LunchList", "Lunch", new { ownerName = userInfo.OwnerName });
                 return true;
             }
             else
             {
-                //return RedirectToAction("Index", "Home");
                 return false;
             }
-
         }
 
         /// <summary>
@@ -73,31 +70,26 @@ namespace TodayLunchCore.Controllers
         /// </summary>
         /// <param name="_placeList">장소 JSON 문자열</param>
         /// <returns>생성된 장소 갯수</returns>
-        private int _PostPlaceAsync(List<Place> _placeList)
+        private (int insertCount, int updateCount) _PostPlaceAsync(List<Place> _placeList)
         {
             int insertCount = 0;
             int updateCount = 0;
 
-            List<Place> forRemove = new List<Place>();
             foreach (var item in _placeList)
             {
                 if (item.Id != Guid.Empty)
                 {
-                    Place.Current.Update(item);
-
-                    forRemove.Add(item);
-                    updateCount++;
+                    if (Place.Current.Update(item))
+                        updateCount++;
+                }
+                else
+                {
+                    if (Place.Current.Insert(item))
+                        insertCount++;
                 }
             }
 
-            foreach (var item in forRemove)
-            {
-                _placeList.Remove(item);
-            }
-
-
-            insertCount = LunchLibrary.SqlLauncher.InsertList(_placeList).Count;
-            return insertCount;
+            return (insertCount, updateCount);
         }
 
         /// <summary>

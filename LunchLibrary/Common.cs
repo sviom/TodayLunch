@@ -44,8 +44,8 @@ namespace LunchLibrary
     /// </summary>
     public abstract class ModelActionGuide
     {
-        public abstract T Insert<T>(T input) where T : class, ICommon;
-        public abstract T Update<T>(T input) where T : class, ICommon;
+        public abstract bool Insert<T>(T input) where T : class, ICommon;
+        public abstract bool Update<T>(T input) where T : class, ICommon;
     }
 
     /// <summary>
