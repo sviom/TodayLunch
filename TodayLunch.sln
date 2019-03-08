@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodayLunchAPI", "TodayLunchAPI\TodayLunchAPI.csproj", "{C6EA96AA-57D4-4D11-AFF2-1ED6AA0CBAC9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodayLunchCore", "TodayLunchCore\TodayLunchCore.csproj", "{77BFA7F0-07D4-4EED-BB1F-ED4B45BC226B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LunchLibrary", "LunchLibrary\LunchLibrary.csproj", "{91989191-ED4E-4896-9AE6-3B34C615D72A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LunchLibrary", "LunchLibrary\LunchLibrary.csproj", "{91989191-ED4E-4896-9AE6-3B34C615D72A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LunchMigration", "LunchMigration\LunchMigration.csproj", "{55F215F8-205A-4E7E-A260-6AF2E413D73B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LunchMigration", "LunchMigration\LunchMigration.csproj", "{55F215F8-205A-4E7E-A260-6AF2E413D73B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C6EA96AA-57D4-4D11-AFF2-1ED6AA0CBAC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6EA96AA-57D4-4D11-AFF2-1ED6AA0CBAC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6EA96AA-57D4-4D11-AFF2-1ED6AA0CBAC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6EA96AA-57D4-4D11-AFF2-1ED6AA0CBAC9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{77BFA7F0-07D4-4EED-BB1F-ED4B45BC226B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{77BFA7F0-07D4-4EED-BB1F-ED4B45BC226B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77BFA7F0-07D4-4EED-BB1F-ED4B45BC226B}.Release|Any CPU.ActiveCfg = Release|Any CPU
