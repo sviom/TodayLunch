@@ -32,25 +32,19 @@ namespace LunchLibrary.Models
         /// </summary>
         public string Location { get; set; }
 
-        /// <summary>
-        /// 장소 관련 입력/소유자
-        /// </summary>
-        //[Required]
-        //public Owner Owner { get; set; }
-
         [Required]
         public Guid OwnerId { get; set; }
 
         /// <summary>
         /// 장소 이용 횟수
         /// </summary>
-        public int UsingCount { get; set; } = 0;
+        public int UsingCount { get; set; }
 
         /// <summary>
         /// 장소 작성 시간
         /// </summary>
         [Required]
-        public DateTime CreatedTime { get; set; } = DateTime.Now;
+        public DateTime CreatedTime { get; set; }
 
         /// <summary>
         /// 장소 업데이트 시간
@@ -61,8 +55,11 @@ namespace LunchLibrary.Models
         {
             if (input is Place place)
             {
-                var ss = place.Insert();
-                if (ss.Id != Guid.Empty)
+                place.CreatedTime = DateTime.Now;
+                place.UsingCount = 0;
+
+                var result = place.Insert();
+                if (result.Id != Guid.Empty)
                     return true;
             }
             return false;
