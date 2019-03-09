@@ -61,8 +61,9 @@ namespace TodayLunchCore.Controllers
         public IActionResult CheckUser(string ownerName, string password)
         {
             (Owner ownerVal, bool isOnwer) = Login(ownerName, password);
+
             if (isOnwer)
-                return RedirectToAction("LunchList", "Lunch", ownerVal);
+                return RedirectToAction("LunchList", "Lunch",new { id = LunchLibrary.UtilityLauncher.ConvertGuidToBase64(ownerVal.Id) });
             else
                 return RedirectToAction("Index", "Home");
         }

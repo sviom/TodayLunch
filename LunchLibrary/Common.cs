@@ -37,6 +37,16 @@ namespace LunchLibrary
                 return null;
             }
         }
+
+        public static string ConvertGuidToBase64(Guid guid)
+        {
+            return Convert.ToBase64String(guid.ToByteArray());
+        }
+        public static Guid ConvertBase64ToGuid(string base64)
+        {
+            var decodedByte = Convert.FromBase64String(base64);
+            return new Guid(decodedByte);
+        }
     }
 
     /// <summary>
