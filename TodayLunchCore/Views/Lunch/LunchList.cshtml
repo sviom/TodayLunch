@@ -20,7 +20,7 @@
         }
 
         var resultData = ExecuteAjax("POST", "/Lunch/DeletePlace", "json", "application/json", itemString);
-        
+
         if (resultData) {
             alert("삭제하였습니다.");
             document.getElementById("placeTR_" + rowCount).outerHTML = "";
@@ -74,8 +74,10 @@
     <hr />
 </div>
 <div class="row">
-    <div class="col-lg-8 col-md-8 col-sm-12 offset-lg-2 offset-md-2">
+    <div class="col-lg-2 col-md-2 col-sm-12 offset-lg-2 offset-md-2" style="margin-top:10px;">
         <a href="/Lunch/CreatePlace" class="btn btn-secondary btn-block">장소 입력</a>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
         <a href="/Home/Index" class="btn btn-secondary btn-block">홈으로</a>
     </div>
 </div>
