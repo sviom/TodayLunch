@@ -36,8 +36,6 @@
         }
 
         var resultData = ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList));
-        console.log("결과");
-        console.log(resultData);
         if (resultData) {
             location.href = '/Lunch/LunchList/@owner.Name';
         }
@@ -54,10 +52,7 @@
         assembleText += '<td><input type="text" id="placeLocationText' + rows + '" class="form-control" placeholder="점심 장소 위치" /></td>';
         assembleText += '<td><button type="button" id="deletePlaceButton' + rows + '" class="deletePlaceButton btn btn-danger float-right" onclick="DeletePlaceInput(this);">장소 제거</button></td>';
         assembleText += '</tr>';
-
-        console.log("현재 테이블");
-        console.log(document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].innerHTML);
-
+        
         document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].innerHTML += assembleText;
     }
 
