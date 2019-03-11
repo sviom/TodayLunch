@@ -37,7 +37,7 @@
 
         var resultData = ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList));
         if (resultData) {
-            location.href = '/Lunch/LunchList/@(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id)))';
+            location.href = '/Lunch/LunchList/@(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id))';
         }
         else {
             location.href = "/Home/Index";
@@ -120,6 +120,6 @@
         <a href="/Home/Index" class="btn btn-secondary btn-block">홈으로</a>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
-        <a href="/Lunch/LunchList/@(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id)))" class="btn btn-secondary btn-block">뒤로 이동</a>
+        <a href="/Lunch/LunchList/@(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id))" class="btn btn-secondary btn-block">뒤로 이동</a>
     </div>
 </div>
