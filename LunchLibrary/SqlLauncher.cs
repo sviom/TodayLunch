@@ -123,7 +123,7 @@ namespace LunchLibrary
             }
             return count;
         }
-
+         
         public static bool Delete<T>(T deleteObject) where T : class, ICommon
         {
             bool result = false;
