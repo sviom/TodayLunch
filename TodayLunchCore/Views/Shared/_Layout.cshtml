@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+
+@{
+    var ownerGuid = Context.Session.GetString("ownerGuid");
+    var ownerName = Context.Session.GetString("ownerName");
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -16,8 +23,20 @@
 
 </head>
 <body>
+    @if (!string.IsNullOrEmpty(ownerGuid))
+    {
+        <div class="container" style="margin-top:10px;">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-12 offset-lg-2 offset-md-2">
+                    <span><b>@ownerName</b> 님, 환영합니다.</span>
+                    <a href="/Home/LogOut" class="btn btn-secondary float-right">로그아웃</a>
+                    <a href="/Home/UpdateUser/@(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(new Guid(ownerGuid)))" class="btn btn-secondary float-right" style="margin-right:10px;">정보수정</a>
+                </div>
+            </div>
+        </div>
+    }
 
-    <div class="container" style="margin-top:10em;">
+    <div class="container" style="margin-top:20px;">
         @RenderBody()
     </div>
 
@@ -25,9 +44,9 @@
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-8 offset-lg-4 offset-md-3 offset-sm-2">
                 <hr />
-                @DateTime.Now.Year - kanghanstar@outlook.com
-            </div>            
+                @DateTime.Now.Year - <a href="mailto:kanghanstar@outlook.com">kanghanstar@outlook.com</a>
+            </div>
         </div>
-    </div>   
+    </div>
 </body>
 </html>

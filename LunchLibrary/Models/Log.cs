@@ -9,7 +9,7 @@ namespace LunchLibrary.Models
     /// <summary>
     /// 로깅 정보
     /// </summary>
-    public class Log : ICommon
+    public class Log : ModelActionGuide, ICommon
     {
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -26,5 +26,31 @@ namespace LunchLibrary.Models
 
 
         public string Name { get; set; }
+
+        public override bool Delete<T>(T input)
+        {
+            return input.Delete();
+        }
+
+        public override bool Insert<T>(T input)
+        {
+            if (input is Log)
+            {
+                if (input.Insert() != null)
+                    return true;
+            }
+            return false;
+        }
+
+        public override bool Update<T>(T input)
+        {
+            if (input is Log owner)
+            {
+                var result = owner.Update();
+                if (result.Id != Guid.Empty)
+                    return true;
+            }
+            return false;
+        }
     }
 }

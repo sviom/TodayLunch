@@ -50,9 +50,9 @@
         var assembleText = '<tr id="placeTR' + rows + '">';
         assembleText += '<td><input type="text" id="placeNameText' + rows + '" class="form-control" placeholder="점심 장소 이름" /></td >';
         assembleText += '<td><input type="text" id="placeLocationText' + rows + '" class="form-control" placeholder="점심 장소 위치" /></td>';
-        assembleText += '<td><button type="button" id="deletePlaceButton' + rows + '" class="deletePlaceButton btn btn-danger float-right" onclick="DeletePlaceInput(this);">장소 제거</button></td>';
+        assembleText += '<td><button type="button" id="deletePlaceButton' + rows + '" class="deletePlaceButton btn btn-danger float-right" onclick="DeletePlaceInput(this);">제거</button></td>';
         assembleText += '</tr>';
-        
+
         document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].innerHTML += assembleText;
     }
 
@@ -66,20 +66,18 @@
 <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-12 offset-lg-2 offset-md-2">
         <h3>주변에 어떠한 장소가 있나요?</h3>
-        <h4>@owner.Name 님, 환영합니다.</h4>
-        <input type="hidden" value="@owner.Id" />
     </div>
 </div>
 
 
 <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-12 offset-lg-2 offset-md-2">
+        <p><small>* 저장 시 자동으로 업데이트 됩니다.</small></p>
         <table id="inputPlaceTable" class="table">
             <thead>
                 <tr>
                     <th scope="col">이름</th>
                     <th scope="col">위치</th>
-                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -89,17 +87,12 @@
                         <tr id="placeTR@(i)">
                             <td>
                                 <input type="hidden" id="placeId@(i)" value="@(places[i].Id)" />
-                                <input type="hidden" id="placeOwnerId@(i)" value="@(places[i].OwnerId)" />
                                 <input type="text" id="placeNameText@(i)" class="form-control" placeholder="점심 장소 이름"
                                        value="@(places[i].Name)" />
                             </td>
                             <td>
-                                <input type="text" id="placeLocationText@(i)" class="form-control" placeholder="점심 장소 위치" 
+                                <input type="text" id="placeLocationText@(i)" class="form-control" placeholder="점심 장소 위치"
                                        value="@(places[i].Location)" />
-                            </td>
-                            <td>
-                                <p><small>* 저장 시 자동으로 업데이트 됩니다.</small></p>
-                                @*<button type="button" id="deletePlaceButton@(i)" class="deletePlaceButton btn btn-danger float-right" onclick="DeletePlaceInput(this);">장소 제거</button>*@
                             </td>
                         </tr>
                     }
@@ -115,9 +108,6 @@
     </div>
     <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
         <button type="button" id="savePlaceButton" class="btn btn-primary btn-block">장소 저장</button>
-    </div>
-    <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
-        <a href="/Home/Index" class="btn btn-secondary btn-block">홈으로</a>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
         <a href="/Lunch/LunchList/@(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id))" class="btn btn-secondary btn-block">뒤로 이동</a>

@@ -19,17 +19,18 @@ namespace TodayLunchCore.Controllers
         public IActionResult LunchList(string id)
         {
             Guid guid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
-            var getOwner = LunchLibrary.SqlLauncher.Get(new Owner(), x => x.Id.Equals(guid));
+            var getOwner = new Owner();
+            var getResult = getOwner.Get(ref getOwner, x => x.Id.Equals(guid));
 
-            if (getOwner.Id != Guid.Empty && getOwner != null)
+            if (getResult && getOwner.Id != Guid.Empty && getOwner != null)
             {
                 _owner = getOwner;
-                var placeList = LunchLibrary.SqlLauncher.GetAll<Place>(x => x.OwnerId.Equals(_owner.Id));
+                var placeList = getOwner.GetAll<Place>(x => x.OwnerId.Equals(_owner.Id));
                 return View(placeList);
             }
-            else if (_owner != null)
+            else if (getResult && _owner != null)
             {
-                var placeList = LunchLibrary.SqlLauncher.GetAll<Place>(x => x.OwnerId.Equals(_owner.Id));
+                var placeList = getOwner.GetAll<Place>(x => x.OwnerId.Equals(_owner.Id));
                 return View(placeList);
             }
             return View();
@@ -40,7 +41,7 @@ namespace TodayLunchCore.Controllers
             if (_owner != null)
             {
                 ViewBag.Owner = _owner;
-                var placeList = LunchLibrary.SqlLauncher.GetAll<Place>(x => x.OwnerId.Equals(_owner.Id));
+                var placeList = _owner.GetAll<Place>(x => x.OwnerId.Equals(_owner.Id));
                 return View(placeList);
             }
             else
@@ -81,12 +82,12 @@ namespace TodayLunchCore.Controllers
             {
                 if (item.Id != Guid.Empty)
                 {
-                    if (Place.Current.Update(item))
+                    if (new Place().Update(item))
                         updateCount++;
                 }
                 else
                 {
-                    if (Place.Current.Insert(item))
+                    if (new Place().Insert(item))
                         insertCount++;
                 }
             }
@@ -112,8 +113,16 @@ namespace TodayLunchCore.Controllers
         private bool _DeletePlace(Place _placeInfo)
         {
             bool _deleteResult = false;
-            _deleteResult = Place.Current.Delete(_placeInfo);
+            _deleteResult = new Place().Delete(_placeInfo);
             return _deleteResult;
+        }
+
+        [HttpPost]
+        public string GetRandom()
+        {
+            var placeList = new Owner().GetAll<Place>(x => x.OwnerId.Equals(_owner.Id));
+            var randomPick = LunchLibrary.UtilityLauncher.RandomPick(placeList);
+            return JsonConvert.SerializeObject(randomPick);
         }
     }
 }

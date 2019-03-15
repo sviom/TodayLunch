@@ -29,6 +29,8 @@ namespace TodayLunchCore
         {
             // Add framework services.
             services.AddMvc();
+            services.AddHttpContextAccessor();
+            services.AddSession(x => x.IdleTimeout = TimeSpan.FromMinutes(60));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +50,7 @@ namespace TodayLunchCore
             }
 
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

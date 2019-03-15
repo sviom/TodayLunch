@@ -70,7 +70,14 @@ namespace LunchLibrary
                 using (var db = new TodayLunchContext())
                 {
                     var dbSet = db.Set<T>();
-                    returnList = dbSet.Where(expression).ToList();
+                    if (expression != null)
+                    {
+                        returnList = dbSet.Where(expression).ToList();
+                    }
+                    else
+                    {
+                        returnList = dbSet.ToList();
+                    }
                 }
             }
             catch (Exception ex)
@@ -80,21 +87,28 @@ namespace LunchLibrary
             return returnList;
         }
 
-        public static T Get<T>(T inputObject, Expression<Func<T, bool>> expression) where T : class, ICommon
+        public static bool Get<T>(ref T inputObject, Expression<Func<T, bool>> expression = null) where T : class, ICommon
         {
             try
             {
                 using (var db = new TodayLunchContext())
                 {
                     var dbSet = db.Set<T>();
-                    var ss = dbSet.Where(expression).FirstOrDefault();
-                    return ss;
+                    if (expression != null)
+                    {
+                        inputObject = dbSet.Where(expression).FirstOrDefault();
+                    }
+                    else
+                    {
+                        inputObject = dbSet.FirstOrDefault();
+                    }
+                    return true;
                 }
             }
             catch
             {
             }
-            return null;
+            return false;
         }
 
         /// <summary>

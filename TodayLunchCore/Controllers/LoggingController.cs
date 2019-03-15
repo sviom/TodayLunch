@@ -12,7 +12,7 @@ namespace TodayLunchCore.Controllers
     {
         public IActionResult Index()
         {
-            var logList = SqlLauncher.GetAll<Log>();
+            var logList = new Log().GetAll<Log>();
             return View(logList);
         }
     }

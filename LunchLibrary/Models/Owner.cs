@@ -12,8 +12,6 @@ namespace LunchLibrary.Models
     [Table("Owner")]
     public class Owner : ModelActionGuide, ICommon
     {
-        public static Owner Current { get; set; } = new Owner();
-
         /// <summary>
         /// 사용자 고유번호
         /// </summary>

@@ -1,0 +1,98 @@
+﻿@model LunchLibrary.Models.Owner
+
+@{
+    ViewData["Title"] = "등록";
+}
+
+
+<script type="text/javascript">
+    var IsPasswordCompleted = false;
+
+    $(document).ready(function () {
+        $("#regist").click(function () {
+            var Owner = new Object();
+            Owner.id = "@(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(Model.Id))";
+            Owner.Password = $("#ownerPw").val();
+
+            var url = "id=" + Owner.id + "&password=" + Owner.Password;
+
+            var resultData = ExecuteAjax("GET", "/Home/PutUser", "json", "application/json", url);
+            if (resultData) {
+                alert("비밀번호 변경에 성공하였습니다. 반영을 위해 다시 로그인해주세요.");
+                location.href = "/Home/Index";
+            } else {
+                alert("오류가 발생하였습니다. 다시 시도해주세요.");
+            }
+        });
+    });
+
+    function ShowAlertWithMessage(elementName, message) {
+        $("#" + elementName).show();
+        $("#" + elementName).html(message);
+        //$("#" + elementName).alert();
+    }
+
+    function PasswordEqualCheck() {
+        var original = $("#ownerPw").val();
+        var recheck = $("#ownerRePw").val();
+
+        if (original == recheck) {
+            ShowAlertWithMessage("passwordInfo", "비밀번호가 일치합니다.");
+            IsPasswordCompleted = true;
+            if (IsPasswordCompleted) {
+                $("#regist").prop("disabled", false);
+            }
+        }
+        else {
+            ShowAlertWithMessage("passwordInfo", "비밀번호가 일치하지 않습니다.");
+            IsPasswordCompleted = false;
+            $("#regist").prop("disabled", true);
+        }
+    }
+</script>
+
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-8 offset-lg-4 offset-md-3 offset-sm-2">
+        <div class="h3">등록을 환영합니다.</div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-8 offset-lg-4 offset-md-3 offset-sm-2">
+        <hr />
+        <form id="updateUserForm" method="post">
+            <div class="form-group">
+                <label>아이디 입력</label>
+                <input type="text" id="ownerName" name="Name" placeholder="원하시는 아이디를 입력하세요."
+                       class="form-control" value="@Model.Name" disabled="disabled" />
+            </div>
+
+            <div id="duplicateInfo" class="alert alert-warning alert-dismissible fade show" style="display:none;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="form-group">
+                <label>새로운 비밀번호</label>
+                <input type="password" id="ownerPw" name="Password" placeholder="새로운 비밀번호"
+                       class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>비밀번호 재입력</label>
+                <input type="password" id="ownerRePw" placeholder="새로운 비밀번호 다시 입력"
+                       class="form-control" onkeyup="PasswordEqualCheck();" />
+            </div>
+
+            <div id="passwordInfo" class="alert alert-warning alert-dismissible fade show" style="display:none;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <button type="submit" id="regist" disabled class="btn btn-primary btn-block">수정</button>
+
+        </form>
+    </div>
+</div>

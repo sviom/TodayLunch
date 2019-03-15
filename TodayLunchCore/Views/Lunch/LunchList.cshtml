@@ -26,6 +26,17 @@
             document.getElementById("placeTR_" + rowCount).outerHTML = "";
         }
     }
+
+    function GetRandom() {
+        var resultData = ExecuteAjax("POST", "/Lunch/GetRandom", "json", "application/json", null);
+        //alert(resultData.Name + "dd");
+        //alert(resultData.Location + "dd");
+
+        $("#lunchName").text(" [ " + resultData.Name + " ] ");
+        $("#lunchLocation").text(" [ " + resultData.Location + " ] ");
+        $("#selectLunch").prop("disabled", "disabled");
+        $("#successAlert").show();
+    }
 </script>
 
 <div class="row">
@@ -36,7 +47,27 @@
 
 <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-12 offset-lg-2 offset-md-2">
-        <button type="button" id="selectLunch" class="btn btn-primary btn-block">점심 고르기</button>
+        <div id="successAlert" class="alert alert-success" role="alert" style="display:none;">
+            오늘의 점심 장소는 - <span class="h5" id="lunchName"></span> 입니다.
+            <br />
+            위치는 - <span class="h6" id="lunchLocation"></span> 입니다.
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 col-md-8 col-sm-12 offset-lg-2 offset-md-2">
+        <select class="form-control">
+            <option>dddd</option>
+            <option>dddd</option>
+            <option>dddd</option>
+            <option>dddd</option>
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 col-md-8 col-sm-12 offset-lg-2 offset-md-2">
         <table class="table">
             <thead>
                 <tr>
@@ -61,7 +92,7 @@
                                 <button type="button" id="deletePlaceButton_@i"
                                         class="btn btn-danger float-right"
                                         onclick="DeleteCreatedPlace('@JsonConvert.SerializeObject(item)',this);">
-                                    이 장소 제거
+                                    제거
                                 </button>
                             </td>
                         </tr>
@@ -75,9 +106,9 @@
 </div>
 <div class="row">
     <div class="col-lg-2 col-md-2 col-sm-12 offset-lg-2 offset-md-2" style="margin-top:10px;">
-        <a href="/Lunch/CreatePlace" class="btn btn-secondary btn-block">장소 입력</a>
+        <button type="button" id="selectLunch" class="btn btn-primary btn-block" onclick="GetRandom();">점심 고르기</button>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
-        <a href="/Home/Index" class="btn btn-secondary btn-block">홈으로</a>
+        <a href="/Lunch/CreatePlace" class="btn btn-secondary btn-block">장소 입력</a>
     </div>
 </div>

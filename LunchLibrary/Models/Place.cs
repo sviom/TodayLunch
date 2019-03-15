@@ -12,8 +12,6 @@ namespace LunchLibrary.Models
     [Table("Place")]
     public class Place : ModelActionGuide, ICommon
     {
-        public static Place Current { get; set; } = new Place();
-
         /// <summary>
         /// 장소 이름
         /// </summary>
@@ -34,6 +32,9 @@ namespace LunchLibrary.Models
 
         [Required]
         public Guid OwnerId { get; set; }
+
+        [Required]
+        public Guid AddressId { get; set; }
 
         /// <summary>
         /// 장소 이용 횟수

@@ -7,6 +7,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using LunchLibrary.Models;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace TodayLunchCore.Controllers
 {
@@ -19,6 +20,7 @@ namespace TodayLunchCore.Controllers
 
         public IActionResult Index(string ownerName)
         {
+            HttpContext.Session.Clear();
             if (ownerName == null)
                 return View();
 
@@ -35,9 +37,27 @@ namespace TodayLunchCore.Controllers
             return View();
         }
 
+        public IActionResult UpdateUser(string id)
+        {
+            Guid guid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
+            var getOwner = new Owner();
+            var getResult = getOwner.Get(ref getOwner, x => x.Id.Equals(guid));
+            if (getResult)
+            {
+                return View(getOwner);
+            }
+            return View();
+        }
+
         public IActionResult Error()
         {
             return View();
+        }
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
 
         /// <summary>
@@ -63,7 +83,7 @@ namespace TodayLunchCore.Controllers
             (Owner ownerVal, bool isOnwer) = Login(ownerName, password);
 
             if (isOnwer)
-                return RedirectToAction("LunchList", "Lunch",new { id = LunchLibrary.UtilityLauncher.ConvertGuidToBase64(ownerVal.Id) });
+                return RedirectToAction("LunchList", "Lunch", new { id = LunchLibrary.UtilityLauncher.ConvertGuidToBase64(ownerVal.Id) });
             else
                 return RedirectToAction("Index", "Home");
         }
@@ -84,10 +104,14 @@ namespace TodayLunchCore.Controllers
                 Password = hashedPw
             };
 
-            var isOwner = LunchLibrary.SqlLauncher.Get(_owner, x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
-            var returnTuple = (ownerVal: isOwner, isOnwer: true);
-            if (isOwner != null)
+            var getResult = _owner.Get(ref _owner, x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
+            var returnTuple = (ownerVal: _owner, isOnwer: true);
+            if (_owner != null)
+            {
+                HttpContext.Session.SetString("ownerName", _owner.Name.ToString());
+                HttpContext.Session.SetString("ownerGuid", _owner.Id.ToString());
                 return returnTuple;
+            }
             else
             {
                 returnTuple.isOnwer = false;
@@ -133,12 +157,29 @@ namespace TodayLunchCore.Controllers
             // 사용자 입력 암호 암호화작업
             var hashedPw = LunchLibrary.UtilityLauncher.EncryptSHA256(password);
             var newOwner = new Owner() { Name = name, Password = hashedPw };
-            if (Owner.Current.Insert(newOwner))
+            if (newOwner.Insert(newOwner))
             {
-                var owner = LunchLibrary.SqlLauncher.Get(newOwner, x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
-                return owner;
+                var getResult = newOwner.Get(ref newOwner, x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
+                return newOwner;
             }
             return null;
+        }
+
+        [HttpGet]
+        public bool PutUser(string id, string password)
+        {
+            Guid guid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
+            // 사용자 입력 암호 암호화작업
+            var hashedPw = LunchLibrary.UtilityLauncher.EncryptSHA256(password);
+
+            var getOwner = new Owner();
+            var getResult = getOwner.Get(ref getOwner, x => x.Id.Equals(guid));
+            getOwner.Password = hashedPw;
+
+            if (getResult)
+                return new Owner().Update(getOwner);
+            else
+                return false;
         }
     }
 }
