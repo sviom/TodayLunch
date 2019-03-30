@@ -14,35 +14,93 @@ namespace TodayLunchCore.Controllers
 {
     public class LunchController : Controller
     {
-        private static Owner _owner = new Owner();
+        private static Owner globalOwner = null;
 
-        public IActionResult LunchList(string id)
+        public IActionResult LunchList(string id, string addressId = null)
         {
-            Guid guid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
-            var getOwner = new Owner();
-            var getResult = getOwner.Get(ref getOwner, x => x.Id.Equals(guid));
 
-            if (getResult && getOwner.Id != Guid.Empty && getOwner != null)
+            Guid ownerGuid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
+            var getOwnerResult = new Owner().Get(ref globalOwner, x => x.Id.Equals(ownerGuid));
+
+            Guid addressGuid = GetAddressGuid(addressId);
+            if (addressGuid == Guid.Empty)
+                return RedirectToAction("UpsertAddress", "Lunch");
+
+            var addressList = new Address().GetAll<Address>(x => x.OwnerId.Equals(ownerGuid));
+            foreach (var item in addressList)
             {
-                _owner = getOwner;
-                var placeList = getOwner.GetAll<Place>(x => x.OwnerId.Equals(_owner.Id));
+                if (item.Id == addressGuid)
+                {
+                    item.IsForeground = true;
+                }
+            }
+            ViewBag.AddressList = addressList;
+
+            if (getOwnerResult && globalOwner.Id != Guid.Empty && globalOwner != null && addressGuid != Guid.Empty)
+            {
+                var placeList = globalOwner.GetAll<Place>(x => x.OwnerId.Equals(globalOwner.Id) && x.AddressId.Equals(addressGuid));
+                ViewBag.Owner = globalOwner;
                 return View(placeList);
             }
-            else if (getResult && _owner != null)
+            else if (getOwnerResult && globalOwner != null && addressGuid != Guid.Empty)
             {
-                var placeList = getOwner.GetAll<Place>(x => x.OwnerId.Equals(_owner.Id));
+                var placeList = globalOwner.GetAll<Place>(x => x.OwnerId.Equals(globalOwner.Id) && x.AddressId.Equals(addressGuid));
+                ViewBag.Owner = globalOwner;
+
                 return View(placeList);
             }
             return View();
         }
 
-        public IActionResult CreatePlace()
+        public IActionResult CreatePlace(string addressId)
         {
-            if (_owner != null)
+            if (globalOwner != null)
             {
-                ViewBag.Owner = _owner;
-                var placeList = _owner.GetAll<Place>(x => x.OwnerId.Equals(_owner.Id));
+                Guid addressGuid = GetAddressGuid(addressId);
+                if (addressGuid == Guid.Empty)
+                    return RedirectToAction("UpsertAddress", "Lunch");
+
+                var address = new Address();
+                var addressGetResult = new Address().Get(ref address, x => x.OwnerId.Equals(globalOwner.Id) && x.Id.Equals(addressGuid));
+
+                ViewBag.Address = address;
+                ViewBag.Owner = globalOwner;
+                var placeList = globalOwner.GetAll<Place>(x => x.OwnerId.Equals(globalOwner.Id) && x.AddressId.Equals(addressGuid));
                 return View(placeList);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        private Guid GetAddressGuid(string addressId)
+        {
+            Guid addressGuid = Guid.Empty;
+            if (!string.IsNullOrEmpty(addressId))
+            {
+                addressGuid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(addressId);
+            }
+            else
+            {
+                var address = new Address();
+                var addressGetResult = new Address().Get(ref address, x => x.OwnerId.Equals(globalOwner.Id) && x.IsDefault == true);
+                if (address != null)
+                {
+                    addressGuid = address.Id;
+                }
+            }
+
+            return addressGuid;
+        }
+
+        public IActionResult UpsertAddress(string addressId = null)
+        {
+            if (globalOwner != null)
+            {
+                ViewBag.Owner = globalOwner;
+                var addressList = new Address().GetAll<Address>(x => x.OwnerId.Equals(globalOwner.Id));
+                return View(addressList);
             }
             else
             {
@@ -118,11 +176,55 @@ namespace TodayLunchCore.Controllers
         }
 
         [HttpPost]
-        public string GetRandom()
+        public string GetRandom([FromBody]string addressId)
         {
-            var placeList = new Owner().GetAll<Place>(x => x.OwnerId.Equals(_owner.Id));
+            Guid addressGuid = GetAddressGuid(addressId);
+
+            var placeList = new Owner().GetAll<Place>(x => x.OwnerId.Equals(globalOwner.Id) && x.AddressId.Equals(addressGuid));
             var randomPick = LunchLibrary.UtilityLauncher.RandomPick(placeList);
             return JsonConvert.SerializeObject(randomPick);
+        }
+
+        public async Task<bool> PostAddress([FromBody]List<Address> addresses)
+        {
+            var (insertCount, updateCount) = await _PostAddress(addresses);
+            if (insertCount > 0 || updateCount > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 주소 생성 실제 로직
+        /// </summary>
+        /// <param name="addresses"></param>
+        /// <returns>생성/수정된 주소 갯수</returns>
+        private async Task<(int insertCount, int updateCount)> _PostAddress(List<Address> addresses)
+        {
+            int insertCount = 0;
+            int updateCount = 0;
+
+            foreach (var item in addresses)
+            {
+                if (item.Id != Guid.Empty)
+                {
+                    var upsertResult = await new Address().UpsertWithGeometry(item, true);
+                    if (upsertResult)
+                        updateCount++;
+                }
+                else
+                {
+                    var upsertResult = await new Address().UpsertWithGeometry(item);
+                    if (upsertResult)
+                        insertCount++;
+                }
+            }
+
+            return (insertCount, updateCount);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace TodayLunchCore.Controllers
         public IActionResult Index()
         {
             var logList = new Log().GetAll<Log>();
-            return View(logList);
+            return View(logList.OrderByDescending(x => x.CreatedTime));
         }
     }
 }

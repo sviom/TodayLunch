@@ -36,6 +36,9 @@ namespace LunchLibrary.Models
         [Required]
         public Guid AddressId { get; set; }
 
+
+        public Address Address { get; set; }
+
         /// <summary>
         /// 장소 이용 횟수
         /// </summary>

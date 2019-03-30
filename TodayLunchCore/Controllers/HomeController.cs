@@ -181,5 +181,12 @@ namespace TodayLunchCore.Controllers
             else
                 return false;
         }
+        public void DeleteUser(string id)
+        {
+            Guid ownerGuid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
+            var ss = new Owner();
+            new Owner().Get<Owner>(ref ss, x => x.Id.Equals(ownerGuid));
+            var result = new Owner().Delete(ss);
+        }
     }
 }

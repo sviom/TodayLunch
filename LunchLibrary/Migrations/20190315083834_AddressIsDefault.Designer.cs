@@ -4,14 +4,16 @@ using LunchLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LunchLibrary.Migrations
 {
     [DbContext(typeof(TodayLunchContext))]
-    partial class TodayLunchContextModelSnapshot : ModelSnapshot
+    [Migration("20190315083834_AddressIsDefault")]
+    partial class AddressIsDefault
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,10 +30,6 @@ namespace LunchLibrary.Migrations
 
                     b.Property<bool>("IsDefault");
 
-                    b.Property<double>("Lat");
-
-                    b.Property<double>("Lng");
-
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -40,9 +38,7 @@ namespace LunchLibrary.Migrations
                     b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("Id");
-                    
-                    b.HasIndex("OwnerId");
-                    
+
                     b.ToTable("Address");
                 });
 
@@ -108,25 +104,7 @@ namespace LunchLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
                     b.ToTable("Place");
-                });
-
-            modelBuilder.Entity("LunchLibrary.Models.Address", b =>
-                {
-                    b.HasOne("LunchLibrary.Models.Owner", "Owner")
-                        .WithMany("Addresses")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("LunchLibrary.Models.Place", b =>
-                {
-                    b.HasOne("LunchLibrary.Models.Address", "Address")
-                        .WithMany("Places")
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

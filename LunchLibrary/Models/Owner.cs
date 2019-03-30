@@ -43,6 +43,8 @@ namespace LunchLibrary.Models
         [Required]
         public DateTime UpdatedTime { get; set; }
 
+        public List<Address> Addresses { get; set; }
+
         public override bool Delete<T>(T input)
         {
             return input.Delete();

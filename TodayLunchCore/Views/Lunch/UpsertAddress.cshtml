@@ -1,0 +1,132 @@
+﻿@using LunchLibrary.Models
+@using System.Web;
+
+@model IEnumerable<LunchLibrary.Models.Address>
+@{
+    Owner owner = ViewBag.Owner as Owner;
+
+    List<Address> addresses = new List<Address>();
+    if (Model != null)
+    {
+        addresses = Model.ToList();
+    }
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#saveAddressButton").click(function () {
+            SaveAddressList();
+        });
+    });
+
+    function SaveAddressList() {
+        var rows = document.getElementById("inputAddressTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
+        if (rows < 1) {
+            alert("장소를 입력해주세요.");
+            $("#saveAddressButton").prop("disabled", true);
+            return false;
+        }
+
+        var jsonAddressList = new Array();
+        for (var i = 0; i < rows; i++) {
+            var rw = parseInt(document.getElementById("inputAddressTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr")[i].id.replace("addressTR", ""));
+
+            var isDefault = false;
+            if ($("#addressIsDefault" + rw).is(":checked")) {
+                isDefault = true;
+            }
+
+            var Address = new Object();
+            Address.Id = $("#addressId" + rw).val();
+            Address.Name = $("#addressNameText" + rw).val();
+            Address.IsDefault = isDefault;
+            Address.OwnerId = "@(owner.Id)";
+
+            jsonAddressList.push(Address);
+        }
+
+        var resultData = ExecuteAjax("POST", "/Lunch/PostAddress", "json", "application/json", JSON.stringify(jsonAddressList));
+        if (resultData) {
+            location.href = '/Lunch/LunchList/@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id))';
+        }
+        else {
+            location.href = "/Home/Index";
+        }
+    }
+
+    // 열 추가
+    function AddAddressInput() {
+        var rows = document.getElementById("inputAddressTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
+        var assembleText = '<tr id="addressTR' + rows + '">';
+        assembleText += '<td><input type="text" id="addressNameText' + rows + '" class="form-control" placeholder="근처 장소를 찾을 주소" /></td >';
+        assembleText += '<td><input type="radio" id="addressIsDefault' + rows + '" name="IsDefault" /></td >';
+        assembleText += '<td><button type="button" id="deleteAddressButton' + rows + '" class="deleteAddressButton btn btn-danger float-right" onclick="DeletePlaceInput(this);">제거</button></td>';
+        assembleText += '</tr>';
+
+        document.getElementById("inputAddressTable").getElementsByTagName("tbody")[0].innerHTML += assembleText;
+    }
+
+    // 해당 열에 해당하는 장소 제거
+    function DeletePlaceInput(BtnObject) {
+        var rowCount = parseInt(BtnObject.id.replace("deleteAddressButton", ""));
+        document.getElementById("addressTR" + rowCount).outerHTML = "";
+    }
+</script>
+
+<div class="row">
+    <div class="col-lg-8 col-md-8 col-sm-12 offset-lg-2 offset-md-2">
+        <h3>주변 음식점을 찾을 주소는 어디인가요?</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 col-md-8 col-sm-12 offset-lg-2 offset-md-2">
+        <p><small>* 저장 시 자동으로 업데이트 됩니다.</small></p>
+        <table id="inputAddressTable" class="table">
+            <thead>
+                <tr>
+                    <th scope="col">주소</th>
+                    <th scope="col">기본</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    for (int i = 0; i < Model.Count(); i++)
+                    {
+                        <tr id="addressTR@(i)">
+                            <td>
+                                <input type="hidden" id="addressId@(i)" value="@(addresses[i].Id)" />
+                                <input type="text" id="addressNameText@(i)" class="form-control" placeholder="근처 장소를 찾을 주소"
+                                       value="@(addresses[i].Name)" />
+                            </td>
+                            <td>
+                                @if (addresses[i].IsDefault == true)
+                                {
+                                    <input type="radio" id="addressIsDefault@(i)" name="IsDefault" checked="checked" />
+                                }
+                                else
+                                {
+                                    <input type="radio" id="addressIsDefault@(i)" name="IsDefault" />
+                                }
+                            </td>
+                            <td></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-12 offset-lg-2 offset-md-2" style="margin-top:10px;">
+        <button type="button" id="addAddressButton" class="btn btn-secondary btn-block" onclick="AddAddressInput();">주소 추가</button>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
+        <button type="button" id="saveAddressButton" class="btn btn-primary btn-block">주소 저장</button>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
+        <a href="/Lunch/LunchList/@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id))" class="btn btn-secondary btn-block">뒤로 이동</a>
+    </div>
+</div>

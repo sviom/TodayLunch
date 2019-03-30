@@ -1,4 +1,6 @@
-﻿@model LunchLibrary.Models.Owner
+@using System.Web;
+
+@model LunchLibrary.Models.Owner
 
 @{
     ViewData["Title"] = "등록";
@@ -49,6 +51,17 @@
             $("#regist").prop("disabled", true);
         }
     }
+    function DeleteUser() {
+        var url = "id=" + "@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(Model.Id))";
+
+        var resultData = ExecuteAjax("GET", "/Home/DeleteUser", "json", "application/json", url);
+        if (resultData) {
+            alert("이용해 주셔서 감사합니다.");
+            location.href = "/Home/Index";
+        } else {
+            alert("오류가 발생하였습니다. 다시 시도해주세요.");
+        }
+    }
 </script>
 
 <div class="row">
@@ -94,5 +107,11 @@
             <button type="submit" id="regist" disabled class="btn btn-primary btn-block">수정</button>
 
         </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-8 offset-lg-4 offset-md-3 offset-sm-2">
+        <button class="btn btn-danger btn-block" onclick="DeleteUser();">회원 탈퇴</button>
     </div>
 </div>

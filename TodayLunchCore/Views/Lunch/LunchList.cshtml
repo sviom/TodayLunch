@@ -1,9 +1,13 @@
 ﻿@using LunchLibrary.Models
 @using Newtonsoft.Json;
+@using System.Web;
+
 @model IEnumerable<LunchLibrary.Models.Place>
 
 @{
+    Owner owner = ViewBag.Owner as Owner;
     ViewData["Title"] = "점심고르기";
+    List<Address> addresses = ViewBag.AddressList;
 }
 
 <script type="text/javascript">
@@ -14,11 +18,9 @@
 
     function DeleteCreatedPlace(itemString, btnObject) {
         var rowCount = parseInt(btnObject.id.replace("deletePlaceButton_", ""));
-
         if (!confirm("정말로 해당 장소를 삭제하시겠습니까?")) {
             return;
         }
-
         var resultData = ExecuteAjax("POST", "/Lunch/DeletePlace", "json", "application/json", itemString);
 
         if (resultData) {
@@ -28,14 +30,29 @@
     }
 
     function GetRandom() {
-        var resultData = ExecuteAjax("POST", "/Lunch/GetRandom", "json", "application/json", null);
-        //alert(resultData.Name + "dd");
-        //alert(resultData.Location + "dd");
-
+        var selectedValue = GetSelectedAddress();
+        var resultData = ExecuteAjax("POST", "/Lunch/GetRandom", "json", "application/json", JSON.stringify(selectedValue));
         $("#lunchName").text(" [ " + resultData.Name + " ] ");
         $("#lunchLocation").text(" [ " + resultData.Location + " ] ");
         $("#selectLunch").prop("disabled", "disabled");
         $("#successAlert").show();
+    }
+    function OnChangedAddress() {
+        var selectedValue = GetSelectedAddress();
+
+        location.href = "?id=" + "@(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id))" + "&addressId=" + selectedValue;
+    }
+
+    function MoveCreatePlace() {
+        var selectedValue = GetSelectedAddress();
+        console.log(selectedValue);
+        location.href = "/Lunch/CreatePlace?addressId=" + selectedValue;
+    }
+
+    function GetSelectedAddress() {
+        var selectBox = document.getElementById("addressSelect");
+        var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+        return selectedValue;
     }
 </script>
 
@@ -57,11 +74,28 @@
 
 <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-12 offset-lg-2 offset-md-2">
-        <select class="form-control">
-            <option>dddd</option>
-            <option>dddd</option>
-            <option>dddd</option>
-            <option>dddd</option>
+
+        <select class="form-control" id="addressSelect" onchange="OnChangedAddress();">
+            @{
+                for (int i = 0; i < addresses.Count; i++)
+                {
+
+                    if (addresses[i].IsForeground)
+                    {
+                        <option selected="selected"
+                                value="@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(addresses[i].Id))">
+                            @addresses[i].Name
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(addresses[i].Id))">
+                            @addresses[i].Name
+                        </option>
+                    }
+                }
+            }
+
         </select>
     </div>
 </div>
@@ -109,6 +143,10 @@
         <button type="button" id="selectLunch" class="btn btn-primary btn-block" onclick="GetRandom();">점심 고르기</button>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
-        <a href="/Lunch/CreatePlace" class="btn btn-secondary btn-block">장소 입력</a>
+        <button class="btn btn-secondary btn-block" onclick="MoveCreatePlace();">장소 입력</button>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
+        <a href="/Lunch/UpsertAddress" class="btn btn-secondary btn-block">주소 입력</a>
+
     </div>
 </div>

@@ -15,6 +15,8 @@ namespace LunchLibrary
 #else
         public static string ServiceApiUrl => "http://todaylunchapi.azurewebsites.net/api/";
 #endif
+
+        public const string SaltPassword = "todaylunchisbest";
     }
 
     public static class UtilityLauncher
@@ -62,11 +64,19 @@ namespace LunchLibrary
 
         public static string ConvertGuidToBase64(Guid guid)
         {
-            return Convert.ToBase64String(guid.ToByteArray());
+            var urlSafeBase64String = Convert.ToBase64String(guid.ToByteArray());
+            return urlSafeBase64String.Replace('+', '-').Replace('/', '_').TrimEnd('=');
         }
 
         public static Guid ConvertBase64ToGuid(string base64)
         {
+            base64 = base64.Replace('-', '+').Replace('_', '/');
+            int paddings = base64.Length % 4;
+            if (paddings > 0)
+            {
+                base64 += new string('=', 4 - paddings);
+            }
+
             var decodedByte = Convert.FromBase64String(base64);
             return new Guid(decodedByte);
         }
@@ -165,7 +175,14 @@ namespace LunchLibrary
         }
         public virtual bool Get<T>(ref T input, Expression<Func<T, bool>> expression = null) where T : class, ICommon
         {
-            return LunchLibrary.SqlLauncher.Get(ref input, expression);
+            try
+            {
+                return LunchLibrary.SqlLauncher.Get(ref input, expression);
+            }
+            catch(Exception ex)
+            {
+                throw;
+            } 
         }
         public abstract bool Insert<T>(T input) where T : class, ICommon;
         public abstract bool Update<T>(T input) where T : class, ICommon;

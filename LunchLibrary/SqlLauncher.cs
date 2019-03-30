@@ -30,7 +30,7 @@ namespace LunchLibrary
                         addedObject = inputObject;
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 
             }
@@ -105,8 +105,9 @@ namespace LunchLibrary
                     return true;
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                Insert(new Log() { Message = ex.Message, StackTrace = ex.StackTrace });
             }
             return false;
         }

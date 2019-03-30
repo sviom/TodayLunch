@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +20,12 @@ namespace LunchLibrary
                 .Build();
 
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("lunchConnection"));
+
+            if (string.IsNullOrEmpty(GooglePlatform.PlaceAPI.API_KEY))
+            {
+                var apiKey = configuration.GetSection("Google")["PlaceApiKey"];
+                GooglePlatform.PlaceAPI.API_KEY = apiKey;
+            }
         }
 
         public DbSet<Place> Places { get; set; }

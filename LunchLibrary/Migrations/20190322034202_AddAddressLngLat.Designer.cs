@@ -4,14 +4,16 @@ using LunchLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LunchLibrary.Migrations
 {
     [DbContext(typeof(TodayLunchContext))]
-    partial class TodayLunchContextModelSnapshot : ModelSnapshot
+    [Migration("20190322034202_AddAddressLngLat")]
+    partial class AddAddressLngLat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,9 +42,9 @@ namespace LunchLibrary.Migrations
                     b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("Id");
-                    
+
                     b.HasIndex("OwnerId");
-                    
+
                     b.ToTable("Address");
                 });
 
