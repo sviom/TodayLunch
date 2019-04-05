@@ -14,18 +14,11 @@ namespace TodayLunchCore.Controllers
 {
     public class HomeController : Controller
     {
-        //public IActionResult Index()
+        //private readonly IConfiguration _configuration;
+        //public HomeController(IConfiguration configuration)
         //{
-        //    return View();
+        //    _configuration = configuration;
         //}
-
-        private readonly IConfiguration _configuration;
-
-        public HomeController(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
 
         public IActionResult Index(string ownerName)
         {
