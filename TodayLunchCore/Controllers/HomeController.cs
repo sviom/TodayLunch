@@ -29,10 +29,10 @@ namespace TodayLunchCore.Controllers
 
         public IActionResult Index(string ownerName)
         {
-            var secretName = "GooglePlaceApiKey";
-            var secretValue = _configuration[secretName];
-            if (!string.IsNullOrEmpty(secretValue) && string.IsNullOrEmpty(LunchLibrary.GooglePlatform.PlaceAPI.API_KEY))
-                LunchLibrary.GooglePlatform.PlaceAPI.API_KEY = secretValue;
+            //var secretName = "GooglePlaceApiKey";
+            //var secretValue = _configuration[secretName];
+            //if (!string.IsNullOrEmpty(secretValue) && string.IsNullOrEmpty(LunchLibrary.GooglePlatform.PlaceAPI.API_KEY))
+            //    LunchLibrary.GooglePlatform.PlaceAPI.API_KEY = secretValue;
 
             HttpContext.Session.Clear();
             if (ownerName == null)
