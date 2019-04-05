@@ -21,11 +21,11 @@ namespace LunchLibrary
 
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("lunchConnection"));
 
-            if (string.IsNullOrEmpty(GooglePlatform.PlaceAPI.API_KEY))
-            {
-                var apiKey = configuration.GetSection("Google")["PlaceApiKey"];
-                GooglePlatform.PlaceAPI.API_KEY = apiKey;
-            }
+            //if (string.IsNullOrEmpty(GooglePlatform.PlaceAPI.API_KEY))
+            //{
+            //    var apiKey = configuration.GetSection("Google")["PlaceApiKey"];
+            //    GooglePlatform.PlaceAPI.API_KEY = apiKey;
+            //}
         }
 
         public DbSet<Place> Places { get; set; }

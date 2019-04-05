@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using LunchLibrary.Models;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace TodayLunchCore.Controllers
 {
@@ -18,8 +19,21 @@ namespace TodayLunchCore.Controllers
         //    return View();
         //}
 
+        private readonly IConfiguration _configuration;
+
+        public HomeController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+
         public IActionResult Index(string ownerName)
         {
+            var secretName = "GooglePlaceApiKey";
+            var secretValue = _configuration[secretName];
+            if (!string.IsNullOrEmpty(secretValue) && string.IsNullOrEmpty(LunchLibrary.GooglePlatform.PlaceAPI.API_KEY))
+                LunchLibrary.GooglePlatform.PlaceAPI.API_KEY = secretValue;
+
             HttpContext.Session.Clear();
             if (ownerName == null)
                 return View();
