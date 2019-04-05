@@ -13,16 +13,6 @@ namespace TodayLunchCore
     {
         public static void Main(string[] args)
         {
-            //var host = new WebHostBuilder()
-            //    .UseKestrel()
-            //    .UseContentRoot(Directory.GetCurrentDirectory())
-            //    .UseIISIntegration()
-            //    .UseStartup<Startup>()
-            //    .UseApplicationInsights()
-            //    .Build();
-
-            //host.Run();
-
             CreateWebHostBuilder(args).Build().Run();
         }
 
@@ -31,7 +21,6 @@ namespace TodayLunchCore
             .UseKestrel()
             .UseContentRoot(Directory.GetCurrentDirectory())
             .UseIISIntegration()
-            .UseStartup<Startup>()
             .UseApplicationInsights()
             .ConfigureAppConfiguration((context, config) =>
             {
@@ -40,7 +29,9 @@ namespace TodayLunchCore
                 var builtConfig = config.Build();
 
                 // Use VaultName from the configuration to create the full vault URL.
-                var vaultUrl = $"https://{builtConfig["VaultName"]}.vault.azure.net/";
+                //var vaultUrl = $"https://{builtConfig["VaultName"]}.vault.azure.net/";
+                var vaultUrl = "https://todaylunchkeyvault.vault.azure.net/";
+                //https://todaylunchkeyvault.vault.azure.net/
 
                 // Load all secrets from the vault into configuration. This will automatically
                 // authenticate to the vault using a managed identity. If a managed identity
