@@ -18,6 +18,7 @@
     });
 
     function SavePlaceList() {
+        $("#progressCircle").toggle();
         var rows = document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
         if (rows < 1) {
             alert("장소를 입력해주세요.");
@@ -41,9 +42,13 @@
 
         var resultData = ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList));
         if (resultData) {
+
+            $("#progressCircle").toggle();
             location.href = '/Lunch/LunchList?id=@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id))' + "&addressId="+"@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(address.Id))";
         }
         else {
+
+            $("#progressCircle").toggle();
             location.href = "/Home/Index";
          }
     }
@@ -113,7 +118,10 @@
         <button type="button" id="addPlaceButton" class="btn btn-secondary btn-block" onclick="AddPlaceInput();">장소 추가</button>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
-        <button type="button" id="savePlaceButton" class="btn btn-primary btn-block">장소 저장</button>
+        <button type="button" id="savePlaceButton" class="btn btn-primary btn-block">
+            <span id="progressCircle" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+            장소 저장
+        </button>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
         <a href="/Lunch/LunchList/@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id))" class="btn btn-secondary btn-block">뒤로 이동</a>
