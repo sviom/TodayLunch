@@ -20,7 +20,13 @@
 
     @*<title>@ViewData["Title"] - 오늘의 점심</title>*@
     <title>오늘의 점심</title>
-
+    <script type="text/javascript">
+        $(document).ajaxStart(function () {
+            console.log("aJax Start...");
+        }).ajaxStop(function () {
+            console.log("aJax End...");
+        });
+    </script>
 </head>
 <body>
     @if (!string.IsNullOrEmpty(ownerGuid))
