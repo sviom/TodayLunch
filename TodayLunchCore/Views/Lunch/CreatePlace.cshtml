@@ -11,8 +11,16 @@
 }
 
 <script type="text/javascript">
+    $(document).ajaxStart(function () {
+        console.log("aJax Start...");
+        $("#PrgressRing").show();
+    }).ajaxStop(function () {
+        console.log("aJax End...");
+        $("#PrgressRing").hide();
+    });
+
     $(document).ready(function () {
-        $("#savePlaceButton").click(function () {            
+        $("#savePlaceButton").click(function () {
             SavePlaceList();
         });
     });
@@ -39,7 +47,18 @@
             jsonPlaceList.push(Place);
         }
 
-        var resultData = ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList));
+        var resultData = false;
+        //Test("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList))
+        Test()
+            .then(function (resolvedData) {
+                console.log(resolvedData);
+                //var resultData = resolvedData;
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+
+        //var resultData = ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList));
         if (resultData) {
             location.href = '/Lunch/LunchList?id=@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id))' + "&addressId="+"@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(address.Id))";
         }
@@ -114,6 +133,9 @@
     </div>
     <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
         <button type="button" id="savePlaceButton" class="btn btn-primary btn-block">
+            <div id="PrgressRing" class="spinner-border spinner-border-sm" role="status" style="display:none;">
+                <span class="sr-only">Loading...</span>
+            </div>
             장소 저장
         </button>
     </div>
