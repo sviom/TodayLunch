@@ -57,7 +57,11 @@ namespace TodayLunchForms.Droid.Renderer
 
         public static GoogleApiClient CreateGoogleApiClient(Context ctx)
         {
-            string clientId = "1084150720454-4g2a96ckjaf329i8ovnom1uv5vdit32s.apps.googleusercontent.com";
+#if DEBUG
+            string clientId = "744732431693-8pr7b1fv5d5s9ig1ogu0reh91n7o3vuq.apps.googleusercontent.com";
+#elif RELASE
+            string cliendId = "744732431693-07us5nv5h8ok4i8rjbek8np43nhqt8nt.apps.googleusercontent.com";
+#endif
             var googleSignInOption = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultSignIn)
                 .RequestEmail()
                 .RequestProfile()
