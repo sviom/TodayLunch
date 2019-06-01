@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LunchLibrary", "LunchLibrar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LunchMigration", "LunchMigration\LunchMigration.csproj", "{55F215F8-205A-4E7E-A260-6AF2E413D73B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodayLunchAndroid", "TodayLunchAndroid\TodayLunchAndroid.csproj", "{EC3471FD-F07A-4C12-B88B-9E7DD762162F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,12 +27,6 @@ Global
 		{55F215F8-205A-4E7E-A260-6AF2E413D73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55F215F8-205A-4E7E-A260-6AF2E413D73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55F215F8-205A-4E7E-A260-6AF2E413D73B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC3471FD-F07A-4C12-B88B-9E7DD762162F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC3471FD-F07A-4C12-B88B-9E7DD762162F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC3471FD-F07A-4C12-B88B-9E7DD762162F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{EC3471FD-F07A-4C12-B88B-9E7DD762162F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC3471FD-F07A-4C12-B88B-9E7DD762162F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC3471FD-F07A-4C12-B88B-9E7DD762162F}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
