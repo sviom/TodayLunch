@@ -6,6 +6,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Android.Content;
+using Android.Gms.Auth.Api;
 
 namespace TodayLunchForms.Droid
 {
@@ -28,6 +30,21 @@ namespace TodayLunchForms.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (requestCode == 9001)
+            {
+                var signInResult = Auth.GoogleSignInApi.GetSignInResultFromIntent(data);
+                if (signInResult.IsSuccess)
+                {
+                    var signInAccount = signInResult.SignInAccount;
+                    var authCode = signInAccount.ServerAuthCode;
+                    //GoogleSignInButton.GoogleSign.OnSuccess?.Execute(authCode);
+                }
+            }
         }
     }
 }
