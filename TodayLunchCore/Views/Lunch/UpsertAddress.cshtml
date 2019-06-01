@@ -58,7 +58,7 @@
     function AddAddressInput() {
         var rows = document.getElementById("inputAddressTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
         var assembleText = '<tr id="addressTR' + rows + '">';
-        assembleText += '<td><input type="text" id="addressNameText' + rows + '" class="form-control" placeholder="근처 장소를 찾을 주소" /></td >';
+        assembleText += '<td><input type="text" id="addressNameText' + rows + '" class="form-control" placeholder="서울시 서초구 논현로 27길 98" /></td >';
         assembleText += '<td><input type="radio" id="addressIsDefault' + rows + '" name="IsDefault" /></td >';
         assembleText += '<td><button type="button" id="deleteAddressButton' + rows + '" class="deleteAddressButton btn btn-danger float-right" onclick="DeletePlaceInput(this);">제거</button></td>';
         assembleText += '</tr>';
@@ -97,7 +97,7 @@
                         <tr id="addressTR@(i)">
                             <td>
                                 <input type="hidden" id="addressId@(i)" value="@(addresses[i].Id)" />
-                                <input type="text" id="addressNameText@(i)" class="form-control" placeholder="근처 장소를 찾을 주소"
+                                <input type="text" id="addressNameText@(i)" class="form-control" placeholder="서울시 서초구 논현로 27길 98"
                                        value="@(addresses[i].Name)" />
                             </td>
                             <td>

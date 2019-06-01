@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <link rel=”shortcut icon” href=”~/favicon.ico” type=”image/x-icon”>
+    <link rel=”shortcut icon” href=”~/favicon_temp.ico” type=”image/x-icon”>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link href="~/css/bootstrap.css" rel="stylesheet" />
@@ -20,7 +20,13 @@
 
     @*<title>@ViewData["Title"] - 오늘의 점심</title>*@
     <title>오늘의 점심</title>
-
+    <script type="text/javascript">
+        $(document).ajaxStart(function () {
+            console.log("aJax Start...");
+        }).ajaxStop(function () {
+            console.log("aJax End...");
+        });
+    </script>
 </head>
 <body>
     @if (!string.IsNullOrEmpty(ownerGuid))

@@ -15,7 +15,7 @@ namespace LunchLibrary.GooglePlatform
             "https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}";
 
         private const string NEARBY_BASE_URL =
-            "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&radius=500&type=restaurant&language=ko&keyword=cruise&key={2}";
+            "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&radius=500&type=restaurant&language=ko&key={2}"; //&keyword=cruise
 
         public static string API_KEY { get; set; }
 
@@ -24,6 +24,9 @@ namespace LunchLibrary.GooglePlatform
             try
             {
                 if (string.IsNullOrEmpty(address))
+                    return null;
+
+                if (string.IsNullOrEmpty(API_KEY))
                     return null;
 
                 var url = string.Format(GEOCODING_BASE_URL, address, API_KEY);
@@ -48,6 +51,9 @@ namespace LunchLibrary.GooglePlatform
             try
             {
                 if (lat == null || lng == null)
+                    return null;
+
+                if (string.IsNullOrEmpty(API_KEY))
                     return null;
 
                 var url = string.Format(NEARBY_BASE_URL, lat, lng, API_KEY);

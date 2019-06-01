@@ -13,18 +13,21 @@ namespace LunchLibrary
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // appsettings.json 파일 사용
-            IConfiguration configuration = new ConfigurationBuilder()
-                .SetBasePath(Environment.CurrentDirectory)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .Build();
-
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("lunchConnection"));
-
-            if (string.IsNullOrEmpty(GooglePlatform.PlaceAPI.API_KEY))
+            if (!optionsBuilder.IsConfigured)
             {
-                var apiKey = configuration.GetSection("Google")["PlaceApiKey"];
-                GooglePlatform.PlaceAPI.API_KEY = apiKey;
+                // appsettings.json 파일 사용
+                IConfiguration configuration = new ConfigurationBuilder()
+                    .SetBasePath(Environment.CurrentDirectory)
+                    .AddJsonFile("appsettings_core.json", optional: false, reloadOnChange: true)
+                    .Build();
+
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("lunchConnection"));
+
+                if (string.IsNullOrEmpty(GooglePlatform.PlaceAPI.API_KEY))
+                {
+                    var apiKey = configuration.GetSection("Google")["PlaceApiKey"];
+                    GooglePlatform.PlaceAPI.API_KEY = apiKey;
+                }
             }
         }
 

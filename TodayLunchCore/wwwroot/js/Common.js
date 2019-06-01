@@ -1,14 +1,22 @@
-﻿/// AJAX 실행(타입/주소/데이터타입/콘텐츠타입/데이터)
+﻿//function Test(type, url, datatype, contentType, data) {
+function Test() {
+    return new Promise(function (resolve, reject) {
+        //var result = ExecuteAjax(type, url, datatype, contentType, data);
+        resolve("Test Message");
+        //resolve(result);
+    });
+}
+
+/// AJAX 실행(타입/주소/데이터타입/콘텐츠타입/데이터)
 function ExecuteAjax(type, url, datatype, contentType, data) {
     var returnData;
     if (data == null || data == undefined) {
         $.ajax({
-
             type: type,
             url: url,
             dataType: datatype,
             contentType: contentType,
-            async: false,
+            //async: true,
             error: function (errorData) {
                 console.log("통신실패!");
                 returnData = errorData;
@@ -27,7 +35,7 @@ function ExecuteAjax(type, url, datatype, contentType, data) {
             dataType: datatype,
             contentType: contentType,//"application/json",
             data: data,
-            async: false,
+            //async: true,
             error: function (errorData) {
                 console.log("통신실패!");
                 returnData = errorData;
