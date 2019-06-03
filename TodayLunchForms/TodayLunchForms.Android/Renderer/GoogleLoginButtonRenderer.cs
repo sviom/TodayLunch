@@ -57,20 +57,18 @@ namespace TodayLunchForms.Droid.Renderer
 
         public static GoogleApiClient CreateGoogleApiClient(Context ctx)
         {
-#if DEBUG
             string clientId = "744732431693-8pr7b1fv5d5s9ig1ogu0reh91n7o3vuq.apps.googleusercontent.com";
-#elif RELASE
-            string cliendId = "744732431693-07us5nv5h8ok4i8rjbek8np43nhqt8nt.apps.googleusercontent.com";
-#endif
+            string lunchKeyClientId = "744732431693-07us5nv5h8ok4i8rjbek8np43nhqt8nt.apps.googleusercontent.com";
+
             var googleSignInOption = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultSignIn)
                 .RequestEmail()
                 .RequestProfile()
-                .RequestIdToken(clientId)
-                .RequestServerAuthCode(clientId)
+                .RequestIdToken(lunchKeyClientId)
                 .Build();
             var apiClient = new GoogleApiClient.Builder(ctx)
                 .EnableAutoManage((FormsAppCompatActivity)ctx, new OnConnectionFailedListener())
                 .AddApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOption)
+                .AddScope(new Scope(Scopes.Email))
                 .Build();
             return apiClient;
         }

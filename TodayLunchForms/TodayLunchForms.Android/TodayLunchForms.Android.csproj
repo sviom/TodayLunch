@@ -21,10 +21,10 @@
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AndroidKeyStore>false</AndroidKeyStore>
-    <AndroidSigningKeyStore>D:\Projects\오늘의점심key관련\todaylunch.keystore</AndroidSigningKeyStore>
+    <AndroidKeyStore>true</AndroidKeyStore>
+    <AndroidSigningKeyStore>D:\TestData\TodayLunchTestKey\todaylunchkey.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>zltmskgo0</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>todyalunch</AndroidSigningKeyAlias>
+    <AndroidSigningKeyAlias>todaylunchkey</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>zltmskgo0</AndroidSigningKeyPass>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
