@@ -15,7 +15,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
@@ -36,9 +35,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
-    <BundleAssemblies>false</BundleAssemblies>
     <MandroidI18n />
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
@@ -51,9 +47,6 @@
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
-    <BundleAssemblies>false</BundleAssemblies>
     <MandroidI18n />
   </PropertyGroup>
   <ItemGroup>
@@ -120,7 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TodayLunchForms\TodayLunchForms.csproj">
-      <Project>{9C1A46ED-D3E0-4A53-8701-77DD12127563}</Project>
+      <Project>{9ECFDFFF-4C9F-48EC-A93A-CB50570DF94C}</Project>
       <Name>TodayLunchForms</Name>
     </ProjectReference>
   </ItemGroup>
