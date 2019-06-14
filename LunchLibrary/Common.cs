@@ -10,12 +10,6 @@ namespace LunchLibrary
 {
     public static class PreDefined
     {
-#if DEBUG
-        public static string ServiceApiUrl => "http://localhost:7011/api/";
-#else
-        public static string ServiceApiUrl => "http://todaylunchapi.azurewebsites.net/api/";
-#endif
-
         public const string SaltPassword = "todaylunchisbest";
     }
 
