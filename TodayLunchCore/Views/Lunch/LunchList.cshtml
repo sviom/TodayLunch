@@ -32,6 +32,9 @@
     function GetRandom() {
         var selectedValue = GetSelectedAddress();
         var resultData = ExecuteAjax("POST", "/Lunch/GetRandom", "json", "application/json", JSON.stringify(selectedValue));
+        if (resultData.Location == null || resultData.Location == "")
+            resultData.Location = "주소가 등록되지 않았습니다.";
+
         $("#lunchName").text(" [ " + resultData.Name + " ] ");
         $("#lunchLocation").text(" [ " + resultData.Location + " ] ");
         $("#selectLunch").prop("disabled", "disabled");
