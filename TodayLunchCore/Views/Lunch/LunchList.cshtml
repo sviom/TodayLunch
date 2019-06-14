@@ -36,6 +36,8 @@
         $("#lunchLocation").text(" [ " + resultData.Location + " ] ");
         $("#selectLunch").prop("disabled", "disabled");
         $("#successAlert").show();
+
+        window.scrollTo(0, $("#successAlert").scrollTop());
     }
     function OnChangedAddress() {
         var selectedValue = GetSelectedAddress();
