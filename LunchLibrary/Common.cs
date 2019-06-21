@@ -173,10 +173,11 @@ namespace LunchLibrary
             {
                 return LunchLibrary.SqlLauncher.Get(ref input, expression);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                throw;
-            } 
+                Log.Report(ex);
+                return false;
+            }
         }
         public abstract bool Insert<T>(T input) where T : class, ICommon;
         public abstract bool Update<T>(T input) where T : class, ICommon;

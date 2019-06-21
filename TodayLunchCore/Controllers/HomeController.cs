@@ -76,7 +76,7 @@ namespace TodayLunchCore.Controllers
         [HttpPost]
         public bool CheckDuplicateUser([FromBody]string ownerName)
         {
-            return _CheckDuplicateUserAsync(ownerName);
+            return CheckDuplicateUserAsync(ownerName);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace TodayLunchCore.Controllers
         /// </summary>
         /// <param name="_ownerId">사용자가 입력한 아이디</param>
         /// <returns></returns>
-        private bool _CheckDuplicateUserAsync(string _ownerName)
+        private bool CheckDuplicateUserAsync(string _ownerName)
         {
             int count = LunchLibrary.SqlLauncher.Count<Owner>(x => x.Name.Equals(_ownerName));
             if (count > 0)
@@ -147,7 +147,7 @@ namespace TodayLunchCore.Controllers
         /// <returns>생성된 사용자 고유번호</returns>
         public IActionResult PostUser(string name, string password)
         {
-            var owner = _PostUserAsync(name, password);
+            var owner = PostUserAsync(name, password);
             if (owner != null)
                 return RedirectToAction("Index", "Home", new { ownerName = owner.Name });
             else
@@ -159,7 +159,7 @@ namespace TodayLunchCore.Controllers
         /// </summary>
         /// <param name="name">사용자가 입력한 아이디</param>
         /// <returns>생성된 사용자 고유번호</returns>
-        private Owner _PostUserAsync(string name, string password)
+        private Owner PostUserAsync(string name, string password)
         {
             // 사용자 입력 암호 암호화작업
             var hashedPw = LunchLibrary.UtilityLauncher.EncryptSHA256(password);

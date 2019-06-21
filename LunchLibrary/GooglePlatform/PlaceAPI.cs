@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LunchLibrary.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -41,7 +42,7 @@ namespace LunchLibrary.GooglePlatform
             }
             catch (Exception ex)
             {
-                throw;
+                Log.Report(ex);
             }
             return null;
         }
@@ -68,7 +69,7 @@ namespace LunchLibrary.GooglePlatform
             }
             catch (Exception ex)
             {
-                throw;
+                Log.Report(ex);
             }
             return null;
         }

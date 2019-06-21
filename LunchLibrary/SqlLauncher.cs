@@ -18,23 +18,15 @@ namespace LunchLibrary
         public static T Insert<T>(T inputObject) where T : class
         {
             T addedObject = null;
-            try
+            using (var db = new TodayLunchContext())
             {
-                using (var db = new TodayLunchContext())
-                {
-                    db.Entry(inputObject).State = Microsoft.EntityFrameworkCore.EntityState.Added;
-                    var set = db.Set<T>();
-                    set.Add(inputObject);
-                    int saveResult = db.SaveChanges();
-                    if (saveResult > 0)
-                        addedObject = inputObject;
-                }
+                db.Entry(inputObject).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                var set = db.Set<T>();
+                set.Add(inputObject);
+                int saveResult = db.SaveChanges();
+                if (saveResult > 0)
+                    addedObject = inputObject;
             }
-            catch(Exception ex)
-            {
-                
-            }
-
             return addedObject;
         }
 
@@ -185,11 +177,6 @@ namespace LunchLibrary
             }
 
             return addedObject;
-        }
-
-        public static void InsertOrUpdate<T>(T objeee) where T :class, ICommon
-        {
-
         }
     }
 }

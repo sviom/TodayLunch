@@ -52,5 +52,15 @@ namespace LunchLibrary.Models
             }
             return false;
         }
+
+        public static void Report(Exception ex)
+        {
+            var log = new Log
+            {
+                Message = ex.Message,
+                StackTrace = ex.StackTrace
+            };
+            log.Insert();
+        }
     }
 }
