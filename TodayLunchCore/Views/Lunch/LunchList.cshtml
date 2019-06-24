@@ -124,7 +124,6 @@
                     {
                         <tr id="placeTR_@i">
                             <th scope="row">@(i + 1)</th>
-                            @*<td><span id="placeId_@i">@item.Id</span></td>*@
                             <td>@item.Name</td>
                             <td>@item.Location</td>
                             <td>
@@ -148,7 +147,7 @@
         <button type="button" id="selectLunch" class="btn btn-primary btn-block" onclick="GetRandom();">점심 고르기</button>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
-        <button class="btn btn-secondary btn-block" onclick="MoveCreatePlace();">장소 입력</button>
+        <button class="btn btn-secondary btn-block" onclick="MoveCreatePlace();">식당 입력</button>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-12" style="margin-top:10px;">
         <a href="/Lunch/UpsertAddress" class="btn btn-secondary btn-block">주소 입력</a>

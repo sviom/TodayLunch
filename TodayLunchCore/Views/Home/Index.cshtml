@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    string ownerName = !string.IsNullOrEmpty(Model.Name) ? Model.Name : "";
 }
 
 <script type="text/javascript">
@@ -55,7 +56,7 @@
         <form id="loginForm">
             <div class="form-group">
                 <label>아이디</label>
-                <input type="text" id="OwnerName" name="OwnerName" class="form-control" placeholder="아이디 입력" onkeyup="EnterKey();" />
+                <input type="text" id="OwnerName" name="OwnerName" class="form-control" placeholder="아이디 입력" onkeyup="EnterKey();" value="@ownerName" />
             </div>
             <div class="form-group">
                 <label>비밀번호</label>
@@ -73,8 +74,8 @@
     </div>
 </div>
 
-<div class="row" style="margin-top:10px;">
+@*<div class="row" style="margin-top:10px;">
     <div class="col-lg-4 col-md-6 col-sm-8 offset-lg-4 offset-md-3 offset-sm-2">
         <a href="/Logging/Index" class="btn btn-secondary btn-block">로깅페이지</a>
     </div>
-</div>
+</div>*@

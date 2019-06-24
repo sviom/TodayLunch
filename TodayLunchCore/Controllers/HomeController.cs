@@ -14,11 +14,6 @@ namespace TodayLunchCore.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
-        {
-
-        }
-
         public IActionResult Index(string ownerName)
         {
             HttpContext.Session.Clear();
@@ -168,6 +163,7 @@ namespace TodayLunchCore.Controllers
             else
                 return false;
         }
+
         public void DeleteUser(string id)
         {
             Guid ownerGuid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);

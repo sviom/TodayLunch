@@ -39,13 +39,6 @@ namespace TodayLunchCore.Controllers
                 ViewBag.Owner = getOwnerResult;
                 return View(placeList);
             }
-            else if (getOwnerResult != null && addressGuid != Guid.Empty)
-            {
-                var placeList = ModelAction.Instance.GetAll<Place>(x => x.OwnerId.Equals(getOwnerResult.Id) && x.AddressId.Equals(addressGuid));
-                ViewBag.Owner = getOwnerResult;
-
-                return View(placeList);
-            }
             return View();
         }
 
