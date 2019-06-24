@@ -13,6 +13,8 @@ namespace LunchLibrary.Models
     [Table("Owner")]
     public class Owner : ModelAction, ICommon
     {
+        public static Owner OwnerInstance;
+
         /// <summary>
         /// 사용자 고유번호
         /// </summary>

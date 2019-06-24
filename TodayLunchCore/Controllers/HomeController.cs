@@ -14,12 +14,6 @@ namespace TodayLunchCore.Controllers
 {
     public class HomeController : Controller
     {
-        //private readonly IConfiguration _configuration;
-        //public HomeController(IConfiguration configuration)
-        //{
-        //    _configuration = configuration;
-        //}
-
         public HomeController()
         {
 
@@ -27,11 +21,6 @@ namespace TodayLunchCore.Controllers
 
         public IActionResult Index(string ownerName)
         {
-            //var secretName = "GooglePlaceApiKey";
-            //var secretValue = _configuration[secretName];
-            //if (!string.IsNullOrEmpty(secretValue) && string.IsNullOrEmpty(LunchLibrary.GooglePlatform.PlaceAPI.API_KEY))
-            //    LunchLibrary.GooglePlatform.PlaceAPI.API_KEY = secretValue;
-
             HttpContext.Session.Clear();
             if (ownerName == null)
                 return View();
@@ -51,14 +40,11 @@ namespace TodayLunchCore.Controllers
 
         public IActionResult UpdateUser(string id)
         {
-            Guid guid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
-            var getOwner = new Owner();
-            getOwner = getOwner.Get<Owner>(x => x.Id.Equals(guid));
-
-            var getResult = getOwner != null ? true : false;
-            if (getResult)
+            Guid guid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);            
+            var getResult = ModelAction.Instance.Get<Owner>(x => x.Id.Equals(guid));
+            if (getResult != null)
             {
-                return View(getOwner);
+                return View(getResult);
             }
             return View();
         }
@@ -117,6 +103,7 @@ namespace TodayLunchCore.Controllers
             {
                 HttpContext.Session.SetString("ownerName", owner.Name.ToString());
                 HttpContext.Session.SetString("ownerGuid", owner.Id.ToString());
+                Owner.OwnerInstance = owner;
                 return (ownerVal: owner, isOnwer: true);
             }
             else
@@ -163,7 +150,7 @@ namespace TodayLunchCore.Controllers
             var newOwner = new Owner() { Name = name, Password = hashedPw };
             if (ModelAction.Instance.Insert(newOwner) != null)
             {
-                var getResult = Owner.Instance.Get<Owner>(x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
+                var getResult = ModelAction.Instance.Get<Owner>(x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
                 return getResult;
             }
             return null;
@@ -174,7 +161,7 @@ namespace TodayLunchCore.Controllers
         {
             Guid guid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
             var hashedPw = LunchLibrary.UtilityLauncher.EncryptSHA256(password);
-            var getResult = Owner.Instance.Get<Owner>(x => x.Id.Equals(guid));
+            var getResult = ModelAction.Instance.Get<Owner>(x => x.Id.Equals(guid));
             getResult.Password = hashedPw;
             if (getResult != null)
                 return ModelAction.Instance.Update(getResult) != null;
@@ -184,8 +171,8 @@ namespace TodayLunchCore.Controllers
         public void DeleteUser(string id)
         {
             Guid ownerGuid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
-            var ssss = ModelAction.Instance.Get<Owner>(x => x.Id.Equals(ownerGuid));
-            var result = ModelAction.Instance.Delete(ssss);
+            var deletedUser = ModelAction.Instance.Get<Owner>(x => x.Id.Equals(ownerGuid));
+            var result = ModelAction.Instance.Delete(deletedUser);
         }
     }
 }

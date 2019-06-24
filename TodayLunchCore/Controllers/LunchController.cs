@@ -16,7 +16,6 @@ namespace TodayLunchCore.Controllers
     {
         public IActionResult LunchList(string id, string addressId = null)
         {
-
             Guid ownerGuid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
             var getOwnerResult = ModelAction.Instance.Get<Owner>(x => x.Id.Equals(ownerGuid));
 
@@ -24,7 +23,7 @@ namespace TodayLunchCore.Controllers
             if (addressGuid == Guid.Empty)
                 return RedirectToAction("UpsertAddress", "Lunch");
 
-            var addressList = new Address().GetAll<Address>(x => x.OwnerId.Equals(ownerGuid));
+            var addressList = ModelAction.Instance.GetAll<Address>(x => x.OwnerId.Equals(ownerGuid));
             foreach (var item in addressList)
             {
                 if (item.Id == addressGuid)
@@ -34,15 +33,15 @@ namespace TodayLunchCore.Controllers
             }
             ViewBag.AddressList = addressList;
 
-            if (getOwnerResult != null  && addressGuid != Guid.Empty)
+            if (getOwnerResult != null && addressGuid != Guid.Empty)
             {
-                var placeList = Owner.Instance.GetAll<Place>(x => x.OwnerId.Equals(getOwnerResult.Id) && x.AddressId.Equals(addressGuid));
+                var placeList = ModelAction.Instance.GetAll<Place>(x => x.OwnerId.Equals(getOwnerResult.Id) && x.AddressId.Equals(addressGuid));
                 ViewBag.Owner = getOwnerResult;
                 return View(placeList);
             }
             else if (getOwnerResult != null && addressGuid != Guid.Empty)
             {
-                var placeList = Owner.Instance.GetAll<Place>(x => x.OwnerId.Equals(getOwnerResult.Id) && x.AddressId.Equals(addressGuid));
+                var placeList = ModelAction.Instance.GetAll<Place>(x => x.OwnerId.Equals(getOwnerResult.Id) && x.AddressId.Equals(addressGuid));
                 ViewBag.Owner = getOwnerResult;
 
                 return View(placeList);
@@ -52,18 +51,17 @@ namespace TodayLunchCore.Controllers
 
         public IActionResult CreatePlace(string addressId)
         {
-            if (globalOwner != null)
+            if (Owner.OwnerInstance != null)
             {
                 Guid addressGuid = GetAddressGuid(addressId);
                 if (addressGuid == Guid.Empty)
                     return RedirectToAction("UpsertAddress", "Lunch");
 
-                var address = new Address();
-                var addressGetResult = new Address().Get(ref address, x => x.OwnerId.Equals(globalOwner.Id) && x.Id.Equals(addressGuid));
+                var addressGetResult = ModelAction.Instance.Get<Address>(x => x.OwnerId.Equals(Owner.OwnerInstance.Id) && x.Id.Equals(addressGuid));
 
-                ViewBag.Address = address;
-                ViewBag.Owner = globalOwner;
-                var placeList = globalOwner.GetAll<Place>(x => x.OwnerId.Equals(globalOwner.Id) && x.AddressId.Equals(addressGuid));
+                ViewBag.Address = addressGetResult;
+                ViewBag.Owner = Owner.OwnerInstance;
+                var placeList = ModelAction.Instance.GetAll<Place>(x => x.OwnerId.Equals(Owner.OwnerInstance.Id) && x.AddressId.Equals(addressGuid));
                 return View(placeList);
             }
             else
@@ -81,11 +79,10 @@ namespace TodayLunchCore.Controllers
             }
             else
             {
-                var address = new Address();
-                var addressGetResult = new Address().Get(ref address, x => x.OwnerId.Equals(globalOwner.Id) && x.IsDefault == true);
-                if (address != null)
+                var addressGetResult = ModelAction.Instance.Get<Address>(x => x.OwnerId.Equals(Owner.OwnerInstance.Id) && x.IsDefault == true);
+                if (addressGetResult != null)
                 {
-                    addressGuid = address.Id;
+                    addressGuid = addressGetResult.Id;
                 }
             }
 
@@ -94,10 +91,10 @@ namespace TodayLunchCore.Controllers
 
         public IActionResult UpsertAddress(string addressId = null)
         {
-            if (globalOwner != null)
+            if (Owner.OwnerInstance != null)
             {
-                ViewBag.Owner = globalOwner;
-                var addressList = new Address().GetAll<Address>(x => x.OwnerId.Equals(globalOwner.Id));
+                ViewBag.Owner = Owner.OwnerInstance;
+                var addressList = ModelAction.Instance.GetAll<Address>(x => x.OwnerId.Equals(Owner.OwnerInstance.Id));
                 return View(addressList);
             }
             else
@@ -113,7 +110,25 @@ namespace TodayLunchCore.Controllers
         /// <returns>장소 생성이 정상적으로 이루어지면 장소 목록으로 이동</returns>
         public bool PostPlace([FromBody]List<Place> jsonPlaceList)
         {
-            var (insertCount, updateCount) = _PostPlaceAsync(jsonPlaceList);
+
+
+            int insertCount = 0;
+            int updateCount = 0;
+
+            foreach (var item in jsonPlaceList)
+            {
+                if (item.Id != Guid.Empty)
+                {
+                    if (ModelAction.Instance.Update(item) != null)
+                        updateCount++;
+                }
+                else
+                {
+                    if (ModelAction.Instance.Insert(item) != null)
+                        insertCount++;
+                }
+            }
+
             if (insertCount > 0 || updateCount > 0)
             {
                 return true;
@@ -122,33 +137,6 @@ namespace TodayLunchCore.Controllers
             {
                 return false;
             }
-        }
-
-        /// <summary>
-        /// 장소 생성 실제 로직
-        /// </summary>
-        /// <param name="_placeList">장소 JSON 문자열</param>
-        /// <returns>생성된 장소 갯수</returns>
-        private (int insertCount, int updateCount) _PostPlaceAsync(List<Place> _placeList)
-        {
-            int insertCount = 0;
-            int updateCount = 0;
-
-            foreach (var item in _placeList)
-            {
-                if (item.Id != Guid.Empty)
-                {
-                    if (new Place().Update(item))
-                        updateCount++;
-                }
-                else
-                {
-                    if (new Place().Insert(item))
-                        insertCount++;
-                }
-            }
-
-            return (insertCount, updateCount);
         }
 
         /// <summary>
@@ -158,18 +146,7 @@ namespace TodayLunchCore.Controllers
         /// <returns></returns>
         public bool DeletePlace([FromBody]Place placeInfo)
         {
-            return _DeletePlace(placeInfo);
-        }
-
-        /// <summary>
-        /// 장소 삭제 API 호출
-        /// </summary>
-        /// <param name="_placeInfo"></param>
-        /// <returns></returns>
-        private bool _DeletePlace(Place _placeInfo)
-        {
-            bool _deleteResult = false;
-            _deleteResult = new Place().Delete(_placeInfo);
+            bool _deleteResult = ModelAction.Instance.Delete(placeInfo);
             return _deleteResult;
         }
 
@@ -178,31 +155,13 @@ namespace TodayLunchCore.Controllers
         {
             Guid addressGuid = GetAddressGuid(addressId);
 
-            var placeList = Owner.Instance.GetAll<Place>(x => x.OwnerId.Equals(globalOwner.Id) && x.AddressId.Equals(addressGuid));
+            var placeList = ModelAction.Instance.GetAll<Place>(x => x.OwnerId.Equals(Owner.OwnerInstance.Id) && x.AddressId.Equals(addressGuid));
             var randomPick = LunchLibrary.UtilityLauncher.RandomPick(placeList);
             ModelAction.Instance.Update(randomPick);
             return JsonConvert.SerializeObject(randomPick);
         }
 
-        public async Task<bool> PostAddress([FromBody]List<Address> addresses)
-        {
-            var (insertCount, updateCount) = await _PostAddress(addresses);
-            if (insertCount > 0 || updateCount > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 주소 생성 실제 로직
-        /// </summary>
-        /// <param name="addresses"></param>
-        /// <returns>생성/수정된 주소 갯수</returns>
-        private async Task<(int insertCount, int updateCount)> _PostAddress(List<Address> addresses)
+        public bool PostAddress([FromBody]List<Address> addresses)
         {
             int insertCount = 0;
             int updateCount = 0;
@@ -211,19 +170,22 @@ namespace TodayLunchCore.Controllers
             {
                 if (item.Id != Guid.Empty)
                 {
-                    var upsertResult = ModelAction.Instance.Update(item);
-                    if (upsertResult != null)
+                    var updateResult = ModelAction.Instance.Update(item);
+                    if (updateResult != null)
                         updateCount++;
                 }
                 else
                 {
-                    var upsertResult = ModelAction.Instance.Insert(item);
-                    if (upsertResult != null)
+                    var insertResult = ModelAction.Instance.Insert(item);
+                    if (insertResult != null)
                         insertCount++;
                 }
             }
 
-            return (insertCount, updateCount);
+            if (insertCount > 0 || updateCount > 0)
+                return true;
+            else
+                return false;
         }
     }
 }

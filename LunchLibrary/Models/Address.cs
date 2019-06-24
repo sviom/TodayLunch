@@ -89,9 +89,10 @@ namespace LunchLibrary.Models
                 address.CreatedTime = DateTime.Now;
                 address.Name = UtilityLauncher.EncryptAES256(address.Name, LunchLibrary.PreDefined.SaltPassword);
                 Task.Run(async () => await GetGeometry(address));
-                Task.Run(async () => await InsertWithGooglePlaces(address));
 
                 var insertResult = SqlLauncher.Insert(address);
+
+                Task.Run(async () => await UpsertWithGooglePlaces(insertResult));
                 if (insertResult != null)
                     return insertResult.ConvertType<T>();
             }
@@ -113,7 +114,7 @@ namespace LunchLibrary.Models
             return input;
         }
 
-        public async Task<Address> InsertWithGooglePlaces(Address address)
+        public async Task<Address> UpsertWithGooglePlaces(Address address)
         {
             if (address != null)
             {
@@ -125,17 +126,32 @@ namespace LunchLibrary.Models
                         var googleNearbyPlaces = await GooglePlatform.PlaceAPI.GetNearbyPlacesAsync(address.Lat, address.Lng);
                         foreach (var item in googleNearbyPlaces.results)
                         {
-                            var _newPlace = new Place
+                            var existPlaces = ModelAction.Instance.GetAll<Place>(x => x.AddressId.Equals(address.Id));
+                            foreach (var existPlace in existPlaces)
                             {
-                                Name = item.name,
-                                Address = address,
-                                AddressId = address.Id,
-                                Location = item.formatted_address,
-                                CreatedTime = DateTime.Now,
-                                OwnerId = address.OwnerId
-                            };
+                                if (item.formatted_address.Equals(existPlace.Location))
+                                {
+                                    existPlace.Name = item.name;
+                                    existPlace.Address = address;
+                                    existPlace.AddressId = address.Id;
+                                    UpdatedTime = DateTime.Now;
+                                    SqlLauncher.Update(existPlace);
+                                }
+                                else
+                                {
+                                    var _newPlace = new Place
+                                    {
+                                        Name = item.name,
+                                        Address = address,
+                                        AddressId = address.Id,
+                                        Location = item.formatted_address,
+                                        CreatedTime = DateTime.Now,
+                                        OwnerId = address.OwnerId
+                                    };
 
-                            SqlLauncher.Insert(_newPlace);
+                                    SqlLauncher.Insert(_newPlace);
+                                }
+                            }
                         }
                     });
 
@@ -152,10 +168,9 @@ namespace LunchLibrary.Models
             {
                 address.UpdatedTime = DateTime.Now;
                 address.Name = UtilityLauncher.EncryptAES256(address.Name, LunchLibrary.PreDefined.SaltPassword);
-
                 Task.Run(async () => await GetGeometry(address));
-
                 var result = SqlLauncher.Update(address);
+                Task.Run(async () => await UpsertWithGooglePlaces(result));
                 if (result.Id != Guid.Empty)
                     return result.ConvertType<T>();
             }

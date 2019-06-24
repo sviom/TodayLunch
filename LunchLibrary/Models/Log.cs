@@ -9,7 +9,7 @@ namespace LunchLibrary.Models
     /// <summary>
     /// 로깅 정보
     /// </summary>
-    public class Log : ModelActionGuide, ICommon
+    public class Log : ModelAction, ICommon
     {
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -24,33 +24,28 @@ namespace LunchLibrary.Models
         [Required]
         public DateTimeOffset CreatedTime { get; set; } = DateTimeOffset.Now;
 
-
         public string Name { get; set; }
 
-        public override bool Delete<T>(T input)
+        public override T Insert<T>(T input)
         {
-            return input.Delete();
-        }
-
-        public override bool Insert<T>(T input)
-        {
-            if (input is Log)
+            if (input is Log log)
             {
-                if (input.Insert() != null)
-                    return true;
+                var insertedLog = SqlLauncher.Insert(log);
+                if (insertedLog != null)
+                    return insertedLog.ConvertType<T>();
             }
-            return false;
+            return null;
         }
 
-        public override bool Update<T>(T input)
+        public override T Update<T>(T input)
         {
             if (input is Log owner)
             {
-                var result = owner.Update();
+                var result = SqlLauncher.Update(owner);
                 if (result.Id != Guid.Empty)
-                    return true;
+                    return result.ConvertType<T>();
             }
-            return false;
+            return null;
         }
 
         public static void Report(Exception ex)
@@ -60,7 +55,7 @@ namespace LunchLibrary.Models
                 Message = ex.Message,
                 StackTrace = ex.StackTrace
             };
-            log.Insert();
+            SqlLauncher.Insert(log);
         }
     }
 }
