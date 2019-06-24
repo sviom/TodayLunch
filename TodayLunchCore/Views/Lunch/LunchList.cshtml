@@ -92,16 +92,16 @@
 
                     if (addresses[i].IsForeground)
                     {
-                        <option selected="selected"
+                        <!option selected="selected"
                                 value="@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(addresses[i].Id))">
                             @addresses[i].Name
-                        </option>
+                        </!option>
                     }
                     else
                     {
-                        <option value="@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(addresses[i].Id))">
+                        <!option value="@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(addresses[i].Id))">
                             @addresses[i].Name
-                        </option>
+                        </!option>
                     }
                 }
             }
