@@ -48,7 +48,7 @@ namespace LunchLibrary
                 if (randomPicked is Place place)
                 {
                     place.UsingCount++;
-                    place.Update();
+                    //SqlLauncher.Update(place);
                 }
                 return randomPicked;
             }
@@ -156,6 +156,11 @@ namespace LunchLibrary
                 return string.Empty;
             }
         }
+
+        public static T ConvertType<T>(this object value)
+        {
+            return (T)Convert.ChangeType(value, typeof(T));
+        }
     }
 
     /// <summary>
@@ -163,43 +168,26 @@ namespace LunchLibrary
     /// </summary>
     public abstract class ModelActionGuide
     {
-        public virtual List<T> GetAll<T>(Expression<Func<T, bool>> expression = null) where T : class, ICommon
-        {
-            return LunchLibrary.SqlLauncher.GetAll<T>(expression);
-        }
-        public virtual bool Get<T>(ref T input, Expression<Func<T, bool>> expression = null) where T : class, ICommon
-        {
-            try
-            {
-                return LunchLibrary.SqlLauncher.Get(ref input, expression);
-            }
-            catch (Exception ex)
-            {
-                Log.Report(ex);
-                return false;
-            }
-        }
-        public abstract bool Insert<T>(T input) where T : class, ICommon;
-        public abstract bool Update<T>(T input) where T : class, ICommon;
+        public abstract List<T> GetAll<T>(Expression<Func<T, bool>> expression = null) where T : class, ICommon;
+        public abstract T Get<T>(Expression<Func<T, bool>> expression = null) where T : class, ICommon;
+        public abstract T Insert<T>(T input) where T : class, ICommon;
+        public abstract T Update<T>(T input) where T : class, ICommon;
         public abstract bool Delete<T>(T input) where T : class, ICommon;
     }
 
-    /// <summary>
-    /// 모델들이 직접 DB에 접근하게 하지 않기 위한 확장
-    /// </summary>
-    public static class ModelExtension
-    {
-        public static T Insert<T>(this T input) where T : class, ICommon
-        {
-            return SqlLauncher.Insert(input);
-        }
-        public static T Update<T>(this T input) where T : class, ICommon
-        {
-            return SqlLauncher.Update(input);
-        }
-        public static bool Delete<T>(this T input) where T : class, ICommon
-        {
-            return SqlLauncher.Delete(input);
-        }
-    }
+    //public static class ModelExtension
+    //{
+    //    public static T Insert<T>(this T input) where T : class, ICommon
+    //    {
+    //        return SqlLauncher.Insert(input);
+    //    }
+    //    public static T Update<T>(this T input) where T : class, ICommon
+    //    {
+    //        return SqlLauncher.Update(input);
+    //    }
+    //    public static bool Delete<T>(this T input) where T : class, ICommon
+    //    {
+    //        return SqlLauncher.Delete(input);
+    //    }
+    //}
 }

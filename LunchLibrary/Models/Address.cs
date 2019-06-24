@@ -13,7 +13,7 @@ namespace LunchLibrary.Models
     /// 주소 별 장소 관련
     /// </summary>
     [Table("Address")]
-    public class Address : ModelActionGuide, ICommon
+    public class Address : ModelAction, ICommon
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -72,79 +72,36 @@ namespace LunchLibrary.Models
             return addressList;
         }
 
-        public override bool Get<T>(ref T input, Expression<Func<T, bool>> expression = null)
+        public override T Get<T>(Expression<Func<T, bool>> expression = null)
         {
-            var returnValue = LunchLibrary.SqlLauncher.Get(ref input, expression);
-            if (input is Address address)
+            var returnValue = LunchLibrary.SqlLauncher.Get(expression);
+            if (returnValue is Address address)
             {
                 address.Name = UtilityLauncher.DecryptAES256(address.Name, LunchLibrary.PreDefined.SaltPassword);
             }
             return returnValue;
         }
 
-        public override bool Delete<T>(T input)
-        {
-            return input.Delete();
-        }
-
-        public override bool Insert<T>(T input)
+        public override T Insert<T>(T input)
         {
             if (input is Address address)
             {
                 address.CreatedTime = DateTime.Now;
                 address.Name = UtilityLauncher.EncryptAES256(address.Name, LunchLibrary.PreDefined.SaltPassword);
+                Task.Run(async () => await GetGeometry(address));
+                Task.Run(async () => await InsertWithGooglePlaces(address));
 
-                var insertResult = address.Insert();
+                var insertResult = SqlLauncher.Insert(address);
                 if (insertResult != null)
-                    return true;
+                    return insertResult.ConvertType<T>();
             }
 
-            return false;
+            return null;
         }
 
-        public async Task<bool> InsertWithGooglePlaces(Address address)
-        {
-            address.CreatedTime = DateTime.Now;
-            address.Name = UtilityLauncher.EncryptAES256(address.Name, LunchLibrary.PreDefined.SaltPassword);
-
-            var insertResult = address.Insert();
-            if (insertResult != null)
-            {
-                // Place 자동 입력
-                if (insertResult.Lat != null && insertResult.Lng != null)
-                {
-                    var placeInsertTask = Task.Run(async () =>
-                    {
-                        var googleNearbyPlaces = await GooglePlatform.PlaceAPI.GetNearbyPlacesAsync(insertResult.Lat, insertResult.Lng);
-                        foreach (var item in googleNearbyPlaces.results)
-                        {
-                            var _newPlace = new Place
-                            {
-                                Name = item.name,
-                                Address = insertResult,
-                                AddressId = insertResult.Id,
-                                Location = item.formatted_address,
-                                CreatedTime = DateTime.Now,
-                                OwnerId = insertResult.OwnerId
-                            };
-
-                            new Place().Insert(_newPlace);
-                        }
-                    });
-
-                    await Task.WhenAll(placeInsertTask);
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        public async Task<bool> UpsertWithGeometry(Address input, bool isUpdate = false)
+        public async Task<Address> GetGeometry(Address input)
         {
             var geometry = await LunchLibrary.GooglePlatform.PlaceAPI.GetAddressGeometry(input.Name);
-
             if (geometry != null)
             {
                 if (geometry.results.Count > 0)
@@ -153,29 +110,56 @@ namespace LunchLibrary.Models
                     input.Lng = geometry.results[0].geometry.location.lng;
                 }
             }
-
-            if (!isUpdate)
-            {
-                return await InsertWithGooglePlaces(input);
-            }
-            else
-            {
-                return Update(input);
-            }
+            return input;
         }
 
-        public override bool Update<T>(T input)
+        public async Task<Address> InsertWithGooglePlaces(Address address)
+        {
+            if (address != null)
+            {
+                // Place 자동 입력
+                if (address.Lat != null && address.Lng != null)
+                {
+                    var placeInsertTask = Task.Run(async () =>
+                    {
+                        var googleNearbyPlaces = await GooglePlatform.PlaceAPI.GetNearbyPlacesAsync(address.Lat, address.Lng);
+                        foreach (var item in googleNearbyPlaces.results)
+                        {
+                            var _newPlace = new Place
+                            {
+                                Name = item.name,
+                                Address = address,
+                                AddressId = address.Id,
+                                Location = item.formatted_address,
+                                CreatedTime = DateTime.Now,
+                                OwnerId = address.OwnerId
+                            };
+
+                            SqlLauncher.Insert(_newPlace);
+                        }
+                    });
+
+                    await Task.WhenAll(placeInsertTask);
+                }
+                return address;
+            }
+            return null;
+        }
+
+        public override T Update<T>(T input)
         {
             if (input is Address address)
             {
                 address.UpdatedTime = DateTime.Now;
                 address.Name = UtilityLauncher.EncryptAES256(address.Name, LunchLibrary.PreDefined.SaltPassword);
 
-                var result = address.Update();
+                Task.Run(async () => await GetGeometry(address));
+
+                var result = SqlLauncher.Update(address);
                 if (result.Id != Guid.Empty)
-                    return true;
+                    return result.ConvertType<T>();
             }
-            return false;
+            return null;
         }
     }
 }

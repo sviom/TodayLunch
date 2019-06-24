@@ -20,6 +20,11 @@ namespace TodayLunchCore.Controllers
         //    _configuration = configuration;
         //}
 
+        public HomeController()
+        {
+
+        }
+
         public IActionResult Index(string ownerName)
         {
             //var secretName = "GooglePlaceApiKey";
@@ -48,7 +53,9 @@ namespace TodayLunchCore.Controllers
         {
             Guid guid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
             var getOwner = new Owner();
-            var getResult = getOwner.Get(ref getOwner, x => x.Id.Equals(guid));
+            getOwner = getOwner.Get<Owner>(x => x.Id.Equals(guid));
+
+            var getResult = getOwner != null ? true : false;
             if (getResult)
             {
                 return View(getOwner);
@@ -105,25 +112,15 @@ namespace TodayLunchCore.Controllers
         public (Owner ownerVal, bool isOnwer) Login(string name, string password)
         {
             var hashedPw = LunchLibrary.UtilityLauncher.EncryptSHA256(password);
-            var _owner = new Owner
+            var owner = ModelAction.Instance.Get<Owner>(x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
+            if (owner != null)
             {
-                Name = name,
-                Password = hashedPw
-            };
-
-            var getResult = _owner.Get(ref _owner, x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
-            var returnTuple = (ownerVal: _owner, isOnwer: true);
-            if (_owner != null)
-            {
-                HttpContext.Session.SetString("ownerName", _owner.Name.ToString());
-                HttpContext.Session.SetString("ownerGuid", _owner.Id.ToString());
-                return returnTuple;
+                HttpContext.Session.SetString("ownerName", owner.Name.ToString());
+                HttpContext.Session.SetString("ownerGuid", owner.Id.ToString());
+                return (ownerVal: owner, isOnwer: true);
             }
             else
-            {
-                returnTuple.isOnwer = false;
-                return returnTuple;
-            }
+                return (ownerVal: owner, isOnwer: false);
         }
 
         /// <summary>
@@ -164,10 +161,10 @@ namespace TodayLunchCore.Controllers
             // 사용자 입력 암호 암호화작업
             var hashedPw = LunchLibrary.UtilityLauncher.EncryptSHA256(password);
             var newOwner = new Owner() { Name = name, Password = hashedPw };
-            if (newOwner.Insert(newOwner))
+            if (ModelAction.Instance.Insert(newOwner) != null)
             {
-                var getResult = newOwner.Get(ref newOwner, x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
-                return newOwner;
+                var getResult = Owner.Instance.Get<Owner>(x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
+                return getResult;
             }
             return null;
         }
@@ -176,24 +173,19 @@ namespace TodayLunchCore.Controllers
         public bool PutUser(string id, string password)
         {
             Guid guid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
-            // 사용자 입력 암호 암호화작업
             var hashedPw = LunchLibrary.UtilityLauncher.EncryptSHA256(password);
-
-            var getOwner = new Owner();
-            var getResult = getOwner.Get(ref getOwner, x => x.Id.Equals(guid));
-            getOwner.Password = hashedPw;
-
-            if (getResult)
-                return new Owner().Update(getOwner);
+            var getResult = Owner.Instance.Get<Owner>(x => x.Id.Equals(guid));
+            getResult.Password = hashedPw;
+            if (getResult != null)
+                return ModelAction.Instance.Update(getResult) != null;
             else
                 return false;
         }
         public void DeleteUser(string id)
         {
             Guid ownerGuid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
-            var ss = new Owner();
-            new Owner().Get<Owner>(ref ss, x => x.Id.Equals(ownerGuid));
-            var result = new Owner().Delete(ss);
+            var ssss = ModelAction.Instance.Get<Owner>(x => x.Id.Equals(ownerGuid));
+            var result = ModelAction.Instance.Delete(ssss);
         }
     }
 }

@@ -14,13 +14,11 @@ namespace TodayLunchCore.Controllers
 {
     public class LunchController : Controller
     {
-        private static Owner globalOwner = null;
-
         public IActionResult LunchList(string id, string addressId = null)
         {
 
             Guid ownerGuid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
-            var getOwnerResult = new Owner().Get(ref globalOwner, x => x.Id.Equals(ownerGuid));
+            var getOwnerResult = ModelAction.Instance.Get<Owner>(x => x.Id.Equals(ownerGuid));
 
             Guid addressGuid = GetAddressGuid(addressId);
             if (addressGuid == Guid.Empty)
@@ -36,16 +34,16 @@ namespace TodayLunchCore.Controllers
             }
             ViewBag.AddressList = addressList;
 
-            if (getOwnerResult && globalOwner.Id != Guid.Empty && globalOwner != null && addressGuid != Guid.Empty)
+            if (getOwnerResult != null  && addressGuid != Guid.Empty)
             {
-                var placeList = globalOwner.GetAll<Place>(x => x.OwnerId.Equals(globalOwner.Id) && x.AddressId.Equals(addressGuid));
-                ViewBag.Owner = globalOwner;
+                var placeList = Owner.Instance.GetAll<Place>(x => x.OwnerId.Equals(getOwnerResult.Id) && x.AddressId.Equals(addressGuid));
+                ViewBag.Owner = getOwnerResult;
                 return View(placeList);
             }
-            else if (getOwnerResult && globalOwner != null && addressGuid != Guid.Empty)
+            else if (getOwnerResult != null && addressGuid != Guid.Empty)
             {
-                var placeList = globalOwner.GetAll<Place>(x => x.OwnerId.Equals(globalOwner.Id) && x.AddressId.Equals(addressGuid));
-                ViewBag.Owner = globalOwner;
+                var placeList = Owner.Instance.GetAll<Place>(x => x.OwnerId.Equals(getOwnerResult.Id) && x.AddressId.Equals(addressGuid));
+                ViewBag.Owner = getOwnerResult;
 
                 return View(placeList);
             }
@@ -180,8 +178,9 @@ namespace TodayLunchCore.Controllers
         {
             Guid addressGuid = GetAddressGuid(addressId);
 
-            var placeList = new Owner().GetAll<Place>(x => x.OwnerId.Equals(globalOwner.Id) && x.AddressId.Equals(addressGuid));
+            var placeList = Owner.Instance.GetAll<Place>(x => x.OwnerId.Equals(globalOwner.Id) && x.AddressId.Equals(addressGuid));
             var randomPick = LunchLibrary.UtilityLauncher.RandomPick(placeList);
+            ModelAction.Instance.Update(randomPick);
             return JsonConvert.SerializeObject(randomPick);
         }
 
@@ -212,14 +211,14 @@ namespace TodayLunchCore.Controllers
             {
                 if (item.Id != Guid.Empty)
                 {
-                    var upsertResult = await new Address().UpsertWithGeometry(item, true);
-                    if (upsertResult)
+                    var upsertResult = ModelAction.Instance.Update(item);
+                    if (upsertResult != null)
                         updateCount++;
                 }
                 else
                 {
-                    var upsertResult = await new Address().UpsertWithGeometry(item);
-                    if (upsertResult)
+                    var upsertResult = ModelAction.Instance.Insert(item);
+                    if (upsertResult != null)
                         insertCount++;
                 }
             }

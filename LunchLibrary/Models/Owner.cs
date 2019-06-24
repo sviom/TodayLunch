@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace LunchLibrary.Models
@@ -10,7 +11,7 @@ namespace LunchLibrary.Models
     /// 서비스 사용자 관련
     /// </summary>
     [Table("Owner")]
-    public class Owner : ModelActionGuide, ICommon
+    public class Owner : ModelAction, ICommon
     {
         /// <summary>
         /// 사용자 고유번호
@@ -45,38 +46,32 @@ namespace LunchLibrary.Models
 
         public List<Address> Addresses { get; set; }
 
-        public override bool Delete<T>(T input)
-        {
-            return input.Delete();
-        }
-
-        public override bool Insert<T>(T input)
+        public override T Insert<T>(T input)
         {
             if (input is Owner owner)
             {
                 owner.CreatedTime = DateTime.Now;
 
                 if (string.IsNullOrEmpty(owner.Name) || string.IsNullOrEmpty(owner.Password))
-                    return false;
+                    return null;
 
-                var result = owner.Insert();
-                if (result.Id != Guid.Empty)
-                    return true;
+                var insertResult = SqlLauncher.Insert(owner);
+                if (insertResult.Id != Guid.Empty)
+                    return insertResult.ConvertType<T>();
             }
-            return false;
+            return null;
         }
 
-        public override bool Update<T>(T input)
+        public override T Update<T>(T input)
         {
             if (input is Owner owner)
             {
                 owner.UpdatedTime = DateTime.Now;
-                var result = owner.Update();
-
+                var result = SqlLauncher.Update(owner);
                 if (result.Id != Guid.Empty)
-                    return true;
+                    return result.ConvertType<T>();
             }
-            return false;
+            return null;
         }
     }
 }

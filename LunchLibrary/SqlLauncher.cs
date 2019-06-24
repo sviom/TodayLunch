@@ -79,8 +79,9 @@ namespace LunchLibrary
             return returnList;
         }
 
-        public static bool Get<T>(ref T inputObject, Expression<Func<T, bool>> expression = null) where T : class, ICommon
+        public static T Get<T>(Expression<Func<T, bool>> expression = null) where T : class, ICommon
         {
+            T returnObject;
             try
             {
                 using (var db = new TodayLunchContext())
@@ -88,20 +89,20 @@ namespace LunchLibrary
                     var dbSet = db.Set<T>();
                     if (expression != null)
                     {
-                        inputObject = dbSet.Where(expression).FirstOrDefault();
+                        returnObject = dbSet.Where(expression).FirstOrDefault();
                     }
                     else
                     {
-                        inputObject = dbSet.FirstOrDefault();
+                        returnObject = dbSet.FirstOrDefault();
                     }
-                    return true;
+                    return returnObject;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Insert(new Log() { Message = ex.Message, StackTrace = ex.StackTrace });
+                Log.Report(ex);
             }
-            return false;
+            return null;
         }
 
         /// <summary>
