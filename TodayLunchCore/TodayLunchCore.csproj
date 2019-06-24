@@ -13,12 +13,16 @@
 
   <ItemGroup>
     <Compile Remove="wwwroot\images\**" />
+    <Compile Remove="wwwroot\Javascript\**" />
     <Compile Remove="wwwroot\lib\**" />
     <Content Remove="wwwroot\images\**" />
+    <Content Remove="wwwroot\Javascript\**" />
     <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="wwwroot\images\**" />
+    <EmbeddedResource Remove="wwwroot\Javascript\**" />
     <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="wwwroot\images\**" />
+    <None Remove="wwwroot\Javascript\**" />
     <None Remove="wwwroot\lib\**" />
   </ItemGroup>
 
@@ -75,9 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LunchLibrary\LunchLibrary.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\Javascript\" />
   </ItemGroup>
 
 </Project>

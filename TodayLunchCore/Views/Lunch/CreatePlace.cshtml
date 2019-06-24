@@ -48,8 +48,8 @@
         }
 
         var resultData = false;
-        //Test("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList))
-        Test()
+        Test("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList))
+        //Test()
             .then(function (resolvedData) {
                 console.log(resolvedData);
                 //var resultData = resolvedData;
@@ -59,6 +59,8 @@
             });
 
         //var resultData = ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList));
+
+        return;
         if (resultData) {
             location.href = '/Lunch/LunchList?id=@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id))' + "&addressId="+"@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(address.Id))";
         }
