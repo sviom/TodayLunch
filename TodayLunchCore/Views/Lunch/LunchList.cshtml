@@ -32,9 +32,10 @@
     function GetRandom() {
         var selectedValue = GetSelectedAddress();
         var resultData = ExecuteAjax("POST", "/Lunch/GetRandom", "json", "application/json", JSON.stringify(selectedValue));
-        if (resultData.Location == null || resultData.Location == "")
-            resultData.Location = "주소가 등록되지 않았습니다.";
-
+        if (resultData.Location == null || resultData.Location == "") {
+            resultData.Location = "";
+            $("#lunchLocationWrapper").hide();
+        }
         $("#lunchName").text(" [ " + resultData.Name + " ] ");
         $("#lunchLocation").text(" [ " + resultData.Location + " ] ");
         $("#selectLunch").prop("disabled", "disabled");
@@ -70,9 +71,13 @@
 <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-12 offset-lg-2 offset-md-2">
         <div id="successAlert" class="alert alert-success" role="alert" style="display:none;">
-            오늘의 점심 장소는 - <span class="h5" id="lunchName"></span> 입니다.
-            <br />
-            위치는 - <span class="h6" id="lunchLocation"></span> 입니다.
+            <div>
+                오늘의 점심 장소는 - <span class="h5" id="lunchName"></span> 입니다.
+            </div>
+            <div id="lunchLocationWrapper">
+                <br />
+                위치는 - <span class="h6" id="lunchLocation"></span> 입니다.
+            </div>
         </div>
     </div>
 </div>
