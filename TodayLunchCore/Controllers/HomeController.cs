@@ -18,7 +18,7 @@ namespace TodayLunchCore.Controllers
         {
             HttpContext.Session.Clear();
             if (ownerName == null)
-                return View();
+                return View(new Owner());
 
             // 아이디 생성 한 뒤에 들어오는 거면 아이디를 자동으로 텍스트 칸에 입력하게 해준다.
             var ownerInfo = new Owner()
