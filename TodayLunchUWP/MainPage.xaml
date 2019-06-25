@@ -1,0 +1,25 @@
+﻿<Page
+    x:Class="TodayLunchUWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TodayLunchUWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Style="{StaticResource HeaderTextBlockStyle}">오늘 점심 뭐 먹지</TextBlock>
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">오늘점심뭐먹지는~~~~~~~~~~~</TextBlock>
+            
+            <TextBlock>아이디</TextBlock>
+            <TextBox></TextBox>
+            <TextBlock>비밀번호</TextBlock>
+            <PasswordBox></PasswordBox>
+            
+            <Button HorizontalAlignment="Stretch">로그인</Button>
+            <Button HorizontalAlignment="Stretch">아이디생성</Button>
+        </StackPanel>
+    </Grid>
+</Page>
