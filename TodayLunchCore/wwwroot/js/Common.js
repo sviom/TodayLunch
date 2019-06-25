@@ -1,15 +1,16 @@
-﻿function Test(type, url, datatype, contentType, data) {
-//function Test() {
+﻿function ExecuteAjaxAsyncCommon(type, url, datatype, contentType, data) {
+    //function Test() {
     return new Promise(function (resolve, reject) {
-        var result = ExecuteAjax(type, url, datatype, contentType, data);        
+        var result = ExecuteAjax(type, url, datatype, contentType, data);
         //resolve(result);
         if (result === null) {
             reject("error occured");
         } else {
-            resolve("Test Message");
+            resolve(result);
         }
     });
 }
+
 
 /// AJAX 실행(타입/주소/데이터타입/콘텐츠타입/데이터)
 function ExecuteAjax(type, url, datatype, contentType, data) {

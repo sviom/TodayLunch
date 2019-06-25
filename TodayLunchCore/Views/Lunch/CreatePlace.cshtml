@@ -10,7 +10,7 @@
     places = Model.ToList();
 }
 
-<script type="text/javascript">
+    <script type="text/javascript">
     $(document).ajaxStart(function () {
         console.log("aJax Start...");
         $("#PrgressRing").show();
@@ -24,6 +24,19 @@
             SavePlaceList();
         });
     });
+
+    function ExecuteAjaxAsync(type, url, datatype, contentType, data) {
+        //function Test() {
+        return new Promise(function (resolve, reject) {
+            var result = ExecuteAjax(type, url, datatype, contentType, data);
+            //resolve(result);
+            if (result === null) {
+                reject("error occured");
+            } else {
+                resolve(result);
+            }
+        });
+    }
 
     function SavePlaceList() {
         var rows = document.getElementById("inputPlaceTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
@@ -48,25 +61,31 @@
         }
 
         var resultData = false;
-        Test("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList))
-        //Test()
+        ExecuteAjaxAsync("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList))
             .then(function (resolvedData) {
-                console.log(resolvedData);
-                //var resultData = resolvedData;
+                console.log("ExecuteAjaxAsync" + resolvedData);
+                resultData = resolvedData;
+
+                if (resultData) {
+                    location.href = '/Lunch/LunchList?id=@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id))' + "&addressId=" + "@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(address.Id))";
+                } else {
+                    location.href = "/Home/Index";
+                }
             })
             .catch(function (err) {
                 console.log(err);
             });
 
-        //var resultData = ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList));
+        //resultData = async () => {
+        //    return await ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList));
+        //}
 
-        return;
-        if (resultData) {
-            location.href = '/Lunch/LunchList?id=@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id))' + "&addressId="+"@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(address.Id))";
-        }
-        else {
-            location.href = "/Home/Index";
-        }
+        //var resultData = ExecuteAjax("POST", "/Lunch/PostPlace", "json", "application/json", JSON.stringify(jsonPlaceList));
+        @*if (resultData) {
+                    location.href = '/Lunch/LunchList?id=@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(owner.Id))' + "&addressId=" + "@HttpUtility.UrlEncode(LunchLibrary.UtilityLauncher.ConvertGuidToBase64(address.Id))";
+                } else {
+                    location.href = "/Home/Index";
+                }*@
     }
 
     // 열 추가
@@ -86,7 +105,7 @@
         var rowCount = parseInt(BtnObject.id.replace("deletePlaceButton", ""));
         document.getElementById("placeTR" + rowCount).outerHTML = "";
     }
-</script>
+    </script>
 
 <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-12 offset-lg-2 offset-md-2">
