@@ -8,18 +8,29 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style x:Name="CustomButton" TargetType="Button">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="Background" Value="MediumSpringGreen" />
+                <Setter Property="CornerRadius" Value="3"></Setter>
+                <Setter Property="Foreground" Value="White"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </Page.Resources>
+
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Style="{StaticResource HeaderTextBlockStyle}">오늘 점심 뭐 먹지</TextBlock>
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">오늘점심뭐먹지는~~~~~~~~~~~</TextBlock>
-            
+
             <TextBlock>아이디</TextBlock>
-            <TextBox></TextBox>
+            <TextBox x:Name="UserId"></TextBox>
             <TextBlock>비밀번호</TextBlock>
-            <PasswordBox></PasswordBox>
-            
-            <Button HorizontalAlignment="Stretch">로그인</Button>
-            <Button HorizontalAlignment="Stretch">아이디생성</Button>
+            <PasswordBox x:Name="UserPassword"></PasswordBox>
+
+            <Button Style="{StaticResource CustomButton}" x:Name="LoginButton" Click="LoginButton_Click">로그인</Button>
+            <Button Style="{StaticResource CustomButton}" x:Name="CreateUserButton">아이디생성</Button>
         </StackPanel>
     </Grid>
 </Page>

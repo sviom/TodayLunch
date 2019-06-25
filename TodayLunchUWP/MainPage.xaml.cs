@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LunchLibrary.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,28 @@ namespace TodayLunchUWP
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            var name = UserId.Text;
+            var password = UserPassword.Password;
+
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(password))
+            {
+                return;
+            }
+
+            var hashedPw = LunchLibrary.UtilityLauncher.EncryptSHA256(password);
+            var owner = ModelAction.Instance.Get<Owner>(x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
+            if (owner != null)
+            {
+                Owner.OwnerInstance = owner;
+                //return (ownerVal: owner, isOnwer: true);
+                Frame.Navigate(typeof(Views.LunchList));
+            }
+            //else
+            //    return (ownerVal: owner, isOnwer: false);
         }
     }
 }
