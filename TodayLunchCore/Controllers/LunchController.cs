@@ -50,11 +50,11 @@ namespace TodayLunchCore.Controllers
                 if (addressGuid == Guid.Empty)
                     return RedirectToAction("UpsertAddress", "Lunch");
 
-                var addressGetResult = ModelAction.Instance.Get<Address>(x => x.OwnerId.Equals(Owner.OwnerInstance.Id) && x.Id.Equals(addressGuid));
+                var addressGetResult = Address.Instance.Get<Address>(x => x.OwnerId.Equals(Owner.OwnerInstance.Id) && x.Id.Equals(addressGuid));
 
                 ViewBag.Address = addressGetResult;
                 ViewBag.Owner = Owner.OwnerInstance;
-                var placeList = ModelAction.Instance.GetAll<Place>(x => x.OwnerId.Equals(Owner.OwnerInstance.Id) && x.AddressId.Equals(addressGuid));
+                var placeList = Place.Instance.GetAll<Place>(x => x.OwnerId.Equals(Owner.OwnerInstance.Id) && x.AddressId.Equals(addressGuid));
                 return View(placeList);
             }
             else
