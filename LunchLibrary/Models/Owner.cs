@@ -14,6 +14,11 @@ namespace LunchLibrary.Models
     public class Owner : ModelAction, ICommon
     {
         public static Owner OwnerInstance;
+        private static readonly Lazy<Owner> Lazy = new Lazy<Owner>(() => new Owner());
+        public new static Owner Instance => Lazy.Value;
+        public Owner()
+        {
+        }
 
         /// <summary>
         /// 사용자 고유번호

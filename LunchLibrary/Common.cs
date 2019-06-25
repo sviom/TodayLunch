@@ -162,32 +162,4 @@ namespace LunchLibrary
             return (T)Convert.ChangeType(value, typeof(T));
         }
     }
-
-    /// <summary>
-    /// Model들이 무조건 가져야 하는 행동들 정의
-    /// </summary>
-    public abstract class ModelActionGuide
-    {
-        public abstract List<T> GetAll<T>(Expression<Func<T, bool>> expression = null) where T : class, ICommon;
-        public abstract T Get<T>(Expression<Func<T, bool>> expression = null) where T : class, ICommon;
-        public abstract T Insert<T>(T input) where T : class, ICommon;
-        public abstract T Update<T>(T input) where T : class, ICommon;
-        public abstract bool Delete<T>(T input) where T : class, ICommon;
-    }
-
-    //public static class ModelExtension
-    //{
-    //    public static T Insert<T>(this T input) where T : class, ICommon
-    //    {
-    //        return SqlLauncher.Insert(input);
-    //    }
-    //    public static T Update<T>(this T input) where T : class, ICommon
-    //    {
-    //        return SqlLauncher.Update(input);
-    //    }
-    //    public static bool Delete<T>(this T input) where T : class, ICommon
-    //    {
-    //        return SqlLauncher.Delete(input);
-    //    }
-    //}
 }

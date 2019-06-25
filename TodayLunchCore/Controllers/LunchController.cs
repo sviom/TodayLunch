@@ -17,13 +17,13 @@ namespace TodayLunchCore.Controllers
         public IActionResult LunchList(string id, string addressId = null)
         {
             Guid ownerGuid = LunchLibrary.UtilityLauncher.ConvertBase64ToGuid(id);
-            var getOwnerResult = ModelAction.Instance.Get<Owner>(x => x.Id.Equals(ownerGuid));
+            var getOwnerResult = Owner.Instance.Get<Owner>(x => x.Id.Equals(ownerGuid));
 
             Guid addressGuid = GetAddressGuid(addressId);
             if (addressGuid == Guid.Empty)
                 return RedirectToAction("UpsertAddress", "Lunch");
 
-            var addressList = ModelAction.Instance.GetAll<Address>(x => x.OwnerId.Equals(ownerGuid));
+            var addressList = Address.Instance.GetAll<Address>(x => x.OwnerId.Equals(ownerGuid));
             foreach (var item in addressList)
             {
                 if (item.Id == addressGuid)

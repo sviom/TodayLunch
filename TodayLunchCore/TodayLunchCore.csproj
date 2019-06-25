@@ -80,5 +80,8 @@
   <ItemGroup>
     <ProjectReference Include="..\LunchLibrary\LunchLibrary.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
+  </ItemGroup>
 
 </Project>

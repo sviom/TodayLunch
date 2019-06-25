@@ -15,6 +15,13 @@ namespace LunchLibrary.Models
     [Table("Address")]
     public class Address : ModelAction, ICommon
     {
+        private static readonly Lazy<Address> Lazy = new Lazy<Address>(() => new Address());
+        public new static Address Instance => Lazy.Value;
+        public Address()
+        {
+        }
+
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
@@ -61,7 +68,7 @@ namespace LunchLibrary.Models
 
         public override List<T> GetAll<T>(Expression<Func<T, bool>> expression = null)
         {
-            var addressList = LunchLibrary.SqlLauncher.GetAll<T>(expression);
+            var addressList = SqlLauncher.GetAll(expression);
             foreach (var addressItem in addressList)
             {
                 if (addressItem is Address address)

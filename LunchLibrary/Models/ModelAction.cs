@@ -5,41 +5,35 @@ using System.Text;
 
 namespace LunchLibrary.Models
 {
-    public class ModelAction : ModelActionGuide
+    public class ModelAction
     {
         private static readonly Lazy<ModelAction> Lazy = new Lazy<ModelAction>(() => new ModelAction());
-        public static ModelAction Instance
-        {
-            get
-            {
-                return Lazy.Value;
-            }
-        }
+        public static ModelAction Instance => Lazy.Value;
         public ModelAction()
         {
         }
 
-        public override bool Delete<T>(T input)
+        public virtual bool Delete<T>(T input) where T : class, ICommon
         {
             return SqlLauncher.Delete(input);
         }
 
-        public override T Insert<T>(T input)
+        public virtual T Insert<T>(T input) where T : class, ICommon
         {
             return SqlLauncher.Insert(input);
         }
 
-        public override T Update<T>(T input)
+        public virtual T Update<T>(T input) where T : class, ICommon
         {
             return SqlLauncher.Update(input);
         }
 
-        public override List<T> GetAll<T>(Expression<Func<T, bool>> expression = null)
+        public virtual List<T> GetAll<T>(Expression<Func<T, bool>> expression = null) where T :class, ICommon
         {
             return LunchLibrary.SqlLauncher.GetAll<T>(expression);
         }
 
-        public override T Get<T>(Expression<Func<T, bool>> expression = null)
+        public virtual T Get<T>(Expression<Func<T, bool>> expression = null) where T : class, ICommon
         {
             try
             {
