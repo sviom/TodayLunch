@@ -26,6 +26,10 @@ namespace TodayLunchUWP
         public MainPage()
         {
             this.InitializeComponent();
+
+            string sss = Environment.CurrentDirectory;
+            string fff = Directory.GetCurrentDirectory();
+            string ggg = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)

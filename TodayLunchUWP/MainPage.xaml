@@ -21,8 +21,8 @@
 
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Style="{StaticResource HeaderTextBlockStyle}">오늘 점심 뭐 먹지</TextBlock>
-            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">오늘점심뭐먹지는~~~~~~~~~~~</TextBlock>
+            <!--<TextBlock Style="{StaticResource HeaderTextBlockStyle}">오늘 점심 뭐 먹지</TextBlock>
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">오늘점심뭐먹지는~~~~~~~~~~~</TextBlock>-->
 
             <TextBlock>아이디</TextBlock>
             <TextBox x:Name="UserId"></TextBox>
