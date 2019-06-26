@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TodayLunchUWP.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -45,13 +46,16 @@ namespace TodayLunchUWP
             var hashedPw = LunchLibrary.UtilityLauncher.EncryptSHA256(password);
             var owner = ModelAction.Instance.Get<Owner>(x => x.Name.Equals(name) && x.Password.Equals(hashedPw));
             if (owner != null)
-            {
+            {                
                 Owner.OwnerInstance = owner;
-                //return (ownerVal: owner, isOnwer: true);
-                Frame.Navigate(typeof(Views.LunchList));
+
+                LunchPageNavigate naviagateObject = new LunchPageNavigate
+                {
+                    Owner = owner,
+                    AddressId = string.Empty
+                };
+                Frame.Navigate(typeof(Views.LunchList), naviagateObject);
             }
-            //else
-            //    return (ownerVal: owner, isOnwer: false);
         }
     }
 }
