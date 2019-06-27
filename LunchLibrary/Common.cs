@@ -1,10 +1,13 @@
 ﻿using LunchLibrary.Models;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.Services.AppAuthentication;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace LunchLibrary
 {
@@ -160,6 +163,14 @@ namespace LunchLibrary
         public static T ConvertType<T>(this object value)
         {
             return (T)Convert.ChangeType(value, typeof(T));
+        }
+
+        public static async Task<string> GetKeyVaultSecretAsync(string secretName)
+        {
+            var azureServiceTokenProvider = new AzureServiceTokenProvider();
+            var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+            var secret = await keyVaultClient.GetSecretAsync("https://todaylunchkeyvault.vault.azure.net/secrets/" + secretName).ConfigureAwait(false);
+            return secret.Value;
         }
     }
 }

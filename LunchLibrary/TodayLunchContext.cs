@@ -15,18 +15,22 @@ namespace LunchLibrary
         {
             if (!optionsBuilder.IsConfigured)
             {
-                // appsettings.json 파일 사용
-                IConfiguration configuration = new ConfigurationBuilder()
-                    .SetBasePath(Environment.CurrentDirectory)
-                    .AddJsonFile("appsettings_core.json", optional: false, reloadOnChange: true)
-                    .Build();
+                var secretConnection = UtilityLauncher.GetKeyVaultSecretAsync("LunchConnectionString").Result;
+                var secretGooleApiKey = UtilityLauncher.GetKeyVaultSecretAsync("GooglePlaceApiKey").Result;
 
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("lunchConnection"));
+                // appsettings.json 파일 사용
+                //IConfiguration configuration = new ConfigurationBuilder()
+                //    .SetBasePath(Environment.CurrentDirectory)
+                //    .AddJsonFile("appsettings_core.json", optional: false, reloadOnChange: true)
+                //    .Build();
+
+                //optionsBuilder.UseSqlServer(configuration.GetConnectionString("lunchConnection"));
+                optionsBuilder.UseSqlServer(secretConnection);
 
                 if (string.IsNullOrEmpty(GooglePlatform.PlaceAPI.API_KEY))
                 {
-                    var apiKey = configuration.GetSection("Google")["PlaceApiKey"];
-                    GooglePlatform.PlaceAPI.API_KEY = apiKey;
+                    //var apiKey = configuration.GetSection("Google")["PlaceApiKey"];
+                    GooglePlatform.PlaceAPI.API_KEY = secretGooleApiKey;
                 }
             }
         }
