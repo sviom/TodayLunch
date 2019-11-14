@@ -1,7 +1,0 @@
-[
-  {
-    "packageFamilyName": "LaunchFromLinkTest_vnaaxydmn4844",
-    "paths": [ "*" ],
-    "excludePaths": [ "/news/*", "/blog/*" ]
-  }
-]

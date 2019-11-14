@@ -29,14 +29,6 @@
   <ItemGroup>
     <Content Remove="appsettings_core.json" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="windows-app-web-link" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="windows-app-web-link" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.2" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
