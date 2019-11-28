@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace TodayLunchCore
 {
@@ -13,21 +14,17 @@ namespace TodayLunchCore
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) => 
-            WebHost.CreateDefaultBuilder(args)
-            .UseKestrel()
-            .UseContentRoot(Directory.GetCurrentDirectory())
-            .UseIISIntegration()
-            .UseApplicationInsights()
-            //.ConfigureAppConfiguration((context, config) =>
-            //{
-            //    var builtConfig = config.Build();
-            //    var vaultUrl = "https://todaylunchkeyvault.vault.azure.net/";
-            //    config.AddAzureKeyVault(vaultUrl);
-            //})
-            .UseStartup<Startup>();
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.ConfigureKestrel(servereOptions =>
+                {
+
+                }).UseStartup<Startup>();
+            });
     }
 }
