@@ -16,7 +16,7 @@ namespace TodayLunchCore
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings_core.json", optional: false, reloadOnChange: true)
+                //.AddJsonFile("appsettings_core.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
