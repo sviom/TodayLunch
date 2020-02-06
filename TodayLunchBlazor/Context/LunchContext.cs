@@ -23,5 +23,11 @@ namespace TodayLunchBlazor.Context
 
             optionsBuilder.UseCosmos(endpoint, accountKey, "LunchItems");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //base.OnModelCreating(modelBuilder);
+            modelBuilder.HasDefaultContainer("LunchItems");
+        }
     }
 }
