@@ -28,36 +28,36 @@ namespace LunchLibrary.Models
 
         public string Name { get; set; }
 
-        public override T Insert<T>(T input)
-        {
-            if (input is Log log)
-            {
-                var insertedLog = SqlLauncher.Insert(log);
-                if (insertedLog != null)
-                    return insertedLog.ConvertType<T>();
-            }
-            return null;
-        }
+        //public override T Insert<T>(T input)
+        //{
+        //    if (input is Log log)
+        //    {
+        //        var insertedLog = SqlLauncher.Insert(log);
+        //        if (insertedLog != null)
+        //            return insertedLog.ConvertType<T>();
+        //    }
+        //    return null;
+        //}
 
-        public override T Update<T>(T input)
-        {
-            if (input is Log owner)
-            {
-                var result = SqlLauncher.Update(owner);
-                if (result.Id != Guid.Empty)
-                    return result.ConvertType<T>();
-            }
-            return null;
-        }
+        //public override T Update<T>(T input)
+        //{
+        //    if (input is Log owner)
+        //    {
+        //        var result = SqlLauncher.Update(owner);
+        //        if (result.Id != Guid.Empty)
+        //            return result.ConvertType<T>();
+        //    }
+        //    return null;
+        //}
 
-        public static void Report(Exception ex)
-        {
-            var log = new Log
-            {
-                Message = ex.Message,
-                StackTrace = ex.StackTrace
-            };
-            SqlLauncher.Insert(log);
-        }
+        //public static void Report(Exception ex)
+        //{
+        //    var log = new Log
+        //    {
+        //        Message = ex.Message,
+        //        StackTrace = ex.StackTrace
+        //    };
+        //    SqlLauncher.Insert(log);
+        //}
     }
 }

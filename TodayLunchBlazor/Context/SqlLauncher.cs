@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace LunchLibrary
+namespace TodayLunchBlazor.Context
 {
     public static class SqlLauncher
     {
@@ -18,7 +18,7 @@ namespace LunchLibrary
         public static T Insert<T>(T inputObject) where T : class
         {
             T addedObject = null;
-            using (var db = new TodayLunchContext())
+            using (var db = new LunchContext())
             {
                 db.Entry(inputObject).State = Microsoft.EntityFrameworkCore.EntityState.Added;
                 var set = db.Set<T>();
@@ -33,7 +33,7 @@ namespace LunchLibrary
         public static List<T> InsertList<T>(List<T> inputList) where T : class, ICommon
         {
             List<T> resultList = new List<T>();
-            using (var db = new TodayLunchContext())
+            using (var db = new LunchContext())
             {
                 foreach (var item in inputList)
                 {
@@ -59,7 +59,7 @@ namespace LunchLibrary
             List<T> returnList = new List<T>();
             try
             {
-                using (var db = new TodayLunchContext())
+                using (var db = new LunchContext())
                 {
                     var dbSet = db.Set<T>();
                     if (expression != null)
@@ -84,7 +84,7 @@ namespace LunchLibrary
             T returnObject;
             try
             {
-                using (var db = new TodayLunchContext())
+                using (var db = new LunchContext())
                 {
                     var dbSet = db.Set<T>();
                     if (expression != null)
@@ -100,7 +100,7 @@ namespace LunchLibrary
             }
             catch (Exception ex)
             {
-                Log.Report(ex);
+                //Log.Report(ex);
             }
             return null;
         }
@@ -116,7 +116,7 @@ namespace LunchLibrary
             int count = 0;
             try
             {
-                using (var db = new TodayLunchContext())
+                using (var db = new LunchContext())
                 {
                     var dbSet = db.Set<T>();
                     if (func != null)
@@ -140,7 +140,7 @@ namespace LunchLibrary
                 if (deleteObject == null || deleteObject.Id == Guid.Empty)
                     return false;
 
-                using (var db = new TodayLunchContext())
+                using (var db = new LunchContext())
                 {
                     db.Entry(deleteObject).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
                     var set = db.Set<T>();
@@ -162,7 +162,7 @@ namespace LunchLibrary
             T addedObject = null;
             try
             {
-                using (var db = new TodayLunchContext())
+                using (var db = new LunchContext())
                 {
                     db.Entry(updateObject).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     var set = db.Set<T>();

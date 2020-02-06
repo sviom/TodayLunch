@@ -42,7 +42,7 @@ namespace LunchLibrary.GooglePlatform
             }
             catch (Exception ex)
             {
-                Log.Report(ex);
+                //Log.Report(ex);
             }
             return null;
         }
@@ -69,7 +69,7 @@ namespace LunchLibrary.GooglePlatform
             }
             catch (Exception ex)
             {
-                Log.Report(ex);
+                //Log.Report(ex);
             }
             return null;
         }

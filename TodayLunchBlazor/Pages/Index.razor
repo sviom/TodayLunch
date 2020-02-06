@@ -1,5 +1,96 @@
 ﻿@page "/"
+@using LunchLibrary.Models;
+@using LunchLibrary.ViewModels;
+@using TodayLunchBlazor.Data;
+@inject UserServices UserService
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-8 offset-lg-4 offset-md-3 offset-sm-2">
+        <div class="h2 font-weight-bold">
+            오늘 점심 뭐먹지
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-8 offset-lg-4 offset-md-3 offset-sm-2">
+        오늘 점심 뭐먹지는 점심 가게를 고르는데 지친 사람들을 위한 점심고르기 서비스 입니다.
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-8 offset-lg-4 offset-md-3 offset-sm-2">
+        <hr />
+        <form id="loginForm">
+            <div class="form-group">
+                <label>아이디</label>
+                <input type="text" id="OwnerName" name="OwnerName" class="form-control" placeholder="아이디 입력" />
+            </div>
+            <div class="form-group">
+                <label>비밀번호</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호 입력" />
+            </div>
+
+            <button type="button" id="loginButton" class="btn btn-primary btn-block">로그인</button>
+        </form>
+    </div>
+</div>
+
+<div class="row" style="margin-top:10px;">
+    <div class="col-lg-4 col-md-6 col-sm-8 offset-lg-4 offset-md-3 offset-sm-2">
+        <a href="/Home/CreateUser" class="btn btn-secondary btn-block">아이디 생성</a>
+    </div>
+</div>
+
+<div class="row" style="margin-top:10px;">
+    <div class="col-lg-4 col-md-6 col-sm-8 offset-lg-4 offset-md-3 offset-sm-2">
+        <EditForm Model="@ViewModel" OnValidSubmit="@LogInButton">
+            <DataAnnotationsValidator />
+            <p>
+                <label>
+                    <span>아이디</span>
+                    <InputText id="ownerId" @bind-Value="ViewModel.Name"
+                               class="form-control" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    <span>비밀번호</span>
+                    <InputText id="ownerPassword" @bind-Value="ViewModel.Password"
+                               type="Password"
+                               class="form-control" />
+                </label>
+            </p>
+
+
+            <button type="submit" id="loginButton" class="btn btn-primary btn-block">로그인</button>
+
+            <ValidationSummary />
+        </EditForm>
+
+        <p>Error : @ViewModel.ErrorMessage</p>
+    </div>
+</div>
+
+@code {
+
+    public LogInViewModel ViewModel { get; set; }
+
+    //public Owner Owner { get; set; }
+
+    protected override void OnInitialized()
+    {
+        //base.OnInitialized();
+        ViewModel = new LogInViewModel();
+    }
+
+    public void LogInButton()
+    {
+        //UserService.LogIn(ViewModel.Name, ViewModel.Password);
+        ViewModel.LogIn();
+    }
+}
