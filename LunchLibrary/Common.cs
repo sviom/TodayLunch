@@ -18,6 +18,8 @@ namespace LunchLibrary
 
     public static class UtilityLauncher
     {
+        public static string GetKeyVaultEndpoint() => "https://todaylunchkeyvault.vault.azure.net";
+
         /// <summary>
         /// SHA256 암호화
         /// </summary>
@@ -169,7 +171,7 @@ namespace LunchLibrary
         {
             var azureServiceTokenProvider = new AzureServiceTokenProvider();
             var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
-            var secret = await keyVaultClient.GetSecretAsync("https://todaylunchkeyvault.vault.azure.net/secrets/" + secretName).ConfigureAwait(false);
+            var secret = await keyVaultClient.GetSecretAsync(GetKeyVaultEndpoint() + "/secrets/" + secretName).ConfigureAwait(false);
             return secret.Value;
         }
     }

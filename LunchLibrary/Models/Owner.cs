@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +11,6 @@ namespace LunchLibrary.Models
     /// <summary>
     /// 서비스 사용자 관련
     /// </summary>
-    [Table("Owner")]
     public class Owner : ModelAction, ICommon
     {
         public static Owner OwnerInstance;
@@ -25,6 +25,7 @@ namespace LunchLibrary.Models
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; }
 
         /// <summary>

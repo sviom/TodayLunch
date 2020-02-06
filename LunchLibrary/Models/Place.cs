@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +10,6 @@ namespace LunchLibrary.Models
     /// <summary>
     /// 먹는 장소 관련
     /// </summary>
-    [Table("Place")]
     public class Place : ModelAction, ICommon
     {
         /// <summary>
@@ -23,6 +23,7 @@ namespace LunchLibrary.Models
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; }
 
         /// <summary>

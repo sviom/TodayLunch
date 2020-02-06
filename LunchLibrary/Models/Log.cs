@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace LunchLibrary.Models
 {
@@ -13,6 +14,7 @@ namespace LunchLibrary.Models
     {
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; }
 
         [Required]

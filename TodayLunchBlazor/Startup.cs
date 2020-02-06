@@ -46,6 +46,8 @@ namespace TodayLunchBlazor
 
             app.UseRouting();
 
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();

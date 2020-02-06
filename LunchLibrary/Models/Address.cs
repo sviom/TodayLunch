@@ -12,7 +12,6 @@ namespace LunchLibrary.Models
     /// <summary>
     /// 주소 별 장소 관련
     /// </summary>
-    [Table("Address")]
     public class Address : ModelAction, ICommon
     {
         private static readonly Lazy<Address> Lazy = new Lazy<Address>(() => new Address());
@@ -24,6 +23,7 @@ namespace LunchLibrary.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; }
 
         [Required]
